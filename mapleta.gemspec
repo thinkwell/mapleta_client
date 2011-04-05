@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Turner"]
-  s.date = %q{2011-03-24}
+  s.date = %q{2011-04-05}
   s.description = %q{Provides API bindings for MapleTA}
   s.email = %q{brandont@thinkwell.com}
   s.extra_rdoc_files = [
@@ -20,11 +20,30 @@ Gem::Specification.new do |s|
     ".document",
     ".rspec",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
+    "VERSION",
     "lib/mapleta.rb",
-    "spec/mapleta_spec.rb",
+    "lib/mapleta/assignment.rb",
+    "lib/mapleta/communication.rb",
+    "lib/mapleta/connection.rb",
+    "lib/mapleta/course.rb",
+    "lib/mapleta/errors/invalid_response_error.rb",
+    "lib/mapleta/errors/mapleta_error.rb",
+    "lib/mapleta/errors/network_error.rb",
+    "lib/mapleta/errors/not_connected_error.rb",
+    "lib/mapleta/errors/unexpected_content_error.rb",
+    "lib/mapleta/hash_initialize.rb",
+    "lib/mapleta/question_view.rb",
+    "lib/mapleta/web_service.rb",
+    "mapleta.gemspec",
+    "spec/mapleta/assignment_spec.rb",
+    "spec/mapleta/communication_spec.rb",
+    "spec/mapleta/connection_spec.rb",
+    "spec/mapleta/question_view_spec.rb",
+    "spec/mapleta/web_service_spec.rb",
     "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/thinkwell/mapleta}
@@ -33,7 +52,11 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.6.0}
   s.summary = %q{API bindings for MapleTA}
   s.test_files = [
-    "spec/mapleta_spec.rb",
+    "spec/mapleta/assignment_spec.rb",
+    "spec/mapleta/communication_spec.rb",
+    "spec/mapleta/connection_spec.rb",
+    "spec/mapleta/question_view_spec.rb",
+    "spec/mapleta/web_service_spec.rb",
     "spec/spec_helper.rb"
   ]
 
@@ -42,22 +65,28 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activesupport>, [">= 0"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
+      s.add_runtime_dependency(%q<nokogiri>, [">= 0"])
+      s.add_runtime_dependency(%q<mechanize>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.5"])
+      s.add_development_dependency(%q<bundler>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
     else
       s.add_dependency(%q<activesupport>, [">= 0"])
-      s.add_dependency(%q<rspec>, ["~> 2.3.0"])
-      s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
+      s.add_dependency(%q<nokogiri>, [">= 0"])
+      s.add_dependency(%q<mechanize>, [">= 0"])
+      s.add_dependency(%q<rspec>, ["~> 2.5"])
+      s.add_dependency(%q<bundler>, [">= 0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<rcov>, [">= 0"])
     end
   else
     s.add_dependency(%q<activesupport>, [">= 0"])
-    s.add_dependency(%q<rspec>, ["~> 2.3.0"])
-    s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-    s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
+    s.add_dependency(%q<nokogiri>, [">= 0"])
+    s.add_dependency(%q<mechanize>, [">= 0"])
+    s.add_dependency(%q<rspec>, ["~> 2.5"])
+    s.add_dependency(%q<bundler>, [">= 0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<rcov>, [">= 0"])
   end
 end
