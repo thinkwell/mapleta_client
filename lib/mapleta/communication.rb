@@ -41,6 +41,7 @@ module Maple::MapleTA
 
       def fetch_page(url, params={}, request_method=:get)
         url = abs_url_for(url)
+        params = fix_mechanize_params(params)
 
         begin
           case request_method
@@ -155,6 +156,23 @@ module Maple::MapleTA
     private
       def signature(ts)
         ::ActiveSupport::Base64.encode64(Digest::MD5.digest("#{ts}#{secret}")).gsub("\n",'')
+      end
+
+      # Mechanize unescapes HTML entities such as &minus; in string form data.
+      # This causes a problem with MathML, which expects entities such as
+      # &minus; instead of "-".  This function uses a custom object to
+      # represent MathML data, thus preventing Mechanize from unescaping it.
+      #
+      # See mechanize/lib/mechanize/form/field.rb
+      def fix_mechanize_params(params)
+        params.inject({}) do |memo, (key, val)|
+          if val =~ /^<(xml|math)/
+            memo[key] = RawString.new(val)
+          else
+            memo[key] = val
+          end
+          memo
+        end
       end
 
     end

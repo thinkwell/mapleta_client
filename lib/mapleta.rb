@@ -6,6 +6,7 @@ module Maple
     autoload :Course, 'mapleta/course'
     autoload :HashInitialize, 'mapleta/hash_initialize'
     autoload :QuestionView, 'mapleta/question_view'
+    autoload :RawString, 'mapleta/raw_string'
     autoload :WebService, 'mapleta/web_service'
 
     module Errors
