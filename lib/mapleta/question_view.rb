@@ -1,6 +1,6 @@
 module Maple::MapleTA
   class QuestionView
-    attr_accessor :form_param_name, :base_url
+    attr_accessor :form_param_name, :base_url, :fix_equation_entry_mode_links
     attr_reader :page
 
 
@@ -69,6 +69,18 @@ module Maple::MapleTA
 
     def form_action
       form_node.attr('action')
+    end
+
+
+    # Returns the entry style used for input, either :text or :symbol
+    def equation_entry_mode
+      return @equation_entry_mode if @equation_entry_mode
+
+      if form_node.xpath('.//applet[@code="applets.twodeeeditor.mathEditor"]').length > 0
+        @equation_entry_mode = :symbol
+      else
+        @equation_entry_mode = :text
+      end
     end
 
 
@@ -198,6 +210,23 @@ module Maple::MapleTA
           extra = $3
           node['name'] = "#{form_param_name}[#{field}]#{extra if extra}"
         end
+      end
+    end
+
+
+    def fix_equation_entry_mode_links=(bool)
+      return unless bool
+
+      form_node.xpath('.//a[text()="Change Entry Style"]').each do |node|
+        case equation_entry_mode
+        when :symbol
+          node['href'] = "#text"
+          node.content = "Switch to text input"
+        when :text
+          node['href'] = "#symbol"
+          node.content = "Switch to Equation Editor"
+        end
+        node['class'] = 'change-equation-entry-mode'
       end
     end
 

@@ -21,7 +21,7 @@ module Maple::MapleTA
       def fetch_response(uri, method=:get, post_body=nil)
         uri = URI.parse(uri) if uri.is_a?(String)
         request = method==:post ? Net::HTTP::Post.new(uri.request_uri) : Net::HTTP::Get.new(uri.request_uri)
-        request['Cookie'] = "JSESSIONID=#{session}" if self.respond_to?(:session)
+        request['Cookie'] = cookies.collect {|key, val| "#{key}=#{val}"}.join('; ')
         if method == :post
           request.body = post_body if post_body
         end
@@ -86,9 +86,9 @@ module Maple::MapleTA
 
       def agent
         @agent ||= Mechanize.new.tap do |agent|
-          if self.respond_to?(:session)
-            uri = URI.parse(base_url)
-            cookie = Mechanize::Cookie.new('JSESSIONID', "#{session}")
+          uri = URI.parse(base_url)
+          cookies.each do |key, val|
+            cookie = Mechanize::Cookie.new(key, val)
             cookie.domain = uri.host
             cookie.path = uri.path
             agent.cookie_jar.add(uri, cookie)
@@ -153,6 +153,20 @@ module Maple::MapleTA
       end
 
 
+      def cookies
+        cookies = {}
+        cookies['JSESSIONID'] = "#{session}" if self.respond_to?(:session) && session != nil
+        cookies['useMathEditor'] = "#{use_math_editor}" if self.respond_to?(:use_math_editor) && use_math_editor != nil
+        cookies
+      end
+
+
+      def use_math_editor=(val)
+        return @use_math_editor = nil if val == nil || val.to_s == ""
+        @use_math_editor = val.to_sym == :true ? true : false
+      end
+
+
     private
       def signature(ts)
         ::ActiveSupport::Base64.encode64(Digest::MD5.digest("#{ts}#{secret}")).gsub("\n",'')
@@ -190,7 +204,7 @@ module Maple::MapleTA
       require 'uri'
       require 'mechanize'
 
-      attr_accessor :secret, :base_url, :user_agent
+      attr_accessor :secret, :base_url, :user_agent, :use_math_editor
     end
 
   end
