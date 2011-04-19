@@ -164,6 +164,11 @@ module Maple::MapleTA
       @page.parser.xpath('//*[@href]').each {|node| node['href'] = Connection.abs_url_for(node['href'], uri)}
       @page.parser.xpath('//applet[@codebase]').each {|node| node['codebase'] = Connection.abs_url_for(node['codebase'], uri)}
       @page.parser.xpath('//applet/param[@name="image"]').each {|node| node['value'] = Connection.abs_url_for(node['value'], uri)}
+      @page.parser.xpath('//applet[@archive]').each do |node|
+        node['archive'] = node['archive'].split(',').map do |u|
+          Connection.abs_url_for(u.strip, uri)
+        end.join(', ')
+      end
     end
 
 
