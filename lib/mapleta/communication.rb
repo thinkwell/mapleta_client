@@ -19,7 +19,7 @@ module Maple::MapleTA
     module InstanceMethods
 
       def fetch_response(uri, method=:get, post_body=nil)
-        uri = URI.parse(uri) if uri.is_a?(String)
+        uri = URI.parse(abs_url_for(uri)) if uri.is_a?(String)
         request = method==:post ? Net::HTTP::Post.new(uri.request_uri) : Net::HTTP::Get.new(uri.request_uri)
         request['Cookie'] = cookies.collect {|key, val| "#{key}=#{val}"}.join('; ')
         if method == :post
