@@ -1,6 +1,6 @@
 module Maple::MapleTA
   class QuestionView
-    attr_accessor :form_param_name, :base_url, :fix_equation_entry_mode_links, :fix_preview_links
+    attr_accessor :form_param_name, :base_url
     attr_reader :page
 
 
@@ -214,9 +214,19 @@ module Maple::MapleTA
     end
 
 
-    def fix_equation_entry_mode_links=(bool)
-      return unless bool
 
+    ###
+    # These methods apply different fixes to the html returned from Maple
+    #
+
+    # Shortcut for applying all html fixes
+    def fix_html
+      fix_equation_entry_mode_links
+      fix_preview_links
+    end
+
+
+    def fix_equation_entry_mode_links
       form_node.xpath('.//a[text()="Change Entry Style"]').each do |node|
         case equation_entry_mode
         when :symbol
@@ -231,9 +241,7 @@ module Maple::MapleTA
     end
 
 
-    def fix_preview_links=(bool)
-      return unless bool
-
+    def fix_preview_links
       form_node.xpath('.//a[text()="Preview"]').each do |node|
         if node['href'] =~ /previewFormula\([^,]*getElementsByName\('([^']+)'\)[^,]*,.*'([^\)]+)'\)/
           node['href'] = "##{$1}"
