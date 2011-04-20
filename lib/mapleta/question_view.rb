@@ -223,6 +223,7 @@ module Maple::MapleTA
     def fix_html
       fix_equation_entry_mode_links
       fix_preview_links
+      fix_image_position
     end
 
 
@@ -252,6 +253,17 @@ module Maple::MapleTA
     end
 
 
+    # Removes "vertical-align: -4px;" inline style that causes images to appear
+    # lower than surrounding text
+    def fix_image_position
+      content_node.xpath('.//span[img and @style]').each do |node|
+        node['style'] = node['style'].gsub(/vertical-align: -?\d+px;/, '')
+      end
+    end
+
+
+    #
+    ###
 
   private
 
