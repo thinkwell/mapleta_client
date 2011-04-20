@@ -1,6 +1,6 @@
 module Maple::MapleTA
   class QuestionView
-    attr_accessor :form_param_name, :base_url, :fix_equation_entry_mode_links
+    attr_accessor :form_param_name, :base_url, :fix_equation_entry_mode_links, :fix_preview_links
     attr_reader :page
 
 
@@ -227,6 +227,19 @@ module Maple::MapleTA
           node.content = "Switch to Equation Editor"
         end
         node['class'] = 'change-equation-entry-mode'
+      end
+    end
+
+
+    def fix_preview_links=(bool)
+      return unless bool
+
+      form_node.xpath('.//a[text()="Preview"]').each do |node|
+        if node['href'] =~ /previewFormula\([^,]*getElementsByName\('([^']+)'\)[^,]*,.*'([^\)]+)'\)/
+          node['href'] = "##{$1}"
+          node['class'] = 'preview'
+          node['maple_action'] = $2
+        end
       end
     end
 
