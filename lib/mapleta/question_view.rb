@@ -223,6 +223,7 @@ module Maple::MapleTA
     def fix_html
       fix_equation_entry_mode_links
       fix_preview_links
+      fix_plot_links
       fix_image_position
     end
 
@@ -248,6 +249,20 @@ module Maple::MapleTA
           node['href'] = "##{$1}"
           node['class'] = 'preview'
           node['maple_action'] = $2
+        end
+      end
+    end
+
+
+    def fix_plot_links
+      form_node.xpath('.//a[text()="Plot"]').each do |node|
+        if node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document.getElementsByName\('([^']+)'\)[^']*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/
+          node['href'] = "##{$2}"
+          node['class'] = 'plot'
+          node['maple_maple'] = $1
+          node['maple_type'] = $3
+          node['maple_libname'] = $4
+          node['maple_driver'] = $5
         end
       end
     end
