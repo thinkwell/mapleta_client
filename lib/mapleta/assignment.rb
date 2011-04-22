@@ -17,25 +17,25 @@ module Maple::MapleTA
         'testId' => id,
       }
 
-      question_view(connection.launch('assignment', params), connection, view_opts)
+      page(connection.launch('assignment', params), connection, view_opts)
     end
 
 
     def post(connection, url, data, view_opts={})
       raise Errors::MapleTAError, "Connection class id doesn't match assignment class id" unless self.classId == connection.class_id
 
-      question_view(connection.fetch_page(url, data, :post), connection, view_opts)
+      page(connection.fetch_page(url, data, :post), connection, view_opts)
     end
 
 
   private
 
-    def question_view(page, connection, view_opts)
+    def page(mechanize_page, connection, view_opts)
       view_opts = {
         :base_url => connection.base_url,
       }.merge(view_opts)
 
-      QuestionView.new(page, view_opts)
+      Maple::MapleTA.Page(mechanize_page, view_opts)
     end
 
   end

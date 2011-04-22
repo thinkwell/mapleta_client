@@ -1,25 +1,19 @@
 module Maple::MapleTA
-  class QuestionView
-    attr_accessor :form_param_name, :base_url
-    attr_reader :page
+module Page
+
+  class Question < Base
+    include Form
+
+
+    # Returns true if the given page looks like a page this class can parse
+    def self.detect(page)
+      page.parser.xpath(".//script[contains(@src, 'questionframe.js')]").length > 0 &&
+        page.parser.xpath(".//input[@name='actionID' and (@value='grade' or @value='viewgrade' or @value='viewdetails')]").length == 0
+    end
 
 
     def initialize(page, opts={})
-      @page = page
-      raise "Must pass Mechanize::Page as :page (got: #{@page.class})" unless @page.is_a?(Mechanize::Page)
-      validate
-
-      {
-        :form_param_name => :question,
-      }.merge(opts).each do |key, val|
-        if self.respond_to?("#{key}")
-          if respond_to?("#{key}=")
-            self.send("#{key}=", val)
-          else
-            self.instance_variable_set("@#{key}", val)
-          end
-        end
-      end
+      super
 
       # Move hidden fields out of the question node
       # This prevents duplicate hidden nodes when using question_html and hidden_fields_html
@@ -67,12 +61,6 @@ module Maple::MapleTA
     end
 
 
-    def form_action
-      form_node.attr('action')
-    end
-
-
-    # Returns the entry style used for input, either :text or :symbol
     def equation_entry_mode
       return @equation_entry_mode if @equation_entry_mode
 
@@ -97,11 +85,6 @@ module Maple::MapleTA
     alias :question_html :html
 
 
-    def hidden_fields_html
-      hidden_fields.to_xhtml
-    end
-
-
     def script_html
       html = ''
       html << "#{base_url_script_node.to_html}\n" if base_url_script_node
@@ -123,24 +106,9 @@ module Maple::MapleTA
     end
 
 
-    def content_node
-      @content_node || @page.parser.at_css('div.content')
-    end
-
-
-    def form_node
-      @form_node || content_node.at_xpath(".//form[@name='edu_form']")
-    end
-
-
     def question_node
       #@question_node ||= form_node.at_xpath("./div[@style='margin: 10px']/table[last()]/tr/td[2]")
       @question_node ||= form_node.at_css("div.questionstyle")
-    end
-
-
-    def hidden_fields
-      @hidden_fields ||= form_node.xpath(".//input[@type='hidden']")
     end
 
 
@@ -166,54 +134,6 @@ module Maple::MapleTA
 
 
 
-    # Modifies all relative URL to use absolute URLs, using this URL
-    # as the base URL
-    def base_url=(url)
-      @base_url = url
-      uri = URI.parse(@base_url)
-
-      @page.parser.xpath('//*[@src]').each {|node| node['src'] = Connection.abs_url_for(node['src'], uri)}
-      @page.parser.xpath('//*[@href]').each {|node| node['href'] = Connection.abs_url_for(node['href'], uri)}
-      @page.parser.xpath('//applet[@codebase]').each {|node| node['codebase'] = Connection.abs_url_for(node['codebase'], uri)}
-      @page.parser.xpath('//applet/param[@name="image"]').each {|node| node['value'] = Connection.abs_url_for(node['value'], uri)}
-      @page.parser.xpath('//applet[@archive]').each do |node|
-        node['archive'] = node['archive'].split(',').map do |u|
-          Connection.abs_url_for(u.strip, uri)
-        end.join(', ')
-      end
-    end
-
-
-    # Modifies all form fields so that name="bar" becomes name="foo[bar]"
-    def form_param_name=(name)
-      return if @form_param_name.to_s == name.to_s
-
-      old_name = @form_param_name
-      @form_param_name = name
-
-
-      form_node.xpath('.//input[@name] | .//select[@name] | .//textarea[@name]').each do |node|
-        # This Regexp matches:
-        #   1) field_name
-        #   2) old_param_name[field_name]
-        # and replaces with:
-        #   form_param_name[field_name]
-        #
-        # It also allows for any number bracketted groups such as:
-        #   3) field_name[foo][bar]
-        #   4) old_param_name[field_name][foo][bar]
-        # will be replaced with:
-        #   form_param_name[field_name][foo][bar]
-        #
-        if node['name'] =~ /^(?:#{Regexp.escape(old_name.to_s)}\[([^\[\]]+)\]|([^\[\]]+))(\[.*)?$/
-          field = $1 || $2
-          extra = $3
-          node['name'] = "#{form_param_name}[#{field}]#{extra if extra}"
-        end
-      end
-    end
-
-
 
     ###
     # These methods apply different fixes to the html returned from Maple
@@ -224,6 +144,7 @@ module Maple::MapleTA
       fix_equation_entry_mode_links
       fix_preview_links
       fix_plot_links
+      fix_help_links
       fix_image_position
     end
 
@@ -268,6 +189,10 @@ module Maple::MapleTA
     end
 
 
+    def fix_help_links
+    end
+
+
     # Removes "vertical-align: -4px;" inline style that causes images to appear
     # lower than surrounding text
     def fix_image_position
@@ -286,18 +211,10 @@ module Maple::MapleTA
     # Returns true or throws an exception
     def validate
       node = @page.parser
-      begin
-        error_node   and raise Errors::UnexpectedContentError.new(node, error_node.content.to_s.strip)
-        content_node  or raise Errors::UnexpectedContentError.new(node, "Cannot find question content")
-        form_node     or raise Errors::UnexpectedContentError.new(node, "Cannot find question form")
-        question_node or raise Errors::UnexpectedContentError.new(node, "Cannot find question node")
-      rescue Errors::UnexpectedContentError => e
-        if Rails && Rails.logger
-          Rails.logger.error "Error parsing Maple T.A. question: #{e.message}"
-          Rails.logger.debug "Maple T.A. response: #{e.node.to_html}"
-        end
-        raise e
-      end
+      error_node   and raise Errors::UnexpectedContentError.new(node, error_node.content.to_s.strip)
+      content_node  or raise Errors::UnexpectedContentError.new(node, "Cannot find question content")
+      form_node     or raise Errors::UnexpectedContentError.new(node, "Cannot find question form")
+      question_node or raise Errors::UnexpectedContentError.new(node, "Cannot find question node")
 
       true
     end
@@ -314,4 +231,6 @@ module Maple::MapleTA
 
 
   end
+
+end
 end

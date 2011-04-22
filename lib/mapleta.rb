@@ -5,7 +5,6 @@ module Maple
     autoload :Connection, 'mapleta/connection'
     autoload :Course, 'mapleta/course'
     autoload :HashInitialize, 'mapleta/hash_initialize'
-    autoload :QuestionView, 'mapleta/question_view'
     autoload :RawString, 'mapleta/raw_string'
     autoload :WebService, 'mapleta/web_service'
 
@@ -16,5 +15,14 @@ module Maple
       autoload :NotConnectedError, 'mapleta/errors/not_connected_error'
       autoload :UnexpectedContentError, 'mapleta/errors/unexpected_content_error'
     end
+
+    module Page
+      autoload :Base, 'mapleta/page/base'
+      autoload :Form, 'mapleta/page/form'
+      autoload :Grade, 'mapleta/page/grade'
+      autoload :Question, 'mapleta/page/question'
+    end
+
+    require 'mapleta/page'
   end
 end
