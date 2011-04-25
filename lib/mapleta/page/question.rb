@@ -72,6 +72,12 @@ module Page
     end
 
 
+    def feedback_allowed?
+      return @feedback_allowed unless @feedback_allowed == nil
+      @feedback_allowed = content_node.xpath('.//a[@href="javascript:doInSessionFeedback()"]').length > 0
+    end
+
+
 
     ###
     # These methods return html snippets intended to be inserted directly in

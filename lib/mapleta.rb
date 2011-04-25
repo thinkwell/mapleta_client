@@ -18,6 +18,7 @@ module Maple
 
     module Page
       autoload :Base, 'mapleta/page/base'
+      autoload :Feedback, 'mapleta/page/feedback'
       autoload :Form, 'mapleta/page/form'
       autoload :Grade, 'mapleta/page/grade'
       autoload :Preview, 'mapleta/page/preview'
