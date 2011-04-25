@@ -20,6 +20,7 @@ module Maple
       autoload :Base, 'mapleta/page/base'
       autoload :Form, 'mapleta/page/form'
       autoload :Grade, 'mapleta/page/grade'
+      autoload :Preview, 'mapleta/page/preview'
       autoload :Question, 'mapleta/page/question'
     end
 
