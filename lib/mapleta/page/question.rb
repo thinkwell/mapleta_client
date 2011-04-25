@@ -150,7 +150,7 @@ module Page
 
 
     def fix_equation_entry_mode_links
-      form_node.xpath('.//a[text()="Change Entry Style"]').each do |node|
+      form_node.xpath('.//a[text()="Change Entry Style" or text()="Change Math Entry Mode"]').each do |node|
         case equation_entry_mode
         when :symbol
           node['href'] = "#text"
