@@ -23,6 +23,7 @@ module Maple
       autoload :Grade, 'mapleta/page/grade'
       autoload :Preview, 'mapleta/page/preview'
       autoload :Question, 'mapleta/page/question'
+      autoload :RestrictedAssignment, 'mapleta/page/restricted_assignment'
     end
 
     require 'mapleta/page'
