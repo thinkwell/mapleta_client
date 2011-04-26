@@ -59,7 +59,7 @@ module Page
     #
 
     def content_node
-      @content_node || @page.parser.at_css('div.content')
+      @content_node ||= @page.parser.at_css('div.content')
     end
 
     #
