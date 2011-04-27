@@ -152,7 +152,6 @@ module Page
       fix_preview_links
       fix_plot_links
       fix_help_links
-      fix_image_position
     end
 
 
@@ -201,8 +200,12 @@ module Page
     end
 
 
-    # Removes "vertical-align: -4px;" inline style that causes images to appear
-    # lower than surrounding text
+    # Removes "vertical-align: -\d+px;" inline style that causes images to appear
+    # lower than surrounding text.
+    # NOTE: Maple adds this to center equation images (such as fractions) with
+    # the surrounding inline text.  It is better to set the img.vertical-align
+    # style to baseline than to remove the vertical-align inline styles with this
+    # method.
     def fix_image_position
       content_node.xpath('.//span[img and @style]').each do |node|
         node['style'] = node['style'].gsub(/vertical-align: -?\d+px;/, '')
