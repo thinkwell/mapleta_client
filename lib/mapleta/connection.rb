@@ -55,18 +55,7 @@ module Maple::MapleTA
 
 
     def launcher(action, params={})
-      params = {
-        'wsActionID'   => action,
-        'wsFirstName'  => first_name,
-        'wsMiddleName' => middle_name,
-        'wsLastName'   => last_name,
-        'wsUserLogin'  => user_login,
-        'wsUserEmail'  => user_email,
-        'wsStudentId'  => student_id,
-        'wsUserRole'   => user_role,
-        'wsClassId'    => class_id,
-        'wsCourseId'   => course_id,
-      }.merge(params)
+      params = launcher_params(action).merge(params)
 
       fetch_api_page('launcher', params, :post).tap { |page|
         # Add the session cookie to our connection if provided
@@ -88,6 +77,22 @@ module Maple::MapleTA
 
     def ws
       @ws ||= WebService.new(self)
+    end
+
+
+    def launcher_params(action)
+      {
+        'wsActionID'   => action,
+        'wsFirstName'  => first_name,
+        'wsMiddleName' => middle_name,
+        'wsLastName'   => last_name,
+        'wsUserLogin'  => user_login,
+        'wsUserEmail'  => user_email,
+        'wsStudentId'  => student_id,
+        'wsUserRole'   => user_role,
+        'wsClassId'    => class_id,
+        'wsCourseId'   => course_id,
+      }
     end
 
   end
