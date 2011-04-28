@@ -25,6 +25,8 @@ module Maple
       autoload :Grade, 'mapleta/page/grade'
       autoload :Preview, 'mapleta/page/preview'
       autoload :RestrictedAssignment, 'mapleta/page/restricted_assignment'
+      autoload :Solution, 'mapleta/page/solution'
+      autoload :StudyFeedback, 'mapleta/page/study_feedback'
       autoload :StudyQuestion, 'mapleta/page/study_question'
     end
 
