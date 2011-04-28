@@ -17,13 +17,15 @@ module Maple
     end
 
     module Page
+      autoload :AssignmentQuestion, 'mapleta/page/assignment_question'
       autoload :Base, 'mapleta/page/base'
+      autoload :BaseQuestion, 'mapleta/page/base_question'
       autoload :Feedback, 'mapleta/page/feedback'
       autoload :Form, 'mapleta/page/form'
       autoload :Grade, 'mapleta/page/grade'
       autoload :Preview, 'mapleta/page/preview'
-      autoload :Question, 'mapleta/page/question'
       autoload :RestrictedAssignment, 'mapleta/page/restricted_assignment'
+      autoload :StudyQuestion, 'mapleta/page/study_question'
     end
 
     require 'mapleta/page'
