@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mapleta}
-  s.version = "0.0.5"
+  s.version = "0.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Turner"]
-  s.date = %q{2011-04-26}
+  s.date = %q{2011-04-28}
   s.description = %q{Provides API bindings for MapleTA}
   s.email = %q{brandont@thinkwell.com}
   s.extra_rdoc_files = [
@@ -37,13 +37,17 @@ Gem::Specification.new do |s|
     "lib/mapleta/errors/unexpected_content_error.rb",
     "lib/mapleta/hash_initialize.rb",
     "lib/mapleta/page.rb",
+    "lib/mapleta/page/assignment_question.rb",
     "lib/mapleta/page/base.rb",
+    "lib/mapleta/page/base_question.rb",
     "lib/mapleta/page/feedback.rb",
     "lib/mapleta/page/form.rb",
     "lib/mapleta/page/grade.rb",
     "lib/mapleta/page/preview.rb",
-    "lib/mapleta/page/question.rb",
     "lib/mapleta/page/restricted_assignment.rb",
+    "lib/mapleta/page/solution.rb",
+    "lib/mapleta/page/study_feedback.rb",
+    "lib/mapleta/page/study_question.rb",
     "lib/mapleta/raw_string.rb",
     "lib/mapleta/web_service.rb",
     "mapleta.gemspec",
