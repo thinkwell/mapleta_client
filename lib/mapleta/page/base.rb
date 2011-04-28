@@ -85,6 +85,12 @@ module Page
       @page.parser.xpath('//td[@background]').each {|node| node['background'] = Connection.abs_url_for(node['background'], uri)}
     end
 
+
+    def fix_html
+      # Subclasses should override this if they need to perform fixes on the
+      # Maple html
+    end
+
   private
 
     def validate

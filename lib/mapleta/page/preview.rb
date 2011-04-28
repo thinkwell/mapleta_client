@@ -10,8 +10,6 @@ module Page
       @page.parser.at_css('table')
     end
 
-    def fix_html
-    end
 
   private
 

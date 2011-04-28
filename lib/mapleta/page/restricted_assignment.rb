@@ -19,9 +19,6 @@ module Page
     end
 
 
-    def fix_html
-    end
-
     def reason_node
       @reason_node ||= @page.parser.at_css('div.reason')
     end
