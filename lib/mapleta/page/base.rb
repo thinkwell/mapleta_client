@@ -26,7 +26,7 @@ module Page
 
 
     def self.default_options
-      @default_options ||= {}
+      @default_options ||= superclass.respond_to?(:default_options) ? superclass.default_options.dup : {}
     end
 
     def self.default_option(key, val)
