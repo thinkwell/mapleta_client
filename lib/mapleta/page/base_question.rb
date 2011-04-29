@@ -139,10 +139,10 @@ module Page
             node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document\['([^']+)'\]\.getResponse\(\)\s*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/)
           node['href'] = "##{$2}"
           node['class'] = 'plot'
-          node['maple_maple'] = $1
-          node['maple_type'] = $3
-          node['maple_libname'] = $4
-          node['maple_driver'] = $5
+          node['data-plot'] = $1
+          node['data-type'] = $3
+          node['data-libname'] = $4
+          node['data-driver'] = $5
         end
       end
     end
