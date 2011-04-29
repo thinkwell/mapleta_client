@@ -47,6 +47,21 @@ module Page
     end
 
 
+    def time_remaining
+      if @time_remaining.nil?
+        content_node.xpath('.//script[contains(text(), "remainingTime")]').each do |node|
+          if node.text =~ /var remainingTime\s*=\s*(\d+)/
+            @time_remaining = $1.to_i
+            break
+          end
+        end
+        @time_remaining = -1 if @time_remaining.nil?
+      end
+
+      @time_remaining == -1 ? nil : @time_remaining
+    end
+
+
 
     ###
     # These methods return nokogiri nodes at various important points in the
