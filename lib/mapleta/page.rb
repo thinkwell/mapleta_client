@@ -8,7 +8,7 @@ module Maple::MapleTA
   module Page
 
     def self.classes
-      [AssignmentQuestion, StudyQuestion, Grade, RestrictedAssignment]
+      [AssignmentQuestion, StudyQuestion, Grade, RestrictedAssignment, TimeLimitExceeded]
     end
 
     def self.for(page, opts={})

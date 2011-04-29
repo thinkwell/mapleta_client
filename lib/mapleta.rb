@@ -28,6 +28,7 @@ module Maple
       autoload :Solution, 'mapleta/page/solution'
       autoload :StudyFeedback, 'mapleta/page/study_feedback'
       autoload :StudyQuestion, 'mapleta/page/study_question'
+      autoload :TimeLimitExceeded, 'mapleta/page/time_limit_exceeded'
     end
 
     require 'mapleta/page'
