@@ -17,7 +17,7 @@ module Maple::MapleTA
     end
 
 
-    def connect(opts={})
+    def connect
       params = {
         'firstName'  => first_name,
         'middleName' => middle_name,
