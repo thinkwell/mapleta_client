@@ -8,7 +8,7 @@ module Maple::MapleTA
 
 
     def launch(connection, external_data=nil, view_opts={})
-      raise Errors::MapleTAError, "Connection class id doesn't match assignment class id" unless self.classId == connection.class_id
+      raise Errors::MapleTAError, "Connection class id (#{connection.class_id}) doesn't match assignment class id (#{self.classId})" unless self.classId.to_i == connection.class_id.to_i
 
       params = {
         'wsExternalData' => external_data,
@@ -22,7 +22,7 @@ module Maple::MapleTA
 
 
     def post(connection, url, data, view_opts={})
-      raise Errors::MapleTAError, "Connection class id doesn't match assignment class id" unless self.classId == connection.class_id
+      raise Errors::MapleTAError, "Connection class id (#{connection.class_id}) doesn't match assignment class id (#{self.classId})" unless self.classId.to_i == connection.class_id.to_i
 
       page(connection.fetch_page(url, data, :post), connection, view_opts)
     end
