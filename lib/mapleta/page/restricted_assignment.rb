@@ -5,7 +5,7 @@ module Page
 
     # Returns true if the given page looks like a page this class can parse
     def self.detect(page)
-      !!(page.parser.at_xpath('.//title').text() =~ /Restricted Assignment/)
+      !!(page.parser.xpath('.//title').text() =~ /Restricted Assignment/)
     end
 
 
