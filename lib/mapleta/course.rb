@@ -1,6 +1,8 @@
 module Maple::MapleTA
   class Course
     include HashInitialize
-    attr_accessor :id, :name, :instructor
+    property :id, :type => :integer
+    property :name
+    property :instructor
   end
 end
