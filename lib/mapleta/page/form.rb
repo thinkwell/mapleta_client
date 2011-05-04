@@ -75,7 +75,7 @@ module Page
       base.send :include, InstanceMethods
       base.send :extend, ClassMethods
 
-      attr_accessor :form_param_name
+      attr_reader :form_param_name
       base.default_option :form_param_name, :maple
     end
 
