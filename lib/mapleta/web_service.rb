@@ -72,17 +72,32 @@ module Maple::MapleTA
     # Retrieves a single assignment given its id
     # Must be connected to a class via #connect
     #
+    # Params:
+    #   assignment_id
+    #   class_id (optional)
+    # - or -
+    #   assignment (Assignment object)
+    #
     # Returns an Assignment object
     #
-    def assignment(assignment_id, class_id=nil)
+    def assignment(*args)
       raise Errors::NotConnectedError unless connected?
+      if args[0].is_a?(Assignment)
+        assignment_id = args[0].id
+        class_id = args[0].class_id
+        assignment = args[0]
+      else
+        assignment_id = args[0]
+        class_id = args[1]
+        assignment = :assignment
+      end
 
       response = fetch('assignment', {
         'classId' => class_id || connection.class_id,
         'assignmentId' => assignment_id,
       })
 
-      hydrate('assignment', response)
+      hydrate(assignment, response)
     end
 
 
@@ -147,13 +162,17 @@ module Maple::MapleTA
 
 
     def hydrate(type, data)
-      klass = "Maple::MapleTA::#{type.to_s.camelize}".constantize
-      if data.is_a?(Array)
-        data.map { |obj| klass.new(obj) }
-      elsif data.is_a?(Hash)
-        klass.new(data)
+      if type.is_a?(HashInitialize)
+        type.hydrate(data)
       else
-        nil
+        klass = "Maple::MapleTA::#{type.to_s.camelize}".constantize
+        if data.is_a?(Array)
+          data.map { |obj| klass.new(obj) }
+        elsif data.is_a?(Hash)
+          klass.new(data)
+        else
+          nil
+        end
       end
     end
 
