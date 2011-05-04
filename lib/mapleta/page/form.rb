@@ -8,13 +8,27 @@ module Page
 
     module InstanceMethods
 
+      def form_name
+        'edu_form'
+      end
+
+
       def form_action
         form_node.attr('action')
       end
 
 
       def form_node
-        @form_node || content_node.at_xpath(".//form[@name='edu_form']")
+        @form_node || content_node.at_xpath(".//form[@name='#{form_name}']")
+      end
+
+
+      def form_params
+        mechanize_form = page.form(form_name)
+        mechanize_form.fields.inject({}) do |p, field|
+          p[$1] = field.value if field.name =~ /^#{Regexp.escape(form_param_name.to_s)}\[([^\[]+)\]/
+          p
+        end
       end
 
 
