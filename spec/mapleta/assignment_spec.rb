@@ -14,8 +14,8 @@ module Maple::MapleTA
     end
 
     describe "#launch" do
-      it "returns a QuestionView object" do
-        @assignment.launch(@connection, 5).should be_a(QuestionView)
+      it "returns a Page::BaseQuestion object" do
+        @assignment.launch(@connection, 5).should be_a(Page::BaseQuestion)
       end
     end
   end
