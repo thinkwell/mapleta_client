@@ -14,21 +14,29 @@ module Page
 
 
       def form_action
-        form_node.attr('action')
+        action = form_node.attr('action')
+        if !(action =~ /^\//) && !(action =~ /^\w+:/)
+          action = "#{orig_base_url}#{action}"
+        end
+        action
       end
 
 
       def form_node
-        @form_node || content_node.at_xpath(".//form[@name='#{form_name}']")
+        @form_node ||= content_node.at_xpath(".//form[@name='#{form_name}']")
       end
 
 
       def form_params
-        mechanize_form = page.form(form_name)
         mechanize_form.fields.inject({}) do |p, field|
           p[$1] = field.value if field.name =~ /^#{Regexp.escape(form_param_name.to_s)}\[([^\[]+)\]/
           p
         end
+      end
+
+
+      def mechanize_form
+        @mechanize_form ||= Mechanize::Form.new(form_node, @page.mech, @page)
       end
 
 

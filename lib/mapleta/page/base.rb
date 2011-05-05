@@ -91,6 +91,18 @@ module Page
       # Maple html
     end
 
+
+    def orig_base_url
+      return @orig_base_url if @orig_base_url
+
+      uri = @page.uri
+      if node = @page.parser.at_xpath('.//base[@href]')
+        uri = node['href']
+      end
+      uri = URI.parse(uri) unless uri.is_a?(URI)
+      @orig_base_url = uri.path.gsub(/[^\/]*$/, '')
+    end
+
   private
 
     def validate
