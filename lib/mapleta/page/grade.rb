@@ -8,7 +8,8 @@ module Page
     def self.detect(page)
       return false unless form = page.parser.at_xpath('.//form[@name="edu_form"]')
       return false unless form['action'] =~ /QuestionSheet|gradeProctoredTest|TestDetails/
-      page.parser.xpath(".//input[@name='actionID' and (@value='grade' or @value='viewgrade' or @value='viewdetails')]").length > 0
+      form['action'] =~ /gradeProctoredTest/ ||
+        page.parser.xpath(".//input[@name='actionID' and (@value='grade' or @value='viewgrade' or @value='viewdetails')]").length > 0
     end
 
 
