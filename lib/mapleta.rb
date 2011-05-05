@@ -23,6 +23,7 @@ module Maple
       autoload :Feedback, 'mapleta/page/feedback'
       autoload :Form, 'mapleta/page/form'
       autoload :Grade, 'mapleta/page/grade'
+      autoload :OtherActiveAssignment, 'mapleta/page/other_active_assignment'
       autoload :Preview, 'mapleta/page/preview'
       autoload :RestrictedAssignment, 'mapleta/page/restricted_assignment'
       autoload :Solution, 'mapleta/page/solution'
