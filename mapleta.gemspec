@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mapleta}
-  s.version = "0.0.8"
+  s.version = "0.0.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Turner"]
-  s.date = %q{2011-05-04}
+  s.date = %q{2011-05-06}
   s.description = %q{Provides API bindings for MapleTA}
   s.email = %q{brandont@thinkwell.com}
   s.extra_rdoc_files = [
@@ -43,6 +43,7 @@ Gem::Specification.new do |s|
     "lib/mapleta/page/feedback.rb",
     "lib/mapleta/page/form.rb",
     "lib/mapleta/page/grade.rb",
+    "lib/mapleta/page/other_active_assignment.rb",
     "lib/mapleta/page/preview.rb",
     "lib/mapleta/page/restricted_assignment.rb",
     "lib/mapleta/page/solution.rb",
