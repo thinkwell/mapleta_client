@@ -108,33 +108,46 @@ module Page
 
 
     def fix_equation_entry_mode_links
-      form_node.xpath('.//a[text()="Change Entry Style" or text()="Change Math Entry Mode"]').each do |node|
+      form_node.xpath('.//a[text()="Change Entry Style" or text()="Change Math Entry Mode" or @title="Change entry mode"]').each do |node|
         case equation_entry_mode
         when :symbol
           node['href'] = "#text"
-          node.content = "Switch to text input"
+          title = "Switch to text input"
         when :text
           node['href'] = "#symbol"
-          node.content = "Switch to Equation Editor"
+          title = "Switch to Equation Editor"
         end
         node['class'] = 'change-equation-entry-mode'
+        if node.xpath('./img').length > 0
+          node['class'] += " inline-icon"
+          node['title'] = title
+          node.remove_attribute 'onmouseout'
+          node.remove_attribute 'onmouseover'
+        end
+        node.content = title
       end
     end
 
 
     def fix_preview_links
-      form_node.xpath('.//a[text()="Preview"]').each do |node|
+      form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
         if node['href'] =~ /previewFormula\([^,]*getElementsByName\('([^']+)'\)[^,]*,.*'([^\)]+)'\)/
           node['href'] = "##{$1}"
+          node['data-maple-action'] = $2
           node['class'] = 'preview'
-          node['maple_action'] = $2
+          if node.xpath('./img').length > 0
+            node.content = "Preview"
+            node['class'] += " inline-icon"
+            node.remove_attribute 'onmouseout'
+            node.remove_attribute 'onmouseover'
+          end
         end
       end
     end
 
 
     def fix_plot_links
-      form_node.xpath('.//a[text()="Plot"]').each do |node|
+      form_node.xpath('.//a[text()="Plot" or @title="Plot"]').each do |node|
         if (node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document.getElementsByName\('([^']+)'\)[^']*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/ ||
             node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document\['([^']+)'\]\.getResponse\(\)\s*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/)
           node['href'] = "##{$2}"
@@ -143,8 +156,17 @@ module Page
           node['data-type'] = $3
           node['data-libname'] = $4
           node['data-driver'] = $5
+          if node.xpath('./img').length > 0
+            node.content = "Plot"
+            node['class'] += " inline-icon"
+            node.remove_attribute 'onmouseout'
+            node.remove_attribute 'onmouseover'
+          end
         end
       end
+
+      # Remove disabled inline plot icons
+      form_node.xpath('.//img[contains(@src, "ploton.gif")]').remove
     end
 
 
