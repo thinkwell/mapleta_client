@@ -20,6 +20,7 @@ module Maple
       autoload :AssignmentQuestion, 'mapleta/page/assignment_question'
       autoload :Base, 'mapleta/page/base'
       autoload :BaseQuestion, 'mapleta/page/base_question'
+      autoload :Error, 'mapleta/page/error'
       autoload :Feedback, 'mapleta/page/feedback'
       autoload :Form, 'mapleta/page/form'
       autoload :Grade, 'mapleta/page/grade'
