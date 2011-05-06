@@ -44,16 +44,6 @@ module Maple::MapleTA
     end
 
 
-    def launch(action, params)
-      page = launcher(action, params)
-      onload = page.parser.css('body').attribute('onload') rescue nil
-      if(onload && onload.content && page.forms.first)
-        page = page.forms.first.submit
-      end
-      page
-    end
-
-
     def launcher(action, params={})
       params = launcher_params(action).merge(params)
 
@@ -64,6 +54,7 @@ module Maple::MapleTA
         end
       }
     end
+    alias :launch :launcher
 
 
 

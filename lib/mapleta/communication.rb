@@ -46,14 +46,27 @@ module Maple::MapleTA
         begin
           case request_method
           when :post
-            agent.post(url, params)
+            page = agent.post(url, params)
           else
-            agent.get(:url => url, :params => params)
+            page = agent.get(:url => url, :params => params)
           end
+
+          # Check for a redirection page
+          redirects = 0
+          while (redirects < 5 &&
+              page.parser.xpath('.//title').text() == 'Redirector' &&
+              page.parser.xpath('.//body[@onload="doSubmit();"]').length > 0 &&
+              page.forms.first)
+            page = page.forms.first.submit
+            redirects += 1
+          end
+
         rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError,
                Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
           raise Errors::NetworkError, e
         end
+
+        page
       end
 
 
