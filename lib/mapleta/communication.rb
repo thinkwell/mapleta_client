@@ -70,8 +70,16 @@ module Maple::MapleTA
       end
 
 
-      def fetch_api(method, params={})
-        parse_api_response(fetch_api_response(method, params, :xml))
+      def fetch_api(method, params={}, reconnect_if_expired=true)
+        begin
+          parse_api_response(fetch_api_response(method, params, :xml))
+        rescue Errors::SessionExpiredError => e
+          if connected? && reconnect_if_expired
+            disconnect
+            connect
+            fetch_api(method, params, false)
+          end
+        end
       end
 
 
@@ -158,8 +166,12 @@ module Maple::MapleTA
         raise Errors::InvalidResponseError.new(response, "An error occurred while fetching data from the server.\n#{err}") if err
 
         if data['status'] && data['status']['code'].to_i == 1
-          err = data['status']['message'] rescue "Request returned failure status"
-          raise Errors::MapleTAError, err
+          if data['status']['message'] == "Unauthorized access to Maple TA Assignment Service." && self.respond_to?(:session) && session
+            raise Errors::SessionExpiredError.new(session)
+          else
+            err = data['status']['message'] rescue "Request returned failure status"
+            raise Errors::MapleTAError, err
+          end
         end
 
         data
