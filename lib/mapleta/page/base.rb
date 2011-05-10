@@ -4,8 +4,7 @@ module Maple::MapleTA
 module Page
 
   class Base
-    attr_reader :page
-    attr_accessor :base_url
+    attr_reader :page, :base_url, :applet_archives_url
 
     def initialize(page, opts={})
       @page = page
@@ -75,14 +74,35 @@ module Page
 
       @page.parser.xpath('//*[@src]').each {|node| node['src'] = Connection.abs_url_for(node['src'], uri)}
       @page.parser.xpath('//*[@href]').each {|node| node['href'] = Connection.abs_url_for(node['href'], uri)}
-      @page.parser.xpath('//applet[@codebase]').each {|node| node['codebase'] = Connection.abs_url_for(node['codebase'], uri)}
+      @page.parser.xpath('//td[@background]').each {|node| node['background'] = Connection.abs_url_for(node['background'], uri)}
       @page.parser.xpath('//applet/param[@name="image" or @name="imageURL"]').each {|node| node['value'] = Connection.abs_url_for(node['value'], uri)}
+    end
+
+
+    def applet_archives_url=(url)
+      @applet_archives_url = url
+
       @page.parser.xpath('//applet[@archive]').each do |node|
         node['archive'] = node['archive'].split(',').map do |u|
-          Connection.abs_url_for(u.strip, uri)
+          u =~ /([^\/]+)$/ ? "#{url}#{$1}" : u
         end.join(', ')
       end
-      @page.parser.xpath('//td[@background]').each {|node| node['background'] = Connection.abs_url_for(node['background'], uri)}
+
+      # Replace codebase with archive="applets.jar"
+      # using our modified signed applets.jar file hosted with canvas
+      @page.parser.xpath('//applet[@codebase]').each do |node|
+        node.remove_attribute('codebase')
+        unless node.xpath('.//param[@name="codebase_lookup"]').length > 0
+          new_node = @page.parser.create_element 'param'
+          new_node['name'] = 'codebase_lookup'
+          new_node['value'] = 'false'
+          node.add_child(new_node)
+        end
+        next if node['archive'] && node['archive'] =~ /applets\.jar/
+
+        node['archive'] = "#{node['archive']}," if node['archive'] && !(node['archive'] =~ /^\s*$|,$/)
+        node['archive'] = "#{node['archive']}#{url}applets.jar"
+      end
     end
 
 
