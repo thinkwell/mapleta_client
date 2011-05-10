@@ -66,6 +66,11 @@ module Maple::MapleTA
           raise Errors::NetworkError, e
         end
 
+        # Check for login page
+        if session && page.parser.xpath('//form[@name="LoginActionForm"]').length > 0
+          raise Errors::SessionExpiredError.new(session)
+        end
+
         page
       end
 
