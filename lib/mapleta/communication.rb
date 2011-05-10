@@ -193,7 +193,7 @@ module Maple::MapleTA
 
       def use_math_editor=(val)
         return @use_math_editor = nil if val == nil || val.to_s == ""
-        @use_math_editor = val.to_sym == :true ? true : false
+        @use_math_editor = val.to_s == 'true' ? true : false
       end
 
 
