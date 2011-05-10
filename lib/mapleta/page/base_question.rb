@@ -3,7 +3,7 @@ module Page
 
   class BaseQuestion < Base
     include Form
-
+    attr_reader :clickable_image_base_url
 
 
     def initialize(page, opts={})
@@ -197,6 +197,15 @@ module Page
 
     #
     ###
+
+
+    def clickable_image_base_url=(url)
+      @clickable_image_base_url = url
+      @page.parser.xpath('//applet[@code="applets.clickableImage.ClickableImageApplet"]/param[@name="baseURL"]').each do |node|
+        node['value'] = url
+      end
+    end
+
 
   private
 
