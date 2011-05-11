@@ -67,10 +67,6 @@ module Maple::MapleTA
   private
 
     def page(mechanize_page, connection, view_opts)
-      view_opts = {
-        :base_url => connection.base_url,
-      }.merge(view_opts)
-
       Maple::MapleTA.Page(mechanize_page, view_opts)
     end
 
