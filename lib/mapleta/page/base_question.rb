@@ -132,22 +132,19 @@ module Page
 
     def fix_equation_editor
       form_node.xpath('.//applet[contains(@code, "mathEditor")]').each do |node|
-        node.xpath('./param[@name="paletteContent"]').remove
-        unless node.xpath('.//param[@name="useToolbar"]').length > 0
-          new_node = @page.parser.create_element 'param'
-          new_node['name'] = 'useToolbar'
-          new_node['value'] = 'true'
-          node.add_child(new_node)
-        end
+        node.xpath('.//param[@name="helpUrl"]').remove
         unless node.xpath('.//param[@name="toolbar"]').length > 0
           new_node = @page.parser.create_element 'param'
           new_node['name'] = 'toolbar'
-          new_node['value'] = '<tb size=\'m\'><btn>FRAC</btn><btn>SQRT</btn><btn>ROOT</btn><btn>SUB</btn><btn>SUP</btn><btn>plusmn</btn><btn>middot</btn><btn>pi</btn><btn>infin</btn><btn>cap</btn><btn>cup</btn><btn>ne</btn><btn>le</btn><btn>ge</btn><btn>LOGBASE</btn><btn>MATRIXNXM</btn><btn>HELP</btn></tb>'
+          new_node['value'] = 'true'
           node.add_child(new_node)
         end
-        #if n = node.at_xpath('.//param[@name="disableMacButtons"]')
-        #  n['value'] = 'false'
-        #end
+        if n = node.at_xpath('.//param[@name="mathmlHeight"]')
+          n['value'] = '180'
+        end
+        if n = node.at_xpath('.//param[@name="tooltip"]')
+          n['value'] = 'Equation editor'
+        end
       end
     end
 
