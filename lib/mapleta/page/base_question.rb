@@ -101,6 +101,7 @@ module Page
     # Shortcut for applying all html fixes
     def fix_html
       fix_equation_entry_mode_links
+      fix_equation_editor
       fix_preview_links
       fix_plot_links
       fix_help_links
@@ -125,6 +126,28 @@ module Page
           node.remove_attribute 'onmouseover'
         end
         node.content = title
+      end
+    end
+
+
+    def fix_equation_editor
+      form_node.xpath('.//applet[contains(@code, "mathEditor")]').each do |node|
+        node.xpath('./param[@name="paletteContent"]').remove
+        unless node.xpath('.//param[@name="useToolbar"]').length > 0
+          new_node = @page.parser.create_element 'param'
+          new_node['name'] = 'useToolbar'
+          new_node['value'] = 'true'
+          node.add_child(new_node)
+        end
+        unless node.xpath('.//param[@name="toolbar"]').length > 0
+          new_node = @page.parser.create_element 'param'
+          new_node['name'] = 'toolbar'
+          new_node['value'] = '<tb size=\'m\'><btn>FRAC</btn><btn>SQRT</btn><btn>ROOT</btn><btn>SUB</btn><btn>SUP</btn><btn>plusmn</btn><btn>middot</btn><btn>pi</btn><btn>infin</btn><btn>cap</btn><btn>cup</btn><btn>ne</btn><btn>le</btn><btn>ge</btn><btn>LOGBASE</btn><btn>MATRIXNXM</btn><btn>HELP</btn></tb>'
+          node.add_child(new_node)
+        end
+        #if n = node.at_xpath('.//param[@name="disableMacButtons"]')
+        #  n['value'] = 'false'
+        #end
       end
     end
 
