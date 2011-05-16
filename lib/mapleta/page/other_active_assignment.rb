@@ -71,7 +71,7 @@ module Page
         else
           next if node.name == 'br'
           next if node.children.length == 0 && !node.text?
-          next if node.children.length == 1 && node.children[0].text? && node.children[0].text =~ /^\s*$/
+          next if node.children.length == 1 && node.children[0].text? && node.children[0].text =~ /\A\s*\Z/
           node.parent = new_node
         end
       end
