@@ -163,6 +163,7 @@ module Maple::MapleTA
 
     def hydrate(type, data)
       if type.is_a?(HashInitialize)
+        raise Errors::NotFoundError if data.nil?
         type.hydrate(data)
       else
         klass = "Maple::MapleTA::#{type.to_s.camelize}".constantize

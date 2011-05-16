@@ -13,6 +13,7 @@ module Maple
       autoload :MapleTAError, 'mapleta/errors/mapleta_error'
       autoload :NetworkError, 'mapleta/errors/network_error'
       autoload :NotConnectedError, 'mapleta/errors/not_connected_error'
+      autoload :NotFoundError, 'mapleta/errors/not_found_error'
       autoload :SessionExpiredError, 'mapleta/errors/session_expired_error'
       autoload :UnexpectedContentError, 'mapleta/errors/unexpected_content_error'
     end
