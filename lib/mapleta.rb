@@ -28,6 +28,7 @@ module Maple
       autoload :Grade, 'mapleta/page/grade'
       autoload :OtherActiveAssignment, 'mapleta/page/other_active_assignment'
       autoload :Preview, 'mapleta/page/preview'
+      autoload :PrintAssignment, 'mapleta/page/print_assignment'
       autoload :PrintOrTake, 'mapleta/page/print_or_take'
       autoload :RestrictedAssignment, 'mapleta/page/restricted_assignment'
       autoload :Solution, 'mapleta/page/solution'
