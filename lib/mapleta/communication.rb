@@ -207,13 +207,22 @@ module Maple::MapleTA
       # &minus; instead of "-".  This function uses a custom object to
       # represent MathML data, thus preventing Mechanize from unescaping it.
       #
+      # Also convert array data to multiple copies of the same key, e.g.
+      #   {key => [4, 5]}
+      # will become:
+      #   [['key', 4], ['key', 5]]
+      #
       # See mechanize/lib/mechanize/form/field.rb
       def fix_mechanize_params(params)
-        params.inject({}) do |memo, (key, val)|
-          if val =~ /^<(xml|math)/
-            memo[key] = RawString.new(val)
+        return params unless params.is_a?(Enumerable)
+
+        params.inject([]) do |memo, (key, val)|
+          if val.is_a?(Array)
+            val.each { |v| memo << [key, v] }
+          elsif val =~ /^<(xml|math)/
+            memo << [key, RawString.new(val)]
           else
-            memo[key] = val
+            memo << [key, val]
           end
           memo
         end
