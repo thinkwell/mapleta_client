@@ -5,10 +5,12 @@ module Maple
     autoload :Connection, 'mapleta/connection'
     autoload :Course, 'mapleta/course'
     autoload :HashInitialize, 'mapleta/hash_initialize'
+    autoload :GradeBook, 'mapleta/grade_book'
     autoload :RawString, 'mapleta/raw_string'
     autoload :WebService, 'mapleta/web_service'
 
     module Errors
+      autoload :GradeBookError, 'mapleta/errors/grade_book_error'
       autoload :InvalidResponseError, 'mapleta/errors/invalid_response_error'
       autoload :MapleTAError, 'mapleta/errors/mapleta_error'
       autoload :NetworkError, 'mapleta/errors/network_error'
@@ -26,6 +28,7 @@ module Maple
       autoload :Feedback, 'mapleta/page/feedback'
       autoload :Form, 'mapleta/page/form'
       autoload :Grade, 'mapleta/page/grade'
+      autoload :GradeBook, 'mapleta/page/grade_book'
       autoload :OtherActiveAssignment, 'mapleta/page/other_active_assignment'
       autoload :Preview, 'mapleta/page/preview'
       autoload :PrintAssignment, 'mapleta/page/print_assignment'
