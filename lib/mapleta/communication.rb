@@ -88,10 +88,18 @@ module Maple::MapleTA
       end
 
 
-      def fetch_api_page(method, params={}, request_method=:get)
+      def fetch_api_page(method, params={}, request_method=:get, reconnect_if_expired=true)
         params = api_signature.merge(params)
 
-        page = fetch_page("#{ws_url}/#{method}", params, request_method)
+        begin
+          page = fetch_page("#{ws_url}/#{method}", params, request_method)
+        rescue Errors::SessionExpiredError => e
+          if connected? && reconnect_if_expired
+            disconnect
+            connect
+            fetch_api_page(method, params, request_method, false)
+          end
+        end
 
         # Check for an API response (instead of an HTML page)
         if response_element = (page.parser.at_xpath('/response') || page.parser.at_xpath('/html/body/response'))
