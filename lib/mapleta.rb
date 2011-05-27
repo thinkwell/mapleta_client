@@ -29,6 +29,7 @@ module Maple
       autoload :Form, 'mapleta/page/form'
       autoload :Grade, 'mapleta/page/grade'
       autoload :GradeBook, 'mapleta/page/grade_book'
+      autoload :GradeReport, 'mapleta/page/grade_report'
       autoload :OtherActiveAssignment, 'mapleta/page/other_active_assignment'
       autoload :Preview, 'mapleta/page/preview'
       autoload :PrintAssignment, 'mapleta/page/print_assignment'
