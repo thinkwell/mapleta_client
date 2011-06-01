@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mapleta}
-  s.version = "0.0.13"
+  s.version = "0.0.14"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Turner"]
-  s.date = %q{2011-05-16}
+  s.date = %q{2011-06-01}
   s.description = %q{Provides API bindings for MapleTA}
   s.email = %q{brandont@thinkwell.com}
   s.extra_rdoc_files = [
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
     "lib/mapleta/communication.rb",
     "lib/mapleta/connection.rb",
     "lib/mapleta/course.rb",
+    "lib/mapleta/errors/grade_book_error.rb",
     "lib/mapleta/errors/invalid_response_error.rb",
     "lib/mapleta/errors/mapleta_error.rb",
     "lib/mapleta/errors/network_error.rb",
@@ -37,6 +38,7 @@ Gem::Specification.new do |s|
     "lib/mapleta/errors/not_found_error.rb",
     "lib/mapleta/errors/session_expired_error.rb",
     "lib/mapleta/errors/unexpected_content_error.rb",
+    "lib/mapleta/grade_book.rb",
     "lib/mapleta/hash_initialize.rb",
     "lib/mapleta/page.rb",
     "lib/mapleta/page/assignment_question.rb",
@@ -46,6 +48,8 @@ Gem::Specification.new do |s|
     "lib/mapleta/page/feedback.rb",
     "lib/mapleta/page/form.rb",
     "lib/mapleta/page/grade.rb",
+    "lib/mapleta/page/grade_book.rb",
+    "lib/mapleta/page/grade_report.rb",
     "lib/mapleta/page/other_active_assignment.rb",
     "lib/mapleta/page/preview.rb",
     "lib/mapleta/page/print_assignment.rb",
