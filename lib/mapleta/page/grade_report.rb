@@ -47,6 +47,7 @@ module Page
       remove_question_number_cell
       remove_grade_icons
       remove_table_widths
+      fix_padded_tables
     end
 
 
@@ -70,6 +71,35 @@ module Page
       grade_questions_node.xpath('.//table[@width="650"]').each do |node|
         node.remove_attribute('width')
       end
+    end
+
+
+    def fix_padded_tables
+      grade_questions_node.css('table td.response > table').each do |node|
+
+        # Tables with only one row are easy, just remove the empty padding cells
+        if node.xpath('./tr').length == 1
+          node.xpath('./tr/td[@width="20"]').each do |td|
+            td.remove if td.children.length == 0
+          end
+        end
+
+        # Some question types have two rows, with padding cells in the second
+        # row and a single colspan cell in the first row
+        if node.xpath('./tr').length == 2
+          tr1 = node.xpath('./tr')[0]
+          tr2 = node.xpath('./tr')[1]
+          if tr1.xpath('./td').length == 1
+            tr2.xpath('./td[@width="20"]').each do |td|
+              td.remove if td.children.length == 0
+            end
+            if td = tr1.at_xpath('./td[@colspan]')
+              td['colspan'] = tr2.xpath('./td').length.to_s
+            end
+          end
+        end
+      end
+
     end
 
 
