@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 module Maple::MapleTA
-  describe QuestionView do
+module Page
+  describe AssignmentQuestion do
 
     before(:all) do
       # Fetch from Maple T.A. only once for faster tests
@@ -76,4 +77,5 @@ module Maple::MapleTA
     end
 
   end
+end
 end
