@@ -9,11 +9,6 @@ module Page
     end
 
 
-    def initialize(page, opts={})
-      super
-      fix_reason_node
-    end
-
     def html
       reason_node.children.map { |x| x.to_xhtml }.join
     end
@@ -25,6 +20,10 @@ module Page
 
 
   private
+
+    def mandatory_fixes
+      fix_reason_node
+    end
 
 
     # Wrap the description content (starting with first p, ending with form)

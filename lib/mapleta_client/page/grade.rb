@@ -13,14 +13,6 @@ module Page
     end
 
 
-    def initialize(page, opts={})
-      super
-
-      # Move hidden fields out of the grade node
-      # This prevents duplicate hidden nodes when using question_html and hidden_fields_html
-      grade_node.xpath(".//input[@type='hidden']").each {|node| node.parent = form_node}
-    end
-
 
     # One of :confirm, :grade, :details
     def state
@@ -125,6 +117,13 @@ module Page
 
 
   private
+
+    def mandatory_fixes
+      # Move hidden fields out of the grade node
+      # This prevents duplicate hidden nodes when using question_html and hidden_fields_html
+      grade_node.xpath(".//input[@type='hidden']").each {|node| node.parent = form_node}
+    end
+
 
     def validate
       node = @page.parser

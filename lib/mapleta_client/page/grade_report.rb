@@ -23,7 +23,6 @@ module Page
     def initialize(page, opts={})
       fix_invalid_html_first!(page)
       super
-      fix_grade_tables
     end
 
 
@@ -105,6 +104,11 @@ module Page
 
 
   private
+
+    def mandatory_fixes
+      fix_grade_tables
+    end
+
 
 
     def fix_invalid_html_first!(page)

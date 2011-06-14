@@ -11,6 +11,7 @@ module Page
       raise "Must pass Mechanize::Page as :page (got: #{@page.class})" unless @page.is_a?(Mechanize::Page)
 
       validate
+      mandatory_fixes
 
       self.class.default_options.merge(opts).each do |key, val|
         if self.respond_to?("#{key}")
@@ -182,6 +183,10 @@ module Page
 
     def validate
       true
+    end
+
+    def mandatory_fixes
+      # Intentionally blank, subclasses can override
     end
 
   end

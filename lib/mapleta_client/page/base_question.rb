@@ -6,15 +6,6 @@ module Page
     attr_reader :clickable_image_base_url
 
 
-    def initialize(page, opts={})
-      super
-
-      # Move hidden fields out of the question node
-      # This prevents duplicate hidden nodes when using question_html and hidden_fields_html
-      question_node.xpath(".//input[@type='hidden']").each {|node| node.parent = form_node}
-    end
-
-
 
 
     def title
@@ -228,6 +219,13 @@ module Page
 
 
   private
+
+    def mandatory_fixes
+      # Move hidden fields out of the question node
+      # This prevents duplicate hidden nodes when using question_html and hidden_fields_html
+      question_node.xpath(".//input[@type='hidden']").each {|node| node.parent = form_node}
+    end
+
 
     # Validates that the mechanize page contains a Maple T.A. question,
     # Returns true or throws an exception
