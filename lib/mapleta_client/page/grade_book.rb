@@ -22,12 +22,12 @@ module Page
     # {
     #   3: {
     #     'blt04': [
-    #       {Grade: 100, End: "5/4/11 6:39:47 PM", trId: 4},
-    #       {Grade:  95, End: "5/4/11 6:39:47 PM", trId: 1},
+    #       {Grade: 100, Start: #<Time>, End: #<Time>, trId: 4},
+    #       {Grade:  95, Start: #<Time>, End: #<Time>, trId: 1},
     #     ],
     #     'paloc@thinkwell.com': [
-    #       {Grade: 100, End: "5/4/11 6:39:47 PM", trId: 5},
-    #       {Grade:  75, End: "5/4/11 6:39:47 PM", trId: 3},
+    #       {Grade: 100, Start: #<Time>, End: #<Time>, trId: 5},
+    #       {Grade:  75, Start: #<Time>, End: #<Time>, trId: 3},
     #     ],
     #   },
     #   4: {

@@ -103,6 +103,8 @@ module Maple::MapleTA
         'showProctors'        => 'on',
         'showUid'             => 'on',
         'showAsgnTotalPoints' => 'on',
+        'showStartDate'       => 'on',
+        'showStartTime'       => 'on',
         'showEndDate'         => 'on',
         'showEndTime'         => 'on',
       }
@@ -145,6 +147,7 @@ module Maple::MapleTA
             obj['assignmentId'] = assignment_id
             obj['userLogin'] = user_id
             obj['score'] = obj.delete('Grade') if obj['Grade']
+            obj['dateStarted'] = obj.delete('Start') if obj['Start']
             obj['dateGraded'] = obj.delete('End') if obj['End']
             obj
           end
