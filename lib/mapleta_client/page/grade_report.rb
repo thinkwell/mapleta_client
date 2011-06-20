@@ -2,6 +2,9 @@ module Maple::MapleTA
 module Page
 
   class GradeReport < Base
+    include Form
+
+    attr_reader :student_id
 
     # Returns true if the given page looks like a page this class can parse
     def self.detect(page)
@@ -10,13 +13,68 @@ module Page
     end
 
 
-    def self.fetch(connection, try_id, view_opts={})
+    def self.fetch(connection, try_id, user_login=nil, view_opts={})
       connection.launcher('gradeBook')
+      user_login ||= connection.user_login
       page = connection.fetch_page('gradebook/Details.do', {
-        'userId' => connection.user_login,
+        'userId' => user_login,
         'trId' => try_id,
       })
       self.new(page, view_opts)
+    end
+
+
+    # Update individual question grades.
+    #
+    # This method is very inefficient.  It submits a seperate request to Maple for
+    # each question grade that is changed.  Because of this, it tries to be smart
+    # by only sending changes.
+    # TODO: Find a better way to submit question grade changes.
+    #
+    def self.update_grade_items(connection, try_id, user_login, params, page=nil)
+      page ||= self.fetch(connection, try_id, user_login)
+      student_id = page.student_id
+      question_update_count = 0
+
+      params.each do |key, val|
+        if key =~ /^grade(\d+)_(\d+)$/ && $2.to_i == try_id
+          position = $1.to_i
+          grade = val
+          comment = params["comment#{position}_#{try_id}"]
+
+          grade = nil if grade.blank?
+          grade = grade.to_f if grade
+          comment = nil if comment.blank?
+          comment.strip! if comment
+
+          if grade.nil? && (comment.to_s != page.question_comment(position + 1).to_s)
+            # The teacher changed the comment, but did not change the grade.
+            # If we send nothing as the grade, Maple will change the grade to 0.
+            # We need to use the existing grade.
+            grade = page.question_score(position + 1)
+          end
+
+          unless grade.nil?
+            maple_params = {
+              'userId' => student_id,
+              'classId' => connection.class_id,
+              'detailView' => 'view.instructor.details',
+              'trId' => try_id,
+              'position' => position,
+              'grade' => grade,
+              'comment' => comment.nil? ? ' ' : comment,
+            }
+
+            #Rails.logger.warn("UPDATING GRADE: #{maple_params.inspect}")
+            return_page = connection.fetch_page('gradebook/UpdateGradeItem.do', maple_params, :post)
+            question_update_count += 1
+            # TODO: Check the return page for errors
+          end
+        end
+
+        question_update_count
+      end
+
     end
 
 
@@ -31,6 +89,51 @@ module Page
     end
 
 
+    def score
+      return @score if @score
+      if score_node.text =~ /(\d+)\/(\d+(?:\.\d*)?)/
+        @score = $1.to_i
+      end
+      @score
+    end
+
+
+    # Return the non-weighted question score for the given question number.
+    # NOTE: question_num is indexed from 1.
+    def question_score(question_num)
+      qnode = question_node_for(question_num)
+      label_node = qnode.at_xpath('.//strong[text()="Question Grade:"]')
+      if label_node
+        td_node = label_node.parent
+        td_node = td_node.parent unless td_node.node_name == 'td'
+        if td_node
+          return td_node.next_element.inner_text.strip.to_f
+        end
+      end
+      nil
+    end
+
+
+    # Return the instructor comment for the given question number.
+    # NOTE: question_num is indexed from 1.
+    def question_comment(question_num)
+      qnode = question_node_for(question_num)
+      label_node = qnode.at_xpath('.//strong[text()="Instructors Comment:"]')
+      if label_node
+        tr_node = label_node.parent.parent
+        tr_node = tr_node.parent unless tr_node.node_name == 'tr'
+        if tr_node
+          return tr_node.next_element.at_xpath('./td/textarea').text.strip
+        end
+      end
+      nil
+    end
+
+
+    def finished
+      @finished ||= Time.parse(finished_node.text)
+    end
+
 
     def grade_content_node
       @grade_content_node ||= page.parser.at_css('div#gradeContent')
@@ -42,11 +145,42 @@ module Page
     end
 
 
+    # NOTE: question_num is indexed from 1
+    def question_node_for(question_num)
+      @grade_questions_node.xpath('./*[contains(@class, "question")]')[question_num - 1]
+    end
+
+
+    def score_node
+      @score_node ||= page.parser.at_css('#asgnDetailTotalScore')
+    end
+
+
+    def finished_node
+      unless @finished_node
+        label_node = page.parser.at_xpath('.//div[@id="gbkTRInfoTable"]//td[@class="userInfoTitle"]/strong[text()="Finished:"]')
+        if label_node
+          @finished_node = label_node.parent.next_sibling
+        end
+      end
+      @finished_node
+    end
+
+
+    def form_name
+      'maple_grade_report_form'
+    end
+
+
+
     def fix_html
       remove_question_number_cell
       remove_grade_icons
       remove_table_widths
       fix_padded_tables
+      remove_history_links
+      remove_grade_comment
+      remove_form_javascript
     end
 
 
@@ -102,11 +236,66 @@ module Page
     end
 
 
+    def remove_history_links
+      grade_questions_node.xpath('.//a[text()="View History"]').each do |node|
+        tr_node = node.parent.parent rescue nil
+        if tr_node && tr_node.node_name == 'tr'
+          tr_node.remove
+        else
+          node.remove
+        end
+      end
+    end
+
+
+    def remove_grade_comment
+      grade_questions_node.xpath('.//tr/td/strong[text()="Comment on Grade:"]').each do |node|
+        tr_node = node.parent.parent rescue nil
+        if tr_node && tr_node.node_name == 'tr'
+          tr_node.next_sibling.remove
+          tr_node.remove
+        end
+      end
+    end
+
+
+    def remove_form_javascript
+      form_node.xpath('.//input[@onkeyup]').each do |node|
+        node.remove_attribute('onkeyup')
+      end
+    end
+
+
+    def remove_form_inputs
+      form_node.xpath('.//tr/td/strong[text()="New Question Grade:"]').each do |node|
+        tr_node = node.parent.parent rescue nil
+        tr_node.remove if tr_node && tr_node.node_name == 'tr'
+      end
+      grade_questions_node.xpath('.//tr/td/strong[text()="Instructors Comment:"]').each do |node|
+        tr_node = node.parent.parent rescue nil
+        if tr_node && tr_node.node_name == 'tr'
+          comment_tr = tr_node.next_sibling
+          if comment_tr
+            comment_tr.xpath('./td/textarea').each do |node|
+              new_node = @page.parser.create_element 'div'
+              new_node['style'] = "max-width: 400px;"
+              new_node.inner_html = node.text
+              node.add_next_sibling new_node
+              node.remove
+            end
+          end
+        end
+      end
+    end
+
+
 
   private
 
     def mandatory_fixes
+      find_student_id
       fix_grade_tables
+      add_grade_form
     end
 
 
@@ -155,6 +344,12 @@ module Page
     end
 
 
+    def find_student_id
+      @student_id = page.parser.at_xpath('.//input[@name="studentid"]')['value'].to_i
+    end
+
+
+
     # Remove the table container, placing individual question tables inside
     # a surrounding div
     #
@@ -187,6 +382,18 @@ module Page
       end
 
       old_node.remove
+    end
+
+
+    # Wrap the grade_questions_node in a dummy form.  This allows the Form
+    # module to work, but this form should never be submitted.
+    def add_grade_form
+      new_node = @page.parser.create_element 'form'
+      new_node['action'] = '/mapleta/gradebook/UpdateGradeItem.do'
+      new_node['name'] = self.form_name
+      new_node['method'] = 'post'
+      grade_questions_node.replace new_node
+      grade_questions_node.parent = new_node
     end
 
 
