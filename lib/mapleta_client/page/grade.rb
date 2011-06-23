@@ -38,6 +38,30 @@ module Page
     end
 
 
+    # Returns true when this page is being displayed as a result of the assignment
+    # being graded (not just as a result of the viewing the grade, or toggling between
+    # grade view and details view)
+    #
+    def just_graded?(maple_request_params)
+      return false unless maple_request_params.is_a?(Hash)
+
+      # Unfortunately the only way to know why this page is being displayed is to look
+      # the request parameters that resulted in this page being returned.
+      #   * :actionID == 'grade' - The user clicked the Grade button and the assignment
+      #     was graded as a result
+      #   * :authType == 'ALLOW_GRADING' - The assignment required proctor authorization to
+      #     be graded, which was provided by the proctor entering their username/password on
+      #     the students computer
+      #   * :modeRequested == 'ALLOW_GRADING' - The assignment required proctor authorization to
+      #     be graded, which was provided remotely via proctor tools.
+      state == :grade && (
+        maple_request_params[:actionID] == 'grade' ||
+        maple_request_params[:authType] == 'ALLOW_GRADING' ||
+        maple_request_params[:modeRequested] == 'ALLOW_GRADING'
+      )
+    end
+
+
     ###
     # These methods return html snippets intended to be inserted directly in
     # a html page
