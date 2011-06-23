@@ -34,6 +34,7 @@ module Maple
       autoload :Preview, 'mapleta_client/page/preview'
       autoload :PrintAssignment, 'mapleta_client/page/print_assignment'
       autoload :PrintOrTake, 'mapleta_client/page/print_or_take'
+      autoload :ProctorAuthorization, 'mapleta_client/page/proctor_authorization'
       autoload :RestrictedAssignment, 'mapleta_client/page/restricted_assignment'
       autoload :Solution, 'mapleta_client/page/solution'
       autoload :StudyFeedback, 'mapleta_client/page/study_feedback'

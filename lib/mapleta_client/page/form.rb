@@ -1,9 +1,36 @@
 module Maple::MapleTA
 module Page
 
+  # TODO: Refactor this module to better support pages with more than one
+  # form (such as the proctor authorization page)
+
   module Form
 
     module ClassMethods
+
+      # Modifies all form fields in the given node so that name="bar"
+      # becomes name="foo[bar]"
+      def update_form_param_names(node, new_name, old_name=nil)
+        node.xpath('.//input[@name] | .//select[@name] | .//textarea[@name]').each do |node|
+          # This Regexp matches:
+          #   1) field_name
+          #   2) old_param_name[field_name]
+          # and replaces with:
+          #   form_param_name[field_name]
+          #
+          # It also allows for any number bracketted groups such as:
+          #   3) field_name[foo][bar]
+          #   4) old_param_name[field_name][foo][bar]
+          # will be replaced with:
+          #   form_param_name[field_name][foo][bar]
+          #
+          if node['name'] =~ /^(?:#{Regexp.escape(old_name.to_s)}\[([^\[\]]+)\]|([^\[\]]+))(\[.*)?$/
+            field = $1 || $2
+            extra = $3
+            node['name'] = "#{new_name}[#{field}]#{extra if extra}"
+          end
+        end
+      end
     end
 
     module InstanceMethods
@@ -53,31 +80,11 @@ module Page
       # Modifies all form fields so that name="bar" becomes name="foo[bar]"
       def form_param_name=(name)
         return if @form_param_name.to_s == name.to_s
-
-        old_name = @form_param_name
+        self.class.update_form_param_names(form_node, name, @form_param_name)
         @form_param_name = name
-
-
-        form_node.xpath('.//input[@name] | .//select[@name] | .//textarea[@name]').each do |node|
-          # This Regexp matches:
-          #   1) field_name
-          #   2) old_param_name[field_name]
-          # and replaces with:
-          #   form_param_name[field_name]
-          #
-          # It also allows for any number bracketted groups such as:
-          #   3) field_name[foo][bar]
-          #   4) old_param_name[field_name][foo][bar]
-          # will be replaced with:
-          #   form_param_name[field_name][foo][bar]
-          #
-          if node['name'] =~ /^(?:#{Regexp.escape(old_name.to_s)}\[([^\[\]]+)\]|([^\[\]]+))(\[.*)?$/
-            field = $1 || $2
-            extra = $3
-            node['name'] = "#{form_param_name}[#{field}]#{extra if extra}"
-          end
-        end
       end
+
+
 
 
       def form_name_for(name)
