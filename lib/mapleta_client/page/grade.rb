@@ -7,7 +7,9 @@ module Page
     # Returns true if the given page looks like a page this class can parse
     def self.detect(page)
       return false unless form = page.parser.at_xpath('.//form[@name="edu_form"]')
+      return false if form['action'] =~ /sequentialTest\.QuestionSheet/
       return false unless form['action'] =~ /QuestionSheet|gradeProctoredTest|TestDetails/
+      return false if page.parser.xpath('.//th[text()="Topic"]').length != 0 && page.parser.xpath('.//th[text()="% of Requirements"]').length != 0
       form['action'] =~ /gradeProctoredTest/ ||
         page.parser.xpath(".//input[@name='actionID' and (@value='grade' or @value='viewgrade' or @value='viewdetails')]").length > 0
     end

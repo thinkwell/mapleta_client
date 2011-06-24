@@ -30,6 +30,8 @@ module Maple
       autoload :Grade, 'mapleta_client/page/grade'
       autoload :GradeBook, 'mapleta_client/page/grade_book'
       autoload :GradeReport, 'mapleta_client/page/grade_report'
+      autoload :MasteryGrade, 'mapleta_client/page/mastery_grade'
+      autoload :MasteryQuestion, 'mapleta_client/page/mastery_question'
       autoload :OtherActiveAssignment, 'mapleta_client/page/other_active_assignment'
       autoload :Preview, 'mapleta_client/page/preview'
       autoload :PrintAssignment, 'mapleta_client/page/print_assignment'

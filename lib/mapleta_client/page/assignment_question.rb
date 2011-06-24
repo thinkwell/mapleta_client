@@ -6,6 +6,7 @@ module Page
     # Returns true if the given page looks like a page this class can parse
     def self.detect(page)
       return false unless form = page.parser.at_xpath('.//form[@name="edu_form"]')
+      return false if form['action'] =~ /sequentialTest\.QuestionSheet/
       return false unless form['action'] =~ /QuestionSheet/
       return false if page.parser.at_css('div.content').text.include?('exceeded the maximum allowed time')
       page.parser.xpath(".//input[@name='actionID' and (@value='grade' or @value='viewgrade' or @value='viewdetails')]").length == 0
@@ -44,21 +45,6 @@ module Page
       else
         @points = 0
       end
-    end
-
-
-    def time_remaining
-      if @time_remaining.nil?
-        content_node.xpath('.//script[contains(text(), "remainingTime")]').each do |node|
-          if node.text =~ /var remainingTime\s*=\s*(\d+)/
-            @time_remaining = $1.to_i
-            break
-          end
-        end
-        @time_remaining = -1 if @time_remaining.nil?
-      end
-
-      @time_remaining == -1 ? nil : @time_remaining
     end
 
 
