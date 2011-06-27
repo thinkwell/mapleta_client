@@ -63,6 +63,11 @@ module Maple::MapleTA
     end
 
 
+    def proctored?
+      mode == MODE_PROCTORED_TEST
+    end
+
+
 
   private
 
