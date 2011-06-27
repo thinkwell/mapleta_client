@@ -18,8 +18,8 @@ module Maple::MapleTA
     property :time_limit, :type => :integer, :from => :timeLimit, :default => nil
     property :policy, :default => nil
 
-    MODE_PROCTERED_TEST     = 0
-    MODE_UNPROCTERED_TEST   = 1
+    MODE_PROCTORED_TEST     = 0
+    MODE_UNPROCTORED_TEST   = 1
     MODE_PRACTICE           = 2
     MODE_MASTERY_ASSIGNMENT = 3
     MODE_STUDY_SESSION      = 4
@@ -59,7 +59,7 @@ module Maple::MapleTA
 
 
     def recorded?
-      [MODE_PROCTERED_TEST, MODE_UNPROCTERED_TEST, MODE_MASTERY_ASSIGNMENT].include?(mode)
+      [MODE_PROCTORED_TEST, MODE_UNPROCTORED_TEST, MODE_MASTERY_ASSIGNMENT].include?(mode)
     end
 
 
