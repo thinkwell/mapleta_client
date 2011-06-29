@@ -21,7 +21,7 @@ module Page
     def just_graded?(maple_request_params)
       return false unless maple_request_params.is_a?(Hash)
 
-      maple_request_params[:actionID] == 'finishsession'
+      maple_request_params[:actionID] == 'finishsession' || maple_request_params[:actionID] == 'grade'
     end
 
 
