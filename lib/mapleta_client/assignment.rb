@@ -68,6 +68,21 @@ module Maple::MapleTA
     end
 
 
+    def practice?
+      mode == MODE_PRACTICE
+    end
+
+
+    def mastery?
+      mode == MODE_MASTERY_ASSIGNMENT
+    end
+
+
+    def study_session?
+      mode == MODE_STUDY_SESSION
+    end
+
+
 
   private
 
