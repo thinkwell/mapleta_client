@@ -124,6 +124,11 @@ module Maple::MapleTA
     end
 
 
+    def unload!
+      @grades = nil
+    end
+
+
     def reset
       @grades = nil
       @from = nil
