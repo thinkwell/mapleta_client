@@ -111,6 +111,7 @@ module Page
       fix_preview_links
       fix_plot_links
       fix_help_links
+      remove_preview_links
     end
 
 
@@ -168,6 +169,16 @@ module Page
             node.remove_attribute 'onmouseover'
           end
         end
+      end
+    end
+
+
+    def remove_preview_links
+      form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
+        if node.previous_sibling && node.previous_sibling.text? && node.previous_sibling.content =~ /\|/
+          node.previous_sibling.remove
+        end
+        node.remove
       end
     end
 
