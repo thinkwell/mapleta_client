@@ -41,6 +41,7 @@ module Page
     # }
     #
     def grade_table
+      return {} unless grade_table_node
       return @data if @data
       data = {}
       n = grade_table_node
@@ -108,13 +109,34 @@ module Page
     end
 
 
+    def assignment_selection_node
+      @assignment_selection_node ||= page.parser.at_css('select#assignmentSelection')
+    end
+
+
+    def assignment_selections
+      unless @assignment_selections
+        @assignment_selections = []
+        assignment_selection_node.xpath('./option').each do |option|
+          h = {}
+          h[:name] = $1 if option.text.strip =~ /^(.+)(\s+)-(\s+)(Proctored|Homework\/Quiz|Mastery)$/
+          h[:value] = option['value'].to_i
+          h[:mode] = $1 if option['class'] =~ /mode-(\d+)/
+          @assignment_selections << h
+        end
+      end
+      @assignment_selections
+    end
+
+
+
 
   private
 
     def validate
       node = @page.parser
-      content_node  or raise Errors::UnexpectedContentError.new(node, "Cannot find error content")
-      grade_table_node or raise Errors::UnexpectedContentError.new(node, "Cannot find grade table")
+      content_node or raise Errors::UnexpectedContentError.new(node, "Cannot find error content")
+      assignment_selection_node or raise Errors::UnexpectedContentError.new(node, "Cannot find assignment selections")
     end
 
   end

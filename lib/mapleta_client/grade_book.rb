@@ -26,6 +26,22 @@ module Maple::MapleTA
 
     def assignment_ids=(ids)
       @assignment_ids = (ids.is_a?(Array) ? ids : [ids]).compact
+      @assignment_ids = nil if @assignment_ids.empty?
+    end
+
+
+    def assignment_selections
+      assignment_ids.map do |id|
+        s = assignment_selection_for_id(id)
+        s && s[:value] || nil
+      end.compact
+    end
+
+
+    def assignment_selection_for_id(id)
+      assignment = assignments.find {|a| a.id == id}
+      return nil unless assignment
+      available_assignment_selections.find {|a| a[:name] == assignment.name}
     end
 
 
@@ -87,7 +103,7 @@ module Maple::MapleTA
         'trId'                => 0,
         'classSelection'      => connection.class_id,
         'userId'              => nil,
-        'assignmentSelection' => assignment_ids,
+        'assignmentSelection' => assignment_selections,
         'uid'                 => user_id,
         'userList'            => 0,
         'resultType'          => 5, # All (most recent)
@@ -115,6 +131,7 @@ module Maple::MapleTA
 
 
     def assignments
+      connect unless connected?
       @assignments ||= connection.ws.assignments.select { |a| a.recorded? }
     end
 
@@ -179,6 +196,12 @@ module Maple::MapleTA
       end
 
       new_grades
+    end
+
+
+    def available_assignment_selections
+      connect unless connected?
+      @available_assignment_selections ||= Page::GradeBook.new(connection.fetch_page('gradebook/Class.do')).assignment_selections
     end
 
 
