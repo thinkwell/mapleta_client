@@ -48,7 +48,7 @@ module Maple::MapleTA
           when :post
             page = agent.post(url, params)
           else
-            page = agent.get(:url => url, :params => params)
+            page = agent.get(url, params)
           end
 
           # Check for a redirection page
