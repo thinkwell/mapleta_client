@@ -49,20 +49,39 @@ module Maple::MapleTA
 
 
     ##
-    # Creates new Maple T.A. class or updates course Id of existing class
+    # Creates new Maple T.A. class
     # Must be connected via #connect
     #
-    # Returns Course object represent class that was created/updated
+    # Returns Course object representing the class that was created
     #
-    def create_class(course_name, class_id=0, course_id=nil, parent_id=0)
+    def create_class(course_name, course_id=nil, parent_id=0)
       raise Errors::NotConnectedError unless connected?
 
       params = {
         'parentClassId' => parent_id,
-        'classId' => class_id,
+        'classId' => 0,
       }
       params['courseName'] = course_name if course_name
       params['courseId'] = course_id if course_id
+
+      hydrate('course', fetch('createclass', params))
+    end
+
+
+    ##
+    # Updates the course id for an existing class
+    # Must be connected via #connect
+    #
+    # Returns Course object representing the class that was updated
+    #
+    def update_class(class_id, course_id)
+      raise Errors::NotConnectedError unless connected?
+
+      params = {
+        'parentClassId' => 0,
+        'classId' => class_id,
+        'courseId' => course_id,
+      }
 
       hydrate('course', fetch('createclass', params))
     end
