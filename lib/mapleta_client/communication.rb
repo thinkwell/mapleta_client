@@ -67,7 +67,7 @@ module Maple::MapleTA
         end
 
         # Check for login page
-        if session && page.parser.xpath('//form[@name="LoginActionForm"]').length > 0
+        if self.respond_to?(:session) && session && page.parser.xpath('//form[@name="LoginActionForm"]').length > 0
           raise Errors::SessionExpiredError.new(session)
         end
 
