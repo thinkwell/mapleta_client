@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{mapleta_client}
-  s.version = "0.0.21"
+  s.name = "mapleta_client"
+  s.version = "0.0.22"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Brandon Turner}]
-  s.date = %q{2011-08-10}
-  s.description = %q{Provides API bindings for MapleTA}
-  s.email = %q{brandont@thinkwell.com}
+  s.authors = ["Brandon Turner"]
+  s.date = "2011-11-07"
+  s.description = "Provides API bindings for MapleTA"
+  s.email = "brandont@thinkwell.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -73,11 +73,11 @@ Gem::Specification.new do |s|
     "spec/mapleta_client/web_service_spec.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/thinkwell/mapleta_client}
-  s.licenses = [%q{MIT}]
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.6}
-  s.summary = %q{API bindings for MapleTA}
+  s.homepage = "http://github.com/thinkwell/mapleta_client"
+  s.licenses = ["MIT"]
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.10"
+  s.summary = "API bindings for MapleTA"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
