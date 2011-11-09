@@ -8,6 +8,14 @@ module Page
     end
 
 
+    def correct?
+      @correct === true
+    end
+
+    def incorrect?
+      @correct === false
+    end
+
     private
 
     def mandatory_fixes
@@ -21,8 +29,10 @@ module Page
       content_node.children.each do |node|
         if node.name == "h3"
           if node.text =~ /Correct/
+            @correct = true
             new_node['class'] += ' correct'
           elsif node.text =~ /Incorrect/
+            @correct = false
             new_node['class'] += ' incorrect'
           end
         end
