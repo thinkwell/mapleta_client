@@ -1,3 +1,4 @@
+Gemfile.lock
 # rcov generated
 coverage
 
@@ -41,3 +42,4 @@ pkg
 #
 # For vim:
 #*.swp
+.rvmrc
