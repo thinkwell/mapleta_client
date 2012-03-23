@@ -67,6 +67,9 @@ module Maple::MapleTA
       mode == MODE_PROCTORED_TEST
     end
 
+    def unproctored?
+      mode == MODE_UNPROCTORED_TEST
+    end
 
     def practice?
       mode == MODE_PRACTICE
