@@ -54,34 +54,58 @@ module Maple::MapleTA
 
 
     def timed?
-      time_limit > 0 && ![MODE_PRACTICE, MODE_STUDY_SESSION].include?(mode)
+      time_limit > 0 && self.class.timeable?(mode)
     end
 
+    def self.timeable?(mode)
+      ![MODE_PRACTICE, MODE_STUDY_SESSION].include?(mode)
+    end
 
     def recorded?
+      self.class.recorded?(mode)
+    end
+
+    def self.recorded?(mode)
       [MODE_PROCTORED_TEST, MODE_UNPROCTORED_TEST, MODE_MASTERY_ASSIGNMENT].include?(mode)
     end
 
-
     def proctored?
+      self.class.proctored?(mode)
+    end
+
+    def self.proctored?(mode)
       mode == MODE_PROCTORED_TEST
     end
 
     def unproctored?
+      self.class.unproctored?(mode)
+    end
+
+    def self.unproctored?(mode)
       mode == MODE_UNPROCTORED_TEST
     end
 
     def practice?
+      self.class.practice?(mode)
+    end
+
+    def self.practice?(mode)
       mode == MODE_PRACTICE
     end
 
-
     def mastery?
+      self.class.mastery?(mode)
+    end
+
+    def self.mastery?(mode)
       mode == MODE_MASTERY_ASSIGNMENT
     end
 
-
     def study_session?
+      self.class.study_session?(mode)
+    end
+
+    def self.study_session?(mode)
       mode == MODE_STUDY_SESSION
     end
 
