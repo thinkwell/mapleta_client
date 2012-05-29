@@ -189,6 +189,13 @@ module Page
       # Intentionally blank, subclasses can override
     end
 
+    def add_class(root_node, selector, class_name, type = :xpath)
+      return unless [:css, :xpath].include?(type)
+      root_node.send(type, selector).each do |node|
+        node['class'] = (node['class'] ? node['class'] + ' ' : '') + class_name
+      end
+    end
+
   end
 
 end

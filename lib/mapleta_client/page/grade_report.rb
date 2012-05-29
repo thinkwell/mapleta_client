@@ -181,6 +181,8 @@ module Page
       remove_history_links
       remove_grade_comment
       remove_form_javascript
+      remove_nodes
+      add_classes
     end
 
 
@@ -233,6 +235,31 @@ module Page
         end
       end
 
+    end
+
+
+    def remove_nodes
+      # remove empty td cells in 2-column layouts
+      grade_questions_node.xpath('.//td[@class="response"]/table/tr[td/table/tr/th[@bgcolor="aaaaaa"]]/td[1]').remove
+      grade_questions_node.xpath('.//td[@class="response"]/table[1]/tr[3]/td[1]').remove
+
+      # remove total grade from question view
+      grade_questions_node.xpath('.//p[*="Total grade:"]').remove
+    end
+
+
+    def add_classes
+      node = grade_questions_node
+      add_class node, './/td[@class="response"]/table[1]/tr[1]/td', 'question-stem'
+      add_class node, './/td[@class="response"]/table[1]/tr[1]/td/table/tr[2]/td', 'question-stem'
+      add_class node, './/td[*="Your Answer:"]', 'student-answer-label'
+      add_class node, './/tr[td[*="Your Answer:"]]/td', 'student-answer'
+      add_class node, './/td[*="Correct Answer:"]', 'correct-answer-label'
+      add_class node, './/tr[td[*="Correct Answer:"]]/td', 'student-answer'
+      add_class node, './/td[*="Comment:"]', 'question-explanation-label'
+      add_class node, './/tr[td[*="Comment:"]]/td', 'question-explanation'
+      add_class node, './/td[@class="response"]/table[1]/tr[3]/td', 'question-explanation'
+      add_class node, './/td[@class="response"]/table/tr[td/table[tr/th[@bgcolor="aaaaaa"]]]/td/table', 'two-column-layout'
     end
 
 
