@@ -182,6 +182,8 @@ module Page
       remove_grade_comment
       remove_form_javascript
       remove_nodes
+      remove_update_grade_toggles
+      remove_update_icons
       add_classes
     end
 
@@ -289,6 +291,20 @@ module Page
     def remove_form_javascript
       form_node.xpath('.//input[@onkeyup]').each do |node|
         node.remove_attribute('onkeyup')
+      end
+    end
+
+
+    def remove_update_grade_toggles
+      form_node.xpath('.//tr/td/div/a[starts-with(@onclick, "toggleItem(\'gbkUpdate")]').each do |node|
+        node.parent.remove
+      end
+    end
+
+
+    def remove_update_icons
+      form_node.xpath('.//tr/td/span/a[starts-with(@onclick, "updateItem")]').each do |node|
+        node.parent.remove
       end
     end
 
