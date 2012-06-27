@@ -86,7 +86,7 @@ module Page
     #
 
     def grade_node
-      @grade_node ||= form_node.xpath("./div[@style='margin: 10px']").last
+      @grade_node ||= form_node.xpath("./div").first
     end
 
     #
