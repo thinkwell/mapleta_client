@@ -26,6 +26,8 @@ Gem::Specification.new do |s|
   # 2.0.1 is causing problems with Net::HTTP::Persistent
   # https://github.com/tenderlove/mechanize/issues/123
   s.add_runtime_dependency(%q<mechanize>, ["= 1.0.0"])
+  s.add_runtime_dependency(%q<pg>)
+  s.add_runtime_dependency(%q<uuid>, [">= 2.3.0"])
 
   s.add_development_dependency(%q<rspec>, ["~> 2.6"])
   s.add_development_dependency(%q<bundler>, [">= 0"])

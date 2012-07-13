@@ -10,6 +10,7 @@ module Maple
     autoload :WebService, 'mapleta_client/web_service'
 
     module Errors
+      autoload :DatabaseError, 'mapleta_client/errors/database_error'
       autoload :GradeBookError, 'mapleta_client/errors/grade_book_error'
       autoload :InvalidResponseError, 'mapleta_client/errors/invalid_response_error'
       autoload :MapleTAError, 'mapleta_client/errors/mapleta_error'
@@ -44,6 +45,14 @@ module Maple
       autoload :TimeLimitExceeded, 'mapleta_client/page/time_limit_exceeded'
     end
 
+    module Database
+      autoload :Connection, 'mapleta_client/database/connection'
+      module Macros
+        autoload :Assignment, 'mapleta_client/database/macros/assignment'
+      end
+    end
+
     require 'mapleta_client/page'
+    require 'mapleta_client/database'
   end
 end
