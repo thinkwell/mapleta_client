@@ -19,6 +19,7 @@ module Maple
       autoload :NotFoundError, 'mapleta_client/errors/not_found_error'
       autoload :SessionExpiredError, 'mapleta_client/errors/session_expired_error'
       autoload :UnexpectedContentError, 'mapleta_client/errors/unexpected_content_error'
+      autoload :TomcatManagerError, 'mapleta_client/errors/tomcat_manager_error'
     end
 
     module Page
@@ -54,5 +55,6 @@ module Maple
 
     require 'mapleta_client/page'
     require 'mapleta_client/database'
+    require 'mapleta_client/tomcat_manager'
   end
 end
