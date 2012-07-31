@@ -6,6 +6,7 @@ module Maple
     autoload :Course, 'mapleta_client/course'
     autoload :HashInitialize, 'mapleta_client/hash_initialize'
     autoload :GradeBook, 'mapleta_client/grade_book'
+    autoload :MockConnection, 'mapleta_client/mock_connection'
     autoload :RawString, 'mapleta_client/raw_string'
     autoload :WebService, 'mapleta_client/web_service'
 
@@ -48,6 +49,7 @@ module Maple
 
     module Database
       autoload :Connection, 'mapleta_client/database/connection'
+      autoload :MockConnection, 'mapleta_client/database/mock_connection'
       module Macros
         autoload :Assignment, 'mapleta_client/database/macros/assignment'
       end
