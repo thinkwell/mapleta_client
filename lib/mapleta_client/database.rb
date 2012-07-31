@@ -4,6 +4,10 @@ module Maple::MapleTA
 
   def self.database(*args)
     args = [self.database_config] if args.empty?
-    Maple::MapleTA::Database::Connection.new(*args)
+    begin
+      Maple::MapleTA::Database::Connection.new(*args)
+    rescue PG::Error => e
+      raise Errors::DatabaseError.new(nil, e)
+    end
   end
 end

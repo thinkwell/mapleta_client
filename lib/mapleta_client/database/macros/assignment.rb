@@ -71,6 +71,8 @@ module Maple::MapleTA
         end
 
         new_assignment_class_id
+      rescue PG::Error => e
+        raise Errors::DatabaseError.new(nil, e)
       end
     end
   end
