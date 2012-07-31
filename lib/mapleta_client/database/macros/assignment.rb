@@ -74,6 +74,21 @@ module Maple::MapleTA
       rescue PG::Error => e
         raise Errors::DatabaseError.new(nil, e)
       end
+
+      ##
+      # Get or set assignment name for the given assignment_class_id
+      def assignment_name(assignment_class_id, name=nil)
+        assignment_class = exec("SELECT assignmentid, name FROM assignment_class WHERE id=$1", [assignment_class_id]).first
+        raise Errors::DatabaseError.new("Cannot find assignment_class with id=#{assignment_class_id}") unless assignment_class && assignment_class['assignmentid']
+        unless name === nil || name == assignment_class['name']
+          exec("UPDATE assignment_class SET name=$1 WHERE id=$2", [name, assignment_class_id])
+          exec("UPDATE assignment SET name=$1 WHERE id=$2", [name, assignment_class['assignmentid']])
+        end
+        # Return old name
+        assignment_class['name']
+      rescue PG::Error => e
+        raise Errors::DatabaseError.new(nil, e)
+      end
     end
   end
 end
