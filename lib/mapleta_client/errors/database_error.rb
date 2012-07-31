@@ -5,7 +5,7 @@ module Maple::MapleTA
 
       def initialize(msg=nil, original_error=nil)
         @original_error = original_error
-        super(msg.nil? ? original_error.message : msg)
+        super(msg.nil? ? original_error.message.strip : msg)
       end
     end
   end
