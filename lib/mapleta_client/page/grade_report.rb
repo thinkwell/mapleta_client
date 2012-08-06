@@ -9,7 +9,8 @@ module Page
     # Returns true if the given page looks like a page this class can parse
     def self.detect(page)
       page.parser.css('div#gradeContent').length > 0 &&
-        page.parser.css('table.detailsTable').length > 0
+        page.parser.css('table.detailsTable').length > 0 &&
+        page.parser.xpath('.//input[@name="studentid"]').length > 0
     end
 
 
@@ -20,6 +21,7 @@ module Page
         'userId' => user_login,
         'trId' => try_id,
       })
+      raise Errors::UnexpectedContentError.new(page.parser, "Cannot detect page type") unless self.detect(page)
       self.new(page, view_opts)
     end
 
