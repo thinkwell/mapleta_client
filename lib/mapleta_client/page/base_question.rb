@@ -112,6 +112,7 @@ module Page
       fix_plot_links
       fix_help_links
       remove_preview_links
+      remove_equation_editor_label
     end
 
 
@@ -184,6 +185,14 @@ module Page
       end
     end
 
+    def remove_equation_editor_label
+      form_node.xpath('.//span[text()="Equation Editor" and @class="mathedit"]').each do |node|
+        tr_node = node.parent.parent rescue nil
+        if tr_node && tr_node.node_name == 'tr'
+          tr_node.remove
+        end
+      end
+    end
 
     def fix_preview_links
       form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
