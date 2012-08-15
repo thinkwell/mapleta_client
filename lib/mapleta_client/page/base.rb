@@ -13,7 +13,8 @@ module Page
       validate
       mandatory_fixes
 
-      self.class.default_options.merge(opts).each do |key, val|
+      opts = (Page.default_options || {}).merge(self.class.default_options).merge(opts)
+      opts.each do |key, val|
         if self.respond_to?("#{key}")
           if respond_to?("#{key}=")
             self.send("#{key}=", val)

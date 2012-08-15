@@ -18,5 +18,12 @@ module Maple::MapleTA
       klass.new(page, opts)
     end
 
+    def self.default_options
+      @default_options
+    end
+
+    def self.default_options=(opts)
+      @default_options = opts
+    end
   end
 end
