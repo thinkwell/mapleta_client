@@ -140,6 +140,9 @@ module Page
     def fix_equation_editor
       form_node.xpath('.//applet[contains(@code, "mathEditor")]').each do |node|
         node.xpath('.//param[@name="helpUrl"]').remove
+        # Double the width/height, ensuring the size is betwee 300x100 and 800x600
+        node['width']  = [800,  [300, node['width'].to_i  * 2].max].min.to_s
+        node['height'] = [600,  [100, node['height'].to_i * 2].max].min.to_s
         unless node.xpath('.//param[@name="toolbar"]').length > 0
           new_node = @page.parser.create_element 'param'
           new_node['name'] = 'toolbar'
