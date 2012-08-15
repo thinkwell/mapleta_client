@@ -3,8 +3,8 @@ module Page
 
   class BaseQuestion < Base
     include Form
-    attr_reader :clickable_image_base_url
-
+    attr_reader :clickable_image_base_url, :use_custom_equation_editor, :custom_equation_editor_code, :custom_equation_editor_archive
+    alias :use_custom_equation_editor? :use_custom_equation_editor
 
 
 
@@ -143,12 +143,38 @@ module Page
         # Double the width/height, ensuring the size is betwee 300x100 and 800x600
         node['width']  = [800,  [300, node['width'].to_i  * 2].max].min.to_s
         node['height'] = [600,  [100, node['height'].to_i * 2].max].min.to_s
-        unless node.xpath('.//param[@name="toolbar"]').length > 0
-          new_node = @page.parser.create_element 'param'
-          new_node['name'] = 'toolbar'
-          new_node['value'] = 'true'
-          node.add_child(new_node)
+
+        if use_custom_equation_editor?
+          node['code'] = custom_equation_editor_code if custom_equation_editor_code
+          node['archive'] = custom_equation_editor_archive if custom_equation_editor_archive
+
+          # We expect custom equation editors to be compatible with
+          # MathFlow 2.0.  We adjust some parameters to match what MathFlow
+          # expects
+
+          # Rename some parameters
+          {'paletteContent' => 'toolbarMarkup', 'size' => 'pointSize', 'mathml' => 'urlEncodedMathML'}.each do |old_name, new_name|
+            if n = node.at_xpath(".//param[@name=\"#{old_name}\"]")
+              n['name'] = new_name
+            end
+          end
+
+          if n = node.at_xpath('.//param[@name="pointSize"]')
+            n['value'] = [48, [20, node['value'].to_i].max].min.to_s
+          end
+
+          if n = node.at_xpath('.//param[@name="urlEncodedMathML"]')
+            n['value'] = encode_math_ml(URI.unescape(n['value']))
+          end
+        else
+          unless node.xpath('.//param[@name="toolbar"]').length > 0
+            new_node = @page.parser.create_element 'param'
+            new_node['name'] = 'toolbar'
+            new_node['value'] = 'true'
+            node.add_child(new_node)
+          end
         end
+
         if n = node.at_xpath('.//param[@name="mathmlHeight"]')
           n['value'] = '180'
         end
@@ -269,6 +295,27 @@ module Page
     end
 
 
+    def encode_math_ml(math_ml)
+
+      # Multiple replacement version of String.tr
+      strtr = lambda do |str, replace_pairs|
+        keys = replace_pairs.keys
+        values = replace_pairs.values
+        str.gsub(
+          /(#{keys.map{|a| Regexp.quote(a) }.join( ')|(' )})/
+        ) { |match| values[keys.index(match)] }
+      end
+
+      strtr.call(math_ml, {
+        ' ' => '%20',
+        '+' => '%2B',
+        '&' => '%26',
+        '<' => '%3C',
+        '=' => '%3D',
+        '>' => '%3E',
+        '?' => '%3F',
+      })
+    end
   end
 
 end
