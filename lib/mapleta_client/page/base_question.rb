@@ -112,6 +112,7 @@ module Page
       fix_plot_links
       fix_help_links
       remove_preview_links
+      remove_plot_links
       remove_equation_editor_label
     end
 
@@ -242,6 +243,15 @@ module Page
 
       # Remove disabled inline plot icons
       form_node.xpath('.//img[contains(@src, "ploton.gif")]').remove
+    end
+
+    def remove_plot_links
+      form_node.xpath('.//font[text()="Plot"]').each do |node|
+        if node.next_sibling && node.next_sibling.text? && node.next_sibling.content =~ /\|/
+          node.next_sibling.remove
+        end
+        node.remove
+      end
     end
 
 
