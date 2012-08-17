@@ -257,6 +257,7 @@ module Page
 
     def fix_help_links
       form_node.xpath('.//a[contains(@href, "PartialGradingHelp")]').remove
+      form_node.xpath('.//a[contains(@onclick, "PartialGradingHelp")]').remove
       form_node.xpath('.//a[contains(@href, "getHelp")]').each do |node|
         next_node = node.next
         if next_node && next_node.text? && next_node.text =~ /^\s*\|\s*$/
