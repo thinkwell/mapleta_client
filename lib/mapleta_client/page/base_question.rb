@@ -3,9 +3,8 @@ module Page
 
   class BaseQuestion < Base
     include Form
-    attr_reader :clickable_image_base_url, :use_custom_equation_editor, :custom_equation_editor_code, :custom_equation_editor_archive
+    attr_reader :clickable_image_base_url, :use_custom_equation_editor, :custom_equation_editor_code, :custom_equation_editor_archive, :equation_editor_toolbar
     alias :use_custom_equation_editor? :use_custom_equation_editor
-
 
 
     def title
@@ -108,6 +107,7 @@ module Page
     def fix_html
       fix_equation_entry_mode_links
       fix_equation_editor
+      fix_equation_editor_toolbar
       fix_preview_links
       fix_plot_links
       fix_help_links
@@ -140,7 +140,7 @@ module Page
 
 
     def fix_equation_editor
-      form_node.xpath('.//applet[contains(@code, "mathEditor")]').each do |node|
+      equation_editors.each do |node|
         node.xpath('.//param[@name="helpUrl"]').remove
         # Double the width/height, ensuring the size is betwee 300x100 and 800x600
         node['width']  = [800,  [300, node['width'].to_i  * 2].max].min.to_s
@@ -182,6 +182,16 @@ module Page
         end
         if n = node.at_xpath('.//param[@name="tooltip"]')
           n['value'] = 'Equation editor'
+        end
+      end
+    end
+
+    def fix_equation_editor_toolbar
+      return unless custom_equation_editor_toolbar?
+      param = use_custom_equation_editor? ? 'toolbarMarkup' : 'paletteContent'
+      equation_editors.each do |node|
+        if toolbar_node = node.at_xpath(".//param[@name=\"#{param}\"]")
+          toolbar_node['value'] = equation_editor_toolbar
         end
       end
     end
@@ -292,6 +302,9 @@ module Page
       end
     end
 
+    def custom_equation_editor_toolbar?
+      !!equation_editor_toolbar
+    end
 
   private
 
@@ -335,6 +348,10 @@ module Page
         '>' => '%3E',
         '?' => '%3F',
       })
+    end
+
+    def equation_editors
+      form_node.xpath('.//applet[contains(@code, "mathEditor") or contains(@code, "SimpleEditorApplet")]')
     end
   end
 
