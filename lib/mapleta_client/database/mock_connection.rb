@@ -2,10 +2,20 @@ module Maple::MapleTA
   module Database
     class MockConnection
       def initialize(*args)
+        @finsihed = false
       end
+
+      def finish
+        @finished = true
+      end
+      alias :close :finish
 
       def status
         PG::CONNECTION_OK
+      end
+
+      def finished?
+        @finished
       end
 
       def copy_assignment_to_class(assignment_class_id, new_class_id)
