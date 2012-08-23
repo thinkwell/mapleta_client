@@ -119,7 +119,7 @@ module Page
         @assignment_selections = []
         assignment_selection_node.xpath('./option').each do |option|
           h = {}
-          h[:name] = $1 if option.text.strip =~ /^(.+)(\s+)-(\s+)(Proctored|Homework\/Quiz|Mastery)$/
+          h[:name] = $1 if option.text.strip =~ /^(.+)(\s+)-(\s+)(Reworkable )?(Proctored|Homework\/Quiz|Mastery)$/
           h[:value] = option['value'].to_i
           h[:mode] = $1 if option['class'] =~ /mode-(\d+)/
           @assignment_selections << h
