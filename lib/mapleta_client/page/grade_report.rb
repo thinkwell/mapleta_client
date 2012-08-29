@@ -177,93 +177,17 @@ module Page
 
     def fix_html
       remove_question_number_cell
-      remove_grade_icons
-      remove_table_widths
-      fix_padded_tables
       remove_history_links
       remove_grade_comment
       remove_form_javascript
-      remove_nodes
       remove_update_grade_toggles
       remove_update_icons
-      add_classes
+      fix_question_response
     end
 
 
     def remove_question_number_cell
       grade_questions_node.xpath('./fieldset/table/tr/td[@class="position"]').remove
-    end
-
-
-    # Remove correct/incorrect icons
-    def remove_grade_icons
-      grade_questions_node.xpath('.//img[contains(@src, "/correct.gif") or contains(@src, "/incorrect.gif")]').each do |img_node|
-        td_node = img_node.parent.parent rescue nil
-        if td_node && td_node.node_name == 'td' && img_node.parent.node_name == 'div'
-          td_node.remove
-        end
-      end
-    end
-
-
-    def remove_table_widths
-      grade_questions_node.xpath('.//table[@width="650"]').each do |node|
-        node.remove_attribute('width')
-      end
-    end
-
-
-    def fix_padded_tables
-      grade_questions_node.css('table td.response > table').each do |node|
-
-        # Tables with only one row are easy, just remove the empty padding cells
-        if node.xpath('./tr').length == 1
-          node.xpath('./tr/td[@width="20"]').each do |td|
-            td.remove if td.children.length == 0
-          end
-        end
-
-        # Some question types have two rows, with padding cells in the second
-        # row and a single colspan cell in the first row
-        if node.xpath('./tr').length == 2
-          tr1 = node.xpath('./tr')[0]
-          tr2 = node.xpath('./tr')[1]
-          if tr1.xpath('./td').length == 1
-            tr2.xpath('./td[@width="20"]').each do |td|
-              td.remove if td.children.length == 0
-            end
-            if td = tr1.at_xpath('./td[@colspan]')
-              td['colspan'] = tr2.xpath('./td').length.to_s
-            end
-          end
-        end
-      end
-
-    end
-
-
-    def remove_nodes
-      # remove empty td cells in 2-column layouts
-      grade_questions_node.xpath('.//td[@class="response"]/table/tr[td/table/tr/th[@bgcolor="aaaaaa"]]/td[1]').remove
-      grade_questions_node.xpath('.//td[@class="response"]/table[1]/tr[3]/td[1]').remove
-
-      # remove total grade from question view
-      grade_questions_node.xpath('.//p[*="Total grade:"]').remove
-    end
-
-
-    def add_classes
-      node = grade_questions_node
-      add_class node, './/td[@class="response"]/table[1]/tr[1]/td', 'question-stem'
-      add_class node, './/td[@class="response"]/table[1]/tr[1]/td/table/tr[2]/td', 'question-stem'
-      add_class node, './/td[*="Your Answer:"]', 'student-answer-label'
-      add_class node, './/tr[td[*="Your Answer:"]]/td', 'student-answer'
-      add_class node, './/td[*="Correct Answer:"]', 'correct-answer-label'
-      add_class node, './/tr[td[*="Correct Answer:"]]/td', 'student-answer'
-      add_class node, './/td[*="Comment:"]', 'question-explanation-label'
-      add_class node, './/tr[td[*="Comment:"]]/td', 'question-explanation'
-      add_class node, './/td[@class="response"]/table[1]/tr[3]/td', 'question-explanation'
-      add_class node, './/td[@class="response"]/table/tr[td/table[tr/th[@bgcolor="aaaaaa"]]]/td/table', 'two-column-layout'
     end
 
 
@@ -308,6 +232,117 @@ module Page
       form_node.xpath('.//tr/td/span/a[starts-with(@onclick, "updateItem")]').each do |node|
         node.parent.remove
       end
+    end
+
+
+    def fix_question_response
+      grade_questions_node.xpath('./fieldset/table/tr/td[@class="response"]').each do |response_node|
+        # Detect response type
+        if response_node.xpath('./table').length == 1 && response_node.xpath('./table/tr').length == 3
+          fix_two_column_response response_node
+        elsif response_node.xpath('./table').length == 2
+          fix_row_response response_node
+        end
+      end
+    end
+
+
+    def fix_two_column_response(node)
+      # Remove empty padding cells
+      node.xpath('./table/tr/td[1]').each {|td| td.remove if td.children.length == 0}
+
+      column_table = node.at_xpath('./table/tr[1]/td/table')
+      # Remove column table attributes
+      column_table.remove_attribute('width')
+      column_table.remove_attribute('cellpadding')
+      column_table.xpath('.//th[@bgcolor]').remove_attr('bgcolor')
+
+      # Remove correct/incorrect icon
+      column_table.xpath('./tr/td[div/img[contains(@src, "/correct.gif") or contains(@src, "/incorrect.gif")]]').remove
+
+      # Remove total grade
+      node.xpath('.//p[*="Total grade:"]').remove
+      node.xpath('.//p').each {|p| p.remove if p.children.length == 0}
+
+      # Change comment rows from:
+      #   <tr><td>Comment:</td></tr>
+      #   <tr><td>...comment html...</td></tr>
+      # to:
+      #   <tr><td><table><tr>
+      #     <td>Comment:<td>
+      #     <td>...comment html...</td>
+      #   </tr></table></td></tr>
+      new_tr = @page.parser.create_element 'tr'
+      new_tr.inner_html = '<td><table><tr></tr></table></td>'
+      inner_tr = new_tr.at_xpath('./td/table/tr')
+      node.at_xpath('./table/tr[2]/td').parent = inner_tr
+      node.at_xpath('./table/tr[3]/td').parent = inner_tr
+      node.at_xpath('./table/tr[3]').remove
+      node.at_xpath('./table/tr[2]').remove
+      new_tr.xpath('.//td').remove_attr('colspan')
+      new_tr.parent = node.at_xpath('./table')
+
+      # Add classes
+      add_class node, '.', 'column-layout'
+      add_class node, './table/tr[1]', 'response-row'
+      add_class node, './table/tr[2]', 'question-explanation-row'
+      if label = column_table.at_xpath('./tr[1]/th[text()="Your response"]')
+        col_num = column_table.xpath('./tr[1]/th').index(label) + 1
+        add_class column_table, "./tr[1]/th[#{col_num}]", 'student-answer-label'
+        add_class column_table, "./tr[2]/td[#{col_num}]", 'student-answer'
+      end
+      if label = column_table.at_xpath('./tr[1]/th[text()="Correct response"]')
+        col_num = column_table.xpath('./tr[1]/th').index(label) + 1
+        add_class column_table, "./tr[1]/th[#{col_num}]", 'correct-answer-label'
+        add_class column_table, "./tr[2]/td[#{col_num}]", 'correct-answer'
+      end
+      add_class column_table, './tr[2]/td', 'question-stem'
+      add_class inner_tr, './td[1]', 'question-explanation-label'
+      add_class inner_tr, './td[2]', 'question-explanation'
+    end
+
+
+    def fix_row_response(node)
+      # Remove empty padding cells
+      node.xpath('./table/tr/td[@width="20"]').each {|td| td.remove if td.children.length == 0}
+      #node.xpath('./table').each do |table|
+      #  if table.xpath('./tr').length == 1
+      #    # Tables with only one row are easy, just remove the empty padding cells
+      #    table.xpath('./tr/td[@width="20"]').each {|td| td.remove if td.children.length == 0}
+      #
+      #  elsif table.xpath('./tr').length == 2
+      #    # Some question types have two rows, with padding cells in the second
+      #    # row and a single colspan cell in the first row
+      #    tr1 = table.at_xpath('./tr[1]')
+      #    tr2 = table.at_xpath('./tr[2]')
+      #    if tr1.xpath('./td').length == 1
+      #      tr2.xpath('./td[@width="20"]').each {|td| td.remove if td.children.length == 0}
+      #      if td = tr1.at_xpath('./td[@colspan]')
+      #        td['colspan'] = tr2.xpath('./td').length.to_s
+      #      end
+      #    end
+      #  end
+      #end
+
+      # Remove correct/incorrect icon
+      node.xpath('./table/tr/td[div/img[contains(@src, "/correct.gif") or contains(@src, "/incorrect.gif")]]').remove
+
+      # Remove partial grading
+      node.xpath('.//tr[*="Partial Grading Explained"]').remove
+
+      # Add classes
+      add_class node, '.', 'row-layout'
+      add_class node, './table[1]/tr[1]', 'question-row'
+      add_class node, './table[1]/tr[1]/td', 'question-stem'
+      add_class node, './/tr[*="Your Answer:"]', 'student-answer-row'
+      add_class node, './/td[*="Your Answer:"]', 'student-answer-label'
+      add_class node, './/tr[td[*="Your Answer:"]]/td[2]', 'student-answer'
+      add_class node, './/tr[*="Correct Answer:"]', 'correct-answer-row'
+      add_class node, './/td[*="Correct Answer:"]', 'correct-answer-label'
+      add_class node, './/tr[*="Correct Answer:"]/td[2]', 'correct-answer'
+      add_class node, './/tr[*="Comment:"]', 'question-explanation-row'
+      add_class node, './/td[*="Comment:"]', 'question-explanation-label'
+      add_class node, './/tr[*="Comment:"]/td[2]', 'question-explanation'
     end
 
 
