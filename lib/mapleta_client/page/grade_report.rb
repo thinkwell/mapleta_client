@@ -20,6 +20,7 @@ module Page
       page = connection.fetch_page('gradebook/Details.do', {
         'userId' => user_login,
         'trId' => try_id,
+        'numberOfRows' => 250,
       })
       raise Errors::UnexpectedContentError.new(page.parser, "Cannot detect page type") unless self.detect(page)
       self.new(page, view_opts)
