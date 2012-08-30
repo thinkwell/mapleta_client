@@ -238,8 +238,10 @@ module Page
     def fix_question_response
       grade_questions_node.xpath('./fieldset/table/tr/td[@class="response"]').each do |response_node|
         # Detect response type
-        if response_node.xpath('./table').length == 1 && response_node.xpath('./table/tr').length == 3
+        if response_node.xpath('./table').length == 1 && response_node.xpath('./table/tr').length == 3 && response_node.xpath('./table/tr[1]/td/table/tr[1]/th[@bgcolor]').length > 0
           fix_two_column_response response_node
+        elsif response_node.xpath('./table').length == 1 && response_node.xpath('./table/tr[1]/td[1][@colspan="2"]').length == 1
+          fix_multipart_response response_node
         elsif response_node.xpath('./table').length == 2
           fix_row_response response_node
         end
@@ -272,15 +274,19 @@ module Page
       #     <td>Comment:<td>
       #     <td>...comment html...</td>
       #   </tr></table></td></tr>
-      new_tr = @page.parser.create_element 'tr'
-      new_tr.inner_html = '<td><table><tr></tr></table></td>'
-      inner_tr = new_tr.at_xpath('./td/table/tr')
-      node.at_xpath('./table/tr[2]/td').parent = inner_tr
-      node.at_xpath('./table/tr[3]/td').parent = inner_tr
-      node.at_xpath('./table/tr[3]').remove
-      node.at_xpath('./table/tr[2]').remove
-      new_tr.xpath('.//td').remove_attr('colspan')
-      new_tr.parent = node.at_xpath('./table')
+      if node.xpath('./table/tr[2]/td[*="Comment:"]').length > 0
+        new_tr = @page.parser.create_element 'tr'
+        new_tr.inner_html = '<td><table><tr></tr></table></td>'
+        inner_tr = new_tr.at_xpath('./td/table/tr')
+        node.at_xpath('./table/tr[2]/td').parent = inner_tr
+        node.at_xpath('./table/tr[3]/td').parent = inner_tr
+        node.at_xpath('./table/tr[3]').remove
+        node.at_xpath('./table/tr[2]').remove
+        new_tr.xpath('.//td').remove_attr('colspan')
+        new_tr.parent = node.at_xpath('./table')
+        add_class inner_tr, './td[1]', 'question-explanation-label'
+        add_class inner_tr, './td[2]', 'question-explanation'
+      end
 
       # Add classes
       add_class node, '.', 'column-layout'
@@ -297,8 +303,6 @@ module Page
         add_class column_table, "./tr[2]/td[#{col_num}]", 'correct-answer'
       end
       add_class column_table, './tr[2]/td', 'question-stem'
-      add_class inner_tr, './td[1]', 'question-explanation-label'
-      add_class inner_tr, './td[2]', 'question-explanation'
     end
 
 
@@ -343,6 +347,36 @@ module Page
       add_class node, './/tr[*="Comment:"]', 'question-explanation-row'
       add_class node, './/td[*="Comment:"]', 'question-explanation-label'
       add_class node, './/tr[*="Comment:"]/td[2]', 'question-explanation'
+    end
+
+
+    def fix_multipart_response(node)
+      node.xpath('./table').remove_attr 'cellpadding'
+      add_class node, '.', 'multipart-layout'
+      add_class node, './table/tr[1]', 'question-row'
+
+      # Cycle through each part
+      (2..(node.xpath('./table/tr').length)).each do |i|
+        tr = node.at_xpath("./table/tr[#{i}]")
+        if tr.xpath('./td[1][@colspan="2"]').length == 1
+          # Comment
+          add_class tr, '.', 'multipart-explanation-row'
+
+        elsif tr.xpath('./td[1][@valign="top"]').length == 1
+          # Question Response
+          add_class tr, '.', 'multipart-response-row'
+          tr.at_xpath('./td[1]').remove_attribute('valign')
+          add_class tr, './td[1]', 'multipart-response-label'
+
+          # Detect response type
+          response_node = tr.at_xpath('./td[2]')
+          if response_node.xpath('./table').length == 1 && response_node.xpath('./table/tr[1]/td/table/tr[1]/th[@bgcolor]').length > 0
+            fix_two_column_response response_node
+          elsif response_node.xpath('./table/tr[1]/td[2]//img[contains(@src, "/correct.gif") or contains(@src, "/incorrect.gif")]').length == 1
+            fix_row_response response_node
+          end
+        end
+      end
     end
 
 
@@ -417,6 +451,40 @@ module Page
       page.body = page.body.gsub('</td><table', '<table')
       page.body = page.body.gsub('</table><td', '</table></td><td')
       page.body = page.body.gsub('</tr></td>', '</td></tr>')
+
+      # A similar bug occurs in multi-part questions which look similar to
+      #  1  <td class="response">
+      #  2    <table cellpadding=10>
+      #  3      ...
+      #  4      <tr>
+      #  5        <td valign=top>..</td>
+      #  6        <td>
+      #  7          <table>
+      #  8            <tr>
+      #  9              <td>
+      # 10                <table><tr><td>...<P>
+      # 11                <table cellpadding=4 border=1>..</table>
+      # 12              </td>
+      # 13              ...
+      # 14            </tr>
+      # 15            ...
+      # 16            <tr><td>..</tr></td>
+      # 17          </table>
+      # 18        </td>
+      # 19      </tr>
+      # 20      ...
+      # 21    </table>
+      # 22  </td>
+      #
+      # 1) Missing closing "</td></tr></table>" (line 10)
+      # 2) Reversed closing tags ("</tr></td>") (line 16) (should be fixed by the fix for #3 above)
+      #
+      page.body = page.body.gsub('<P><table cellpadding=4 border=1>', '</td></tr></table><table cellpadding=4 border=1>')
+
+      # Other randome HTML errors
+      page.body = page.body.gsub('<P></TABLE>', '</TD></TR></TABLE>')
+      page.body = page.body.gsub('</TD></TD>', '</TD>')
+      page.body = page.body.gsub('</TR></TR>', '</TR>')
 
       # HACK: reset the Mechanize parser so Nokogiri will re-parse the html
       # body
