@@ -415,76 +415,47 @@ module Page
 
 
     def fix_invalid_html_first!(page)
+      # The Grade Report page contains some invalid HTML that causes NokoGiri
+      # to choke.  We attempt to fix this with simple substitutions before
+      # NokoGiri parses the document body.
 
       # Multiple selection questions contain invalid html that looks like this:
-      #  1  <td class="response">
-      #  2    <table><tr><td>
-      #  3    <table>
-      #  4      <tr>
-      #  5        <td>...</td>
-      #  6        <table><tr><td>...</td></tr></table>
-      #  7        <td>...</td>
-      #  8      </tr>
-      #  9      <tr><td>...</tr></td>
-      # 10    </table>
-      # 11  </td>
+      #  1 <table>
+      #  2   <tr>
+      #  3     <td>
+      #  4       <p>...</p>
+      #  5       <P>
+      #  6     </td>
+      #  7
+      #  8
+      #  9     <table cellpadding=4 border=1>...</table>
       #
-      # There are 3 problems above:
-      # 1) Unmatched "<table><tr><td>" (line 2)
-      # 2) Improperly placed table element (line 6)
-      # 3) Reversed closing tags ("</tr></td>") (line 9)
+      # The table element on line 9 is in an invalid place.
+      # We fix this by properly closing the previous table.  We also remove the
+      # empty P element (line 5) as it isn't needed.
       #
-      # Attempt to fix this with:
-      #  1  <td class="response">
-      #  2
-      #  3    <table>
-      #  4      <tr>
-      #  5        <td>...<table><tr><td>...</td></tr></table></td>
-      #  6
-      #  7        <td>...</td>
-      #  8      </tr>
-      #  9      <tr><td>...</td></tr>
-      # 10    </table>
-      # 11  </td>
+      #  1 <table>
+      #  2   <tr>
+      #  3     <td>
+      #  4       <p>..</p>
+      #  5
+      #  6     </td>
+      #  7   </tr>
+      #  8 </table>
+      #  9 <table cellpadding=4 border=1>...</table>
       #
-      page.body = page.body.gsub("<td class=\"response\">\n\t\t<table><tr><td><table><tr><td>", "<td class=\"response\">\n\t\t<table><tr><td>")
-      page.body = page.body.gsub('</td><table', '<table')
-      page.body = page.body.gsub('</table><td', '</table></td><td')
-      page.body = page.body.gsub('</tr></td>', '</td></tr>')
+      page.body.gsub!('<P></td><table cellpadding=4 border=1>', '</td></tr></table><table cellpadding=4 border=1>')
 
-      # A similar bug occurs in multi-part questions which look similar to
-      #  1  <td class="response">
-      #  2    <table cellpadding=10>
-      #  3      ...
-      #  4      <tr>
-      #  5        <td valign=top>..</td>
-      #  6        <td>
-      #  7          <table>
-      #  8            <tr>
-      #  9              <td>
-      # 10                <table><tr><td>...<P>
-      # 11                <table cellpadding=4 border=1>..</table>
-      # 12              </td>
-      # 13              ...
-      # 14            </tr>
-      # 15            ...
-      # 16            <tr><td>..</tr></td>
-      # 17          </table>
-      # 18        </td>
-      # 19      </tr>
-      # 20      ...
-      # 21    </table>
-      # 22  </td>
+      # Partial grading table cells are closed using tags in the wrong order
+      # ("</tr></td>").
+      # We fix this by converting to "</td></tr>".
       #
-      # 1) Missing closing "</td></tr></table>" (line 10)
-      # 2) Reversed closing tags ("</tr></td>") (line 16) (should be fixed by the fix for #3 above)
-      #
-      page.body = page.body.gsub('<P><table cellpadding=4 border=1>', '</td></tr></table><table cellpadding=4 border=1>')
+      page.body.gsub!('Partial Grading Explained</font></A></tr></td>', 'Partial Grading Explained</font></A></td></tr>')
 
-      # Other randome HTML errors
-      page.body = page.body.gsub('<P></TABLE>', '</TD></TR></TABLE>')
-      page.body = page.body.gsub('</TD></TD>', '</TD>')
-      page.body = page.body.gsub('</TR></TR>', '</TR>')
+      # Other random invalid HTML fixes
+      page.body.gsub!('</TD></TD>', '</TD>')
+      page.body.gsub!('</TR></TR>', '</TR>')
+
 
       # HACK: reset the Mechanize parser so Nokogiri will re-parse the html
       # body
