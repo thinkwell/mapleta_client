@@ -25,6 +25,10 @@ module Maple::MapleTA
       def assignment_name(assignment_class_id, name=nil)
         name
       end
+
+      def destroy_test_record(try_id)
+        nil
+      end
     end
   end
 end

@@ -4,6 +4,7 @@ module Maple::MapleTA
   module Database
     class Connection < ::PG::Connection
       include Macros::Assignment
+      include Macros::TestRecord
 
       private
 

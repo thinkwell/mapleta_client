@@ -52,6 +52,7 @@ module Maple
       autoload :MockConnection, 'mapleta_client/database/mock_connection'
       module Macros
         autoload :Assignment, 'mapleta_client/database/macros/assignment'
+        autoload :TestRecord, 'mapleta_client/database/macros/test_record'
       end
     end
 
