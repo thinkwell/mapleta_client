@@ -29,6 +29,14 @@ module Maple::MapleTA
       def destroy_test_record(try_id)
         nil
       end
+
+      def active_test_record(user_unique_id, assignment_class_id)
+        nil
+      end
+
+      def active_test_record_id(user_unique_id, assignment_class_id)
+        nil
+      end
     end
   end
 end
