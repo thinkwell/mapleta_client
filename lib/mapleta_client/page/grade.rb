@@ -14,7 +14,24 @@ module Page
         page.parser.xpath(".//input[@name='actionID' and (@value='grade' or @value='viewgrade' or @value='viewdetails')]").length > 0
     end
 
+    def self.fetch(connection, assignment, force=true, view_opts={})
+      page = assignment.launch(connection)
 
+      if page.is_a?(PrintOrTake)
+        params = page.form_params
+        params['actionID'] = 'work assignment now'
+        page = Maple::MapleTA.Page(connection.fetch_page(page.form_action, params, :post), view_opts)
+      end
+
+      raise Errors::UnexpectedContentError.new(page.parser, "Expected AssignmentQuestion page") unless page.is_a?(AssignmentQuestion)
+
+      params = page.form_params
+      params['actionID'] = 'grade'
+      params['really-grade'] = true
+      page = connection.fetch_page(page.form_action, params, :post)
+      raise Errors::UnexpectedContentError.new(page.parser, "Cannot detect page type") unless self.detect(page)
+      self.new(page, view_opts)
+    end
 
     # One of :confirm, :grade, :details
     def state
