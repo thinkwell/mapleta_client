@@ -42,6 +42,25 @@ module Maple::MapleTA
         test_record = active_test_record(user_unique_id, assignment_class_id)
         test_record ? test_record['id'] : nil
       end
+
+      def test_records(user_unique_id, assignment_class_id, start_utc=Time.now.to_i)
+        raise Errors::DatabaseError.new("Must pass user_unique_id") unless user_unique_id
+        raise Errors::DatabaseError.new("Must pass assignment_id") unless assignment_class_id
+
+        user = exec("SELECT * FROM user_profiles WHERE uid=$1", [user_unique_id]).first
+        raise Errors::DatabaseError.new("Cannot find user for unique_id=#{user_unique_id}") unless user
+        user_id = user['id']
+
+        assignment_class = exec("SELECT * FROM assignment_class WHERE id=$1", [assignment_class_id]).first
+        assignment = exec("SELECT * FROM assignment WHERE id=$1", [assignment_class['assignmentid']]).first if assignment_class && assignment_class['assignmentid']
+        raise Errors::DatabaseError.new("Cannot find assignment for assignment_class_id=#{assignment_class_id}") unless assignment
+        assignment_id = assignment['id']
+
+        start_utc = start_utc.to_i if start_utc.is_a?(Time)
+        raise Errors::DatabaseError.new("start_utc must be a valid Time") unless start_utc.is_a?(Integer)
+
+        exec("SELECT * FROM testrecord WHERE userid=$1 AND assignmentid=$2 ORDER BY @($3 - EXTRACT(epoch from start))", [user_id, assignment_id, start_utc])
+      end
     end
   end
 end
