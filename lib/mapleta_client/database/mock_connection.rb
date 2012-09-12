@@ -22,6 +22,10 @@ module Maple::MapleTA
         []
       end
 
+      def user_id_for_unique_id(user_unique_id)
+        nil
+      end
+
       def copy_assignment_to_class(assignment_class_id, new_class_id)
         new_class_id + 1
       end

@@ -24,9 +24,8 @@ module Maple::MapleTA
         raise Errors::DatabaseError.new("Must pass user_unique_id") unless user_unique_id
         raise Errors::DatabaseError.new("Must pass assignment_id") unless assignment_class_id
 
-        user = exec("SELECT * FROM user_profiles WHERE uid=$1", [user_unique_id]).first
-        raise Errors::DatabaseError.new("Cannot find user for unique_id=#{user_unique_id}") unless user
-        user_id = user['id']
+        user_id = user_id_for_unique_id(user_unique_id)
+        raise Errors::DatabaseError.new("Cannot find user for unique_id=#{user_unique_id}") unless user_id
 
         assignment_class = exec("SELECT * FROM assignment_class WHERE id=$1", [assignment_class_id]).first
         assignment = exec("SELECT * FROM assignment WHERE id=$1", [assignment_class['assignmentid']]).first if assignment_class && assignment_class['assignmentid']
@@ -47,9 +46,9 @@ module Maple::MapleTA
         raise Errors::DatabaseError.new("Must pass user_unique_id") unless user_unique_id
         raise Errors::DatabaseError.new("Must pass assignment_id") unless assignment_class_id
 
-        user = exec("SELECT * FROM user_profiles WHERE uid=$1", [user_unique_id]).first
-        raise Errors::DatabaseError.new("Cannot find user for unique_id=#{user_unique_id}") unless user
-        user_id = user['id']
+
+        user_id = user_id_for_unique_id(user_unique_id)
+        raise Errors::DatabaseError.new("Cannot find user for unique_id=#{user_unique_id}") unless user_id
 
         assignment_class = exec("SELECT * FROM assignment_class WHERE id=$1", [assignment_class_id]).first
         assignment = exec("SELECT * FROM assignment WHERE id=$1", [assignment_class['assignmentid']]).first if assignment_class && assignment_class['assignmentid']
