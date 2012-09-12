@@ -18,12 +18,20 @@ module Maple::MapleTA
         @finished
       end
 
+      def exec(*args)
+        []
+      end
+
       def copy_assignment_to_class(assignment_class_id, new_class_id)
         new_class_id + 1
       end
 
       def assignment_name(assignment_class_id, name=nil)
         name
+      end
+
+      def test_record(try_id)
+        nil
       end
 
       def destroy_test_record(try_id)
@@ -36,6 +44,10 @@ module Maple::MapleTA
 
       def active_test_record_id(user_unique_id, assignment_class_id)
         nil
+      end
+
+      def test_records(user_unique_id, assignment_class_id, start_utc)
+        []
       end
     end
   end
