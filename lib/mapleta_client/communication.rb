@@ -28,8 +28,9 @@ module Maple::MapleTA
         yield(request) if block_given?
 
         begin
-          Net::HTTP.new(uri.host, uri.port).start do |http|
-            http.use_ssl = true if uri.scheme == 'https'
+          http = Net::HTTP.new(uri.host, uri.port)
+          http.use_ssl = true if uri.scheme == 'https'
+          http.start do
             http.request(request)
           end
         rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError,
