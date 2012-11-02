@@ -89,6 +89,25 @@ module Maple::MapleTA
       rescue PG::Error => e
         raise Errors::DatabaseError.new(nil, e)
       end
+
+      ##
+      # Get the assignment policy database row for a given assignment_class_id
+      def assignment_policy(assignment_class_id)
+        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        exec("SELECT * FROM assignment_policy WHERE assignment_class_id=$1", [assignment_class_id]).first
+      end
+
+      ##
+      # Read advance policies to determine max attempts
+      def assignment_max_attempts(assignment_class_id)
+        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        assignment_class = exec("SELECT assignmentid, name FROM assignment_class WHERE id=$1", [assignment_class_id]).first
+        raise Errors::DatabaseError.new("Cannot find assignment_class with id=#{assignment_class_id}") unless assignment_class && assignment_class['assignmentid']
+
+        results = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_class_id=$1 AND assignment_id=$2 AND has='f'", [assignment_class_id, assignment_class['assignmentid']]).first
+        return results['keyword'].to_i if results && results['keyword'] && results['keyword'].to_i > 0
+        false
+      end
     end
   end
 end
