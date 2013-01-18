@@ -141,48 +141,12 @@ module Page
 
     def fix_equation_editor
       equation_editors.each do |node|
-        node.xpath('.//param[@name="helpUrl"]').remove
-        # Double the width/height, ensuring the size is betwee 300x100 and 800x600
-        node['width']  = [800,  [300, node['width'].to_i  * 2].max].min.to_s
-        node['height'] = [600,  [100, node['height'].to_i * 2].max].min.to_s
-
-        if use_custom_equation_editor?
-          node['code'] = custom_equation_editor_code if custom_equation_editor_code
-          node['archive'] = custom_equation_editor_archive if custom_equation_editor_archive
-
-          # We expect custom equation editors to be compatible with
-          # MathFlow 2.0.  We adjust some parameters to match what MathFlow
-          # expects
-
-          # Rename some parameters
-          {'paletteContent' => 'toolbarMarkup', 'size' => 'pointSize', 'mathml' => 'urlEncodedMathML'}.each do |old_name, new_name|
-            if n = node.at_xpath(".//param[@name=\"#{old_name}\"]")
-              n['name'] = new_name
-            end
-          end
-
-          if n = node.at_xpath('.//param[@name="pointSize"]')
-            n['value'] = [48, [20, node['value'].to_i].max].min.to_s
-          end
-
-          if n = node.at_xpath('.//param[@name="urlEncodedMathML"]')
-            n['value'] = encode_math_ml(URI.unescape(n['value']))
-          end
-        else
-          unless node.xpath('.//param[@name="toolbar"]').length > 0
-            new_node = @page.parser.create_element 'param'
-            new_node['name'] = 'toolbar'
-            new_node['value'] = 'true'
-            node.add_child(new_node)
-          end
-        end
-
-        if n = node.at_xpath('.//param[@name="mathmlHeight"]')
-          n['value'] = '180'
-        end
-        if n = node.at_xpath('.//param[@name="tooltip"]')
-          n['value'] = 'Equation editor'
-        end
+        container_node = @page.parser.create_element 'div'
+        container_node['class'] = 'eq-editor'
+        container_node['style'] = 'display: none;'
+        container_node['name'] = node['name'];
+        container_node.inner_html = node.inner_html
+        node.replace container_node
       end
     end
 
