@@ -44,6 +44,8 @@ module Maple::MapleTA
 
       def fetch_page(url, params={}, request_method=:get)
         url = abs_url_for(url)
+        params = fix_hash_params(params)
+        params = fix_mathml_params(params)
         params = fix_mechanize_params(params)
 
         begin
@@ -213,24 +215,51 @@ module Maple::MapleTA
         ::ActiveSupport::Base64.encode64(Digest::MD5.digest("#{ts}#{secret}")).gsub("\n",'')
       end
 
-      # Mechanize unescapes HTML entities such as &minus; in string form data.
-      # This causes a problem with MathML, which expects entities such as
-      # &minus; instead of "-".  This function uses a custom object to
-      # represent MathML data, thus preventing Mechanize from unescaping it.
-      #
-      # Also convert array data to multiple copies of the same key, e.g.
+      # Convert array data to multiple copies of the same key, e.g.
       #   {key => [4, 5]}
       # will become:
       #   [['key', 4], ['key', 5]]
       #
       # See mechanize/lib/mechanize/form/field.rb
+      def fix_hash_params(params)
+        return params unless params.is_a?(Enumerable)
+
+        # Use multidimensional arrays instead of hashes
+        params.inject([]) do |memo, (key, val)|
+          if val.is_a?(Array)
+            val.each { |v| memo << [key, v] }
+          else
+            memo << [key, val]
+          end
+          memo
+        end
+      end
+
+      # Normalize MathML
+      def fix_mathml_params(params)
+        return params unless params.is_a?(Enumerable)
+
+        params.inject([]) do |memo, (key, val)|
+          if val =~ /^<math/
+            memo << [key, MathMLString.new(val)]
+          else
+            memo << [key, val]
+          end
+          memo
+        end
+      end
+
+
+      # Mechanize unescapes HTML entities such as &minus; in string form data.
+      # This causes a problem with MathML, which expects entities such as
+      # &minus; instead of "-".  This function uses a custom object to
+      # represent MathML data, thus preventing Mechanize from unescaping it.
+      #
       def fix_mechanize_params(params)
         return params unless params.is_a?(Enumerable)
 
         params.inject([]) do |memo, (key, val)|
-          if val.is_a?(Array)
-            val.each { |v| memo << [key, v] }
-          elsif val =~ /^<(xml|math)/
+          if val.is_a?(String) && val =~ /^<(xml|math)/
             memo << [key, RawString.new(val)]
           else
             memo << [key, val]
@@ -240,8 +269,6 @@ module Maple::MapleTA
       end
 
     end
-
-
 
     def self.included(base)
       base.send :include, InstanceMethods
