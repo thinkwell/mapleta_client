@@ -2,7 +2,7 @@ require 'spec_helper'
 
 
 module Maple::MapleTA
-  class MockConnection
+  class MockConnection < Maple::MapleTA::Connection
     include Communication
   end
 

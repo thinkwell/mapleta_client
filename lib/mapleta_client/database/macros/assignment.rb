@@ -91,6 +91,15 @@ module Maple::MapleTA
       end
 
       ##
+      # Get assignment ids and names for the given class_id
+      def assignment_ids_and_names(assignment_class_id)
+        results = exec("SELECT id, name FROM assignment_class WHERE classid=$1", [assignment_class_id]).to_a
+        results
+      rescue PG::Error => e
+        raise Errors::DatabaseError.new(nil, e)
+      end
+
+      ##
       # Get the assignment policy database row for a given assignment_class_id
       def assignment_policy(assignment_class_id)
         raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
