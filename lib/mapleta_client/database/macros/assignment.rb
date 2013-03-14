@@ -6,16 +6,14 @@ module Maple::MapleTA
 
       def execute(insert_cmd)
         return if insert_cmd.empty?
-
+        Rails.logger.debug "insert sql : #{insert_cmd.insert_sql}, insert values #{insert_cmd.values.join(",")}"
         exec(insert_cmd.insert_sql, insert_cmd.values)
       end
 
-      def copy_batch_assignments_to_class(assignment_class_classid, new_class_id, recorded_assignment_ids, assignment_ids_and_names)
-        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_classid
+      def copy_batch_assignments_to_class(new_class_id, recorded_assignment_ids, assignment_ids_and_names)
         raise Errors::DatabaseError.new("Must pass new_class_id") unless new_class_id
 
         assignment_class_id_old_to_new = {}
-
         t1 = Time.now
         assignment_classes_query_sql = "SELECT * FROM assignment_class WHERE id IN (#{recorded_assignment_ids.join(",")})"
         assignment_classes = exec(assignment_classes_query_sql)
@@ -128,6 +126,7 @@ module Maple::MapleTA
         end
         assignment_class_id_old_to_new
       rescue PG::Error => e
+        Rails.logger.error e.backtrace.join("\n")
         raise Errors::DatabaseError.new(nil, e)
       end
 
