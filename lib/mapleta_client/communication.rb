@@ -27,6 +27,7 @@ module Maple::MapleTA
         end
         yield(request) if block_given?
 
+        attempts = 0
         begin
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true if uri.scheme == 'https'
@@ -35,6 +36,7 @@ module Maple::MapleTA
           end
         rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError,
                Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+          retry if (attempts += 1) <= 2
           raise Errors::NetworkError, e
         end
       end
