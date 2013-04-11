@@ -53,6 +53,11 @@ module Maple::MapleTA
         assignment_mastery_penalties = exec(assignment_mastery_penalties_query_sql)
         #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#select_assignment_mastery_penalties #{assignment_mastery_penalties.count} in #{time_diff t15, Time.now}"
 
+        t16 = Time.now
+        assignment_advanced_policies_query_sql = "SELECT * FROM assignment_advanced_policy WHERE assignment_id IN (#{assignment_ids.join(",")})"
+        assignment_advanced_policies = exec(assignment_advanced_policies_query_sql)
+        #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#select_assignment_mastery_penalties #{assignment_mastery_penalties.count} in #{time_diff t15, Time.now}"
+
         new_assignment_ids = exec("SELECT nextval('assignment_id_seq') FROM generate_series(1, #{assignment_classes.count})")
         raise Errors::DatabaseError.new("Cannot determine new assignment ids") unless new_assignment_ids && new_assignment_ids.count > 0
 
@@ -69,6 +74,7 @@ module Maple::MapleTA
           assignment_question_group_map_insert_cmd = InsertCmd.new('assignment_question_group_map')
           assignment_mastery_policy_insert_cmd = InsertCmd.new("assignment_mastery_policy")
           assignment_mastery_penalty_insert_cmd = InsertCmd.new("assignment_mastery_penalty")
+          assignment_advanced_policy_insert_cmd = InsertCmd.new("assignment_advanced_policy")
 
           assignment_classes.each_with_index do |assignment_class, index|
             new_assignment_id = new_assignment_ids.getvalue(index, 0)
@@ -100,6 +106,9 @@ module Maple::MapleTA
 
             assignment_mastery_penalties_sub = assignment_mastery_penalties.select{|a| a['assignment_class_id'] == assignment_class['id']}
             push_assignment_mastery_penalty(assignment_mastery_penalties_sub, new_assignment_class_id, assignment_mastery_penalty_insert_cmd)
+
+            assignment_advanced_policies_sub = assignment_advanced_policies.select{|a| a['assignment_id'] == assignment_class['assignmentid']}
+            push_assignment_advanced_policy(assignment_advanced_policies_sub, new_assignment_id, new_assignment_class_id, assignment_advanced_policy_insert_cmd)
           end
 
           t7 = Time.now
@@ -123,6 +132,9 @@ module Maple::MapleTA
           t76 = Time.now
           execute(assignment_mastery_penalty_insert_cmd)
           #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#insert_assignment_mastery_penalties in #{time_diff t76, Time.now}"
+          t77 = Time.now
+          execute(assignment_advanced_policy_insert_cmd)
+          #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#assignment_advanced_policy_insert_cmd in #{time_diff t77, Time.now}"
         end
         assignment_class_id_old_to_new
       rescue PG::Error => e
@@ -172,6 +184,10 @@ module Maple::MapleTA
           t7 = Time.now
           copy_assignment_mastery_penalty(assignment_class_id, new_assignment_class_id)
           #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_mastery_penalty in #{time_diff t7, Time.now}"
+
+          t8 = Time.now
+          copy_assignment_advanced_policy(assignment_class['assignmentid'], new_assignment_id, new_assignment_class_id)
+          #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_advanced_policy in #{time_diff t8, Time.now}"
         end
 
         new_assignment_class_id
@@ -191,6 +207,21 @@ module Maple::MapleTA
       def push_assignment_mastery_penalty(assignment_mastery_penalties, new_assignment_class_id, assignment_mastery_penalty_insert_cmd)
         assignment_mastery_penalties.each do |assignment_mastery_penalty|
           assignment_mastery_penalty_insert_cmd.push(assignment_mastery_penalty, [], {'assignment_class_id' => new_assignment_class_id})
+        end
+      end
+
+      def copy_assignment_advanced_policy(assignment_id, new_assignment_id, new_assignment_class_id)
+        t7 = Time.now
+        assignment_advanced_policy_insert_cmd = InsertCmd.new("assignment_advanced_policy")
+        assignment_advanced_policy = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_id=$1", [assignment_id])
+        push_assignment_advanced_policy(assignment_advanced_policy, new_assignment_id, new_assignment_class_id, assignment_advanced_policy_insert_cmd)
+        execute(assignment_advanced_policy_insert_cmd)
+        #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_mastery_penalties in #{time_diff t7, Time.now}"
+      end
+
+      def push_assignment_advanced_policy(assignment_advanced_policies, new_assignment_id, new_assignment_class_id, assignment_advanced_policy_insert_cmd)
+        assignment_advanced_policies.each do |assignment_advanced_policy|
+          assignment_advanced_policy_insert_cmd.push(assignment_advanced_policy, [], {'assignment_class_id' => new_assignment_class_id, 'assignment_id' => new_assignment_id})
         end
       end
 
@@ -323,6 +354,23 @@ module Maple::MapleTA
         results = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_class_id=$1 AND assignment_id=$2 AND has='f'", [assignment_class_id, assignment_class['assignmentid']]).first
         return results['keyword'].to_i if results && results['keyword'] && results['keyword'].to_i > 0
         false
+      end
+
+      def set_assignment_max_attempts(assignment_class_id, max_attempts)
+        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        assignment_class = exec("SELECT assignmentid, name FROM assignment_class WHERE id=$1", [assignment_class_id]).first
+        raise Errors::DatabaseError.new("Cannot find assignment_class with id=#{assignment_class_id}") unless assignment_class && assignment_class['assignmentid']
+
+        unless max_attempts
+          exec("DELETE FROM assignment_advanced_policy WHERE assignment_class_id=$1 AND assignment_id=$2 AND has='f'", [assignment_class_id, assignment_class['assignmentid']])
+        else
+          existing = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_class_id=$1 AND assignment_id=$2 AND has='f'", [assignment_class_id, assignment_class['assignmentid']]).first
+          if existing
+            exec("UPDATE assignment_advanced_policy SET keyword=$3 WHERE assignment_class_id=$1 AND assignment_id=$2 AND has='f'", [assignment_class_id, assignment_class['assignmentid'], max_attempts])
+          else
+            exec("INSERT INTO assignment_advanced_policy (assignment_class_id, and_id, or_id, keyword, assignment_id, has) VALUES ($1, 0, 0, $3, $2, 'f')", [assignment_class_id, assignment_class['assignmentid'], max_attempts])
+          end
+        end
       end
 
       def time_diff(start, finish)
