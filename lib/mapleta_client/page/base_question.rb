@@ -3,9 +3,7 @@ module Page
 
   class BaseQuestion < Base
     include Form
-    attr_reader :clickable_image_base_url, :use_custom_equation_editor, :custom_equation_editor_code, :custom_equation_editor_archive, :equation_editor_toolbar
-    alias :use_custom_equation_editor? :use_custom_equation_editor
-
+    attr_reader :clickable_image_base_url
 
     def title
       # TODO: Can question title ever be something other than "Question \d"?
@@ -107,12 +105,6 @@ module Page
     def fix_html
       fix_equation_entry_mode_links
       fix_equation_editor
-      fix_equation_editor_toolbar
-      fix_preview_links
-      fix_plot_links
-      fix_help_links
-      remove_preview_links
-      remove_plot_links
       remove_equation_editor_label
     end
 
@@ -141,58 +133,25 @@ module Page
 
     def fix_equation_editor
       equation_editors.each do |node|
-        node.xpath('.//param[@name="helpUrl"]').remove
-        # Double the width/height, ensuring the size is betwee 300x100 and 800x600
-        node['width']  = [800,  [300, node['width'].to_i  * 2].max].min.to_s
-        node['height'] = [600,  [100, node['height'].to_i * 2].max].min.to_s
+        container_node = @page.parser.create_element 'div'
+        container_node['class'] = 'eq-editor'
+        container_node['style'] = 'display: none;'
+        container_node['name'] = node['name'];
+        container_node.inner_html = node.inner_html
+        node.parent.add_child(container_node)
 
-        if use_custom_equation_editor?
-          node['code'] = custom_equation_editor_code if custom_equation_editor_code
-          node['archive'] = custom_equation_editor_archive if custom_equation_editor_archive
-
-          # We expect custom equation editors to be compatible with
-          # MathFlow 2.0.  We adjust some parameters to match what MathFlow
-          # expects
-
-          # Rename some parameters
-          {'paletteContent' => 'toolbarMarkup', 'size' => 'pointSize', 'mathml' => 'urlEncodedMathML'}.each do |old_name, new_name|
-            if n = node.at_xpath(".//param[@name=\"#{old_name}\"]")
-              n['name'] = new_name
-            end
-          end
-
-          if n = node.at_xpath('.//param[@name="pointSize"]')
-            n['value'] = [48, [20, node['value'].to_i].max].min.to_s
-          end
-
-          if n = node.at_xpath('.//param[@name="urlEncodedMathML"]')
-            n['value'] = encode_math_ml(URI.unescape(n['value']))
-          end
-        else
-          unless node.xpath('.//param[@name="toolbar"]').length > 0
-            new_node = @page.parser.create_element 'param'
-            new_node['name'] = 'toolbar'
-            new_node['value'] = 'true'
-            node.add_child(new_node)
-          end
+        if n = node.at_xpath('.//param[@name="mathml"]')
+          @mathMLUnescaped = n['value']
+          @mathML = encode_math_ml(URI.unescape(n['value']))
         end
 
-        if n = node.at_xpath('.//param[@name="mathmlHeight"]')
-          n['value'] = '180'
-        end
-        if n = node.at_xpath('.//param[@name="tooltip"]')
-          n['value'] = 'Equation editor'
-        end
-      end
-    end
-
-    def fix_equation_editor_toolbar
-      return unless custom_equation_editor_toolbar?
-      param = use_custom_equation_editor? ? 'toolbarMarkup' : 'paletteContent'
-      equation_editors.each do |node|
-        if toolbar_node = node.at_xpath(".//param[@name=\"#{param}\"]")
-          toolbar_node['value'] = equation_editor_toolbar
-        end
+        mathML_node = @page.parser.create_element 'input'
+        mathML_node['type'] = 'hidden'
+        mathML_node['id'] = 'mathML'
+        mathML_node['name'] = 'mathML'
+        mathML_node['value'] = @mathML
+        node.parent.add_child(mathML_node)
+        node.remove
       end
     end
 
@@ -202,78 +161,6 @@ module Page
         if tr_node && tr_node.node_name == 'tr'
           tr_node.remove
         end
-      end
-    end
-
-    def fix_preview_links
-      form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
-        if node['href'] =~ /previewFormula\([^,]*getElementsByName\('([^']+)'\)[^,]*,.*'([^\)]+)'\)/
-          node['href'] = "##{$1}"
-          node['data-maple-action'] = $2
-          node['class'] = 'preview'
-          if node.xpath('./img').length > 0
-            node.content = "Preview"
-            node['class'] += " inline-icon"
-            node.remove_attribute 'onmouseout'
-            node.remove_attribute 'onmouseover'
-          end
-        end
-      end
-    end
-
-
-    def remove_preview_links
-      form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
-        if node.previous_sibling && node.previous_sibling.text? && node.previous_sibling.content =~ /\|/
-          node.previous_sibling.remove
-        end
-        node.remove
-      end
-    end
-
-
-    def fix_plot_links
-      form_node.xpath('.//a[text()="Plot" or @title="Plot"]').each do |node|
-        if (node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document.getElementsByName\('([^']+)'\)[^']*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/ ||
-            node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document\['([^']+)'\]\.getResponse\(\)\s*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/)
-          node['href'] = "##{$2}"
-          node['class'] = 'plot'
-          node['data-plot'] = $1
-          node['data-type'] = $3
-          node['data-libname'] = $4
-          node['data-driver'] = $5
-          if node.xpath('./img').length > 0
-            node.content = "Plot"
-            node['class'] += " inline-icon"
-            node.remove_attribute 'onmouseout'
-            node.remove_attribute 'onmouseover'
-          end
-        end
-      end
-
-      # Remove disabled inline plot icons
-      form_node.xpath('.//img[contains(@src, "ploton.gif")]').remove
-    end
-
-    def remove_plot_links
-      form_node.xpath('.//font[text()="Plot"]').each do |node|
-        if node.next_sibling && node.next_sibling.text? && node.next_sibling.content =~ /\|/
-          node.next_sibling.remove
-        end
-        node.remove
-      end
-    end
-
-
-    def fix_help_links
-      form_node.xpath('.//a[contains(@href, "PartialGradingHelp")]').remove
-      form_node.xpath('.//a[contains(@onclick, "PartialGradingHelp")]').remove
-      form_node.xpath('.//a[contains(@href, "getHelp")]').each do |node|
-        next_node = node.next
-        if next_node && next_node.text? && next_node.text =~ /^\s*\|\s*$/
-          next_node.remove
-        end
-        node.remove
       end
     end
 
@@ -300,10 +187,6 @@ module Page
       @page.parser.xpath('//applet[@code="applets.clickableImage.ClickableImageApplet"]/param[@name="baseURL"]').each do |node|
         node['value'] = url
       end
-    end
-
-    def custom_equation_editor_toolbar?
-      !!equation_editor_toolbar
     end
 
   private
