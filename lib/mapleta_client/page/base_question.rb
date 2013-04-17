@@ -3,9 +3,7 @@ module Page
 
   class BaseQuestion < Base
     include Form
-    attr_reader :clickable_image_base_url, :use_custom_equation_editor, :custom_equation_editor_code, :custom_equation_editor_archive, :equation_editor_toolbar
-    alias :use_custom_equation_editor? :use_custom_equation_editor
-
+    attr_reader :clickable_image_base_url
 
     def title
       # TODO: Can question title ever be something other than "Question \d"?
@@ -189,10 +187,6 @@ module Page
       @page.parser.xpath('//applet[@code="applets.clickableImage.ClickableImageApplet"]/param[@name="baseURL"]').each do |node|
         node['value'] = url
       end
-    end
-
-    def custom_equation_editor_toolbar?
-      !!equation_editor_toolbar
     end
 
   private
