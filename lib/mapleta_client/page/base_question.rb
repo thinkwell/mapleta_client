@@ -132,26 +132,22 @@ module Page
 
 
     def fix_equation_editor
-      equation_editors.each do |node|
-        container_node = @page.parser.create_element 'div'
-        container_node['class'] = 'eq-editor'
-        container_node['style'] = 'display: none;'
-        container_node['name'] = node['name'];
-        container_node.inner_html = node.inner_html
-        node.parent.add_child(container_node)
-
-        if n = node.at_xpath('.//param[@name="mathml"]')
-          @mathMLUnescaped = n['value']
-          @mathML = encode_math_ml(URI.unescape(n['value']))
+      if equation_editors.empty?
+        # add hidden equation editor nodes in order to be able to use functionality on client when on text mode
+        change_equation_entry_mode_links.each do |node|
+          text_editor_nodes = text_editors(node.parent)
+          if text_editor_nodes
+            editor_node = create_equation_editor_node(text_editor_nodes[0])
+            editor_node['class'] = editor_node['class'] + ' hidden'
+          else
+            Rails.logger.warn "could not find text_editor_node on #{node.parent}"
+          end
         end
-
-        mathML_node = @page.parser.create_element 'input'
-        mathML_node['type'] = 'hidden'
-        mathML_node['id'] = 'mathML'
-        mathML_node['name'] = 'mathML'
-        mathML_node['value'] = @mathML
-        node.parent.add_child(mathML_node)
-        node.remove
+      else
+        equation_editors.each do |node|
+          create_equation_editor_node(node)
+          node.remove
+        end
       end
     end
 
@@ -164,6 +160,29 @@ module Page
       end
     end
 
+    def create_equation_editor_node(node)
+      container_node = @page.parser.create_element 'div'
+      container_node['class'] = 'eq-editor'
+      container_node['style'] = 'display: none;'
+      container_node['name'] = node['name'];
+      container_node.inner_html = node.inner_html
+      node.parent.add_child(container_node)
+
+      if n = node.at_xpath('.//param[@name="mathml"]')
+        @mathMLUnescaped = n['value']
+        Rails.logger.info "mathml : #{n['value']}"
+        @mathML = encode_math_ml(URI.unescape(n['value']))
+        Rails.logger.info "mathml encoded : #{@mathML}"
+      end
+
+      mathML_node = @page.parser.create_element 'input'
+      mathML_node['type'] = 'hidden'
+      mathML_node['id'] = 'mathML'
+      mathML_node['value'] = @mathML.nil? ? '' : @mathML
+      mathML_node['name'] = 'mathML'
+      node.parent.add_child(mathML_node)
+      container_node
+    end
 
     # Removes "vertical-align: -\d+px;" inline style that causes images to appear
     # lower than surrounding text.
@@ -235,6 +254,14 @@ module Page
 
     def equation_editors
       form_node.xpath('.//applet[contains(@code, "mathEditor") or contains(@code, "SimpleEditorApplet")]')
+    end
+
+    def change_equation_entry_mode_links
+      form_node.xpath('.//a[contains(@class, "change-equation-entry-mode")]')
+    end
+
+    def text_editors(node)
+      node.xpath('.//input[contains(@name, "maple[ans.")]')
     end
   end
 
