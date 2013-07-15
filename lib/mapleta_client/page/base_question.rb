@@ -105,9 +105,16 @@ module Page
     def fix_html
       fix_equation_entry_mode_links
       fix_equation_editor
+      fix_text_equation_null_value
       remove_equation_editor_label
     end
 
+
+    def fix_text_equation_null_value
+      form_node.xpath('.//input[contains(@name, "maple[ans.") and @value="NULL"]').each do |node|
+        node['value'] = ""
+      end
+    end
 
     def fix_equation_entry_mode_links
       form_node.xpath('.//a[text()="Change Entry Style" or text()="Change Math Entry Mode" or @title="Change entry mode"]').each do |node|
