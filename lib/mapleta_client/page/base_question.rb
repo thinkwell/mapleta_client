@@ -139,22 +139,9 @@ module Page
 
 
     def fix_equation_editor
-      if equation_editors.empty?
-        # add hidden equation editor nodes in order to be able to use functionality on client when on text mode
-        change_equation_entry_mode_links.each do |node|
-          text_editor_nodes = text_editors(node.parent)
-          if text_editor_nodes
-            editor_node = create_equation_editor_node(text_editor_nodes[0])
-            editor_node['class'] = editor_node['class'] + ' hidden'
-          else
-            Rails.logger.warn "could not find text_editor_node on #{node.parent}"
-          end
-        end
-      else
-        equation_editors.each do |node|
-          create_equation_editor_node(node)
-          node.remove
-        end
+      equation_editors.each do |node|
+        create_equation_editor_node(node)
+        node.remove
       end
     end
 
