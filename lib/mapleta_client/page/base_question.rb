@@ -167,7 +167,7 @@ module Page
         Rails.logger.info "base_question : mathml : #{mathMLUnescaped}"
         content_mathml = URI.unescape(mathMLUnescaped)
         Rails.logger.info "base_question : content mathml : #{content_mathml}"
-        presentation_mathml = convert_to_presentation_mathml(content_mathml)
+        presentation_mathml = BaseQuestion.convert_to_presentation_mathml(content_mathml)
         Rails.logger.info "base_question : presentation mathml : #{presentation_mathml}"
         @mathML = encode_math_ml(presentation_mathml)
         Rails.logger.info "base_question : mathml encoded : #{@mathML}"
@@ -182,7 +182,7 @@ module Page
       container_node
     end
 
-    def convert_to_presentation_mathml(content_mathml)
+    def self.convert_to_presentation_mathml(content_mathml)
       return "" if content_mathml.blank?
       file_path = File.expand_path("mmlctop2_0.xsl", File.dirname(__FILE__))
       doc   = Nokogiri::XML::Document.parse(content_mathml)
