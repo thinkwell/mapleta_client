@@ -163,21 +163,33 @@ module Page
       node.parent.add_child(container_node)
 
       if n = node.at_xpath('.//param[@name="mathml"]')
-        @mathMLUnescaped = n['value']
-        Rails.logger.info "mathml : #{n['value']}"
-        @mathML = encode_math_ml(URI.unescape(n['value']))
-        Rails.logger.info "mathml encoded : #{@mathML}"
+        mathMLUnescaped = n['value']
+        Rails.logger.info "base_question : mathml : #{mathMLUnescaped}"
+        content_mathml = URI.unescape(mathMLUnescaped)
+        Rails.logger.info "base_question : content mathml : #{content_mathml}"
+        presentation_mathml = convert_to_presentation_mathml(content_mathml)
+        Rails.logger.info "base_question : presentation mathml : #{presentation_mathml}"
+        @mathML = encode_math_ml(presentation_mathml)
+        Rails.logger.info "base_question : mathml encoded : #{@mathML}"
       end
 
       mathML_node = @page.parser.create_element 'input'
       mathML_node['type'] = 'hidden'
-      mathML_node['id'] = 'mathML'
+      mathML_node['id'] = node['name']+'.mathML'
       mathML_node['value'] = @mathML.nil? ? '' : @mathML
-      mathML_node['name'] = 'mathML'
+      mathML_node['name'] = node['name']+'.mathML'
       node.parent.add_child(mathML_node)
       container_node
     end
 
+    def convert_to_presentation_mathml(content_mathml)
+      return "" if content_mathml.blank?
+      file_path = File.expand_path("mmlctop2_0.xsl", File.dirname(__FILE__))
+      doc   = Nokogiri::XML::Document.parse(content_mathml)
+      doc.xpath("//*").each { |node| node.default_namespace="http://www.w3.org/1998/Math/MathML"}
+      xslt  = Nokogiri::XSLT(File.read(file_path))
+      xslt.transform(doc).to_s
+    end
     # Removes "vertical-align: -\d+px;" inline style that causes images to appear
     # lower than surrounding text.
     # NOTE: Maple adds this to center equation images (such as fractions) with
