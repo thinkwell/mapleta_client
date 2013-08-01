@@ -74,8 +74,7 @@ module Page
 
 
     def question_node
-      #@question_node ||= form_node.at_xpath("./div[@style='margin: 10px']/table[last()]/tr/td[2]")
-      @question_node ||= form_node.at_css("div table")
+      @question_node ||= form_node.at_css("div.questionstyle")
     end
 
 
@@ -305,6 +304,7 @@ module Page
     # Returns true or throws an exception
     def validate
       node = @page.parser
+      Rails.logger.info "mapleta : node html : #{node.to_s}"
       error_node   and raise Errors::UnexpectedContentError.new(node, error_node.content.to_s.strip)
       content_node  or raise Errors::UnexpectedContentError.new(node, "Cannot find question content")
       form_node     or raise Errors::UnexpectedContentError.new(node, "Cannot find question form")
