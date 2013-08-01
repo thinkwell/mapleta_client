@@ -81,7 +81,7 @@ module Page
 
     def question_node
       #@question_node ||= form_node.at_xpath("./div[@style='margin: 10px']/table[last()]/tr/td[2]")
-      @question_node ||= form_node.at_css("div.questionstyle")
+      @question_node ||= form_node.at_css("div table")
     end
 
 
