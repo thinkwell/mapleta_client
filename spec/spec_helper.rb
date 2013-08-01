@@ -18,11 +18,11 @@ RSpec.configure do |config|
     :user_email      => 'mapleta@thinkwell.com',
     :user_role       => 'ADMINISTRATOR',
     :student_id      => 'admin',
-    :class_id        => 9,
+    :class_id        => 330,
     :class_name      => 'Calculus I',
     :course_id       => 1,
 
-    :assignment_id   => 132,
+    :assignment_id   => 29928,
     :assignment_name => 'Easy Test',
   }
   config.add_setting :maple_values, :default => {

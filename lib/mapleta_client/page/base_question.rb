@@ -58,12 +58,6 @@ module Page
     alias :question_html :html
 
 
-    def script_html
-      html = ''
-      html << "#{base_url_script_node.to_html}\n" if base_url_script_node
-      html
-    end
-
     #
     ###
 
@@ -84,14 +78,6 @@ module Page
       @question_node ||= form_node.at_css("div table")
     end
 
-
-    def base_url_script_node
-      return @base_url_script_node if @base_url_script_node
-      return nil if @base_url_script_node == false
-      @base_url_script_node = @page.parser.xpath('//script').detect(false) do |node|
-        node.content.include?('function getBaseURL()')
-      end
-    end
 
     #
     ###
