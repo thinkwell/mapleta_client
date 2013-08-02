@@ -44,6 +44,7 @@ module Maple
       autoload :Solution, 'mapleta_client/page/solution'
       autoload :StudyFeedback, 'mapleta_client/page/study_feedback'
       autoload :StudyQuestion, 'mapleta_client/page/study_question'
+      autoload :NumberHelp, 'mapleta_client/page/number_help'
       autoload :TimeLimitExceeded, 'mapleta_client/page/time_limit_exceeded'
     end
 

@@ -57,6 +57,9 @@ module Maple::MapleTA
     alias :launch :launcher
 
 
+    def get_page(action, view_opts={})
+      Maple::MapleTA.Page(fetch_page(action, {}, :get), view_opts)
+    end
 
 
 
