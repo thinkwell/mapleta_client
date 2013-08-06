@@ -55,6 +55,7 @@ module Maple
         autoload :Assignment, 'mapleta_client/database/macros/assignment'
         autoload :TestRecord, 'mapleta_client/database/macros/test_record'
         autoload :User, 'mapleta_client/database/macros/user'
+        autoload :Classes, 'mapleta_client/database/macros/classes'
       end
     end
 

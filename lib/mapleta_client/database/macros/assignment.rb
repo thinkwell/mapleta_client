@@ -6,7 +6,7 @@ module Maple::MapleTA
 
       def execute(insert_cmd)
         return if insert_cmd.empty?
-        Rails.logger.debug "insert sql : #{insert_cmd.insert_sql}, insert values #{insert_cmd.values.join(",")}"
+        #Rails.logger.debug "insert sql : #{insert_cmd.insert_sql}, insert values #{insert_cmd.values.join(",")}"
         exec(insert_cmd.insert_sql, insert_cmd.values)
       end
 
@@ -342,6 +342,50 @@ module Maple::MapleTA
       def assignment_policy(assignment_class_id)
         raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
         exec("SELECT * FROM assignment_policy WHERE assignment_class_id=$1", [assignment_class_id]).first
+      end
+
+      ##
+      # Get the assignment question group database row for a given assignmentid
+      def assignment_question_groups(assignmentid)
+        raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
+        exec("SELECT * FROM assignment_question_group WHERE assignmentid=$1", [assignmentid])
+      end
+
+      ##
+      # Get the assignment database row for a given classid
+      def assignment(classid)
+        raise Errors::DatabaseError.new("Must pass classid") unless classid
+        exec("SELECT * FROM assignment WHERE classid=$1", [classid]).first
+      end
+
+      ##
+      # Get the assignment_class database row for a given classid
+      def assignment_class(classid)
+        raise Errors::DatabaseError.new("Must pass classid") unless classid
+        exec("SELECT * FROM assignment_class WHERE classid=$1", [classid]).first
+      end
+
+      ##
+      # Delete the assignment database row for a given classid
+      def delete_assignment(classid)
+        raise Errors::DatabaseError.new("Must pass classid") unless classid
+        assignment = assignment(classid)
+        return unless assignment
+        assignment_question_groups(assignment['id']).each do |assignment_question_group|
+          exec("DELETE FROM assignment_question_group_map WHERE groupid=$1", [assignment_question_group['id']])
+          exec("DELETE FROM assignment_question_group WHERE id=$1", [assignment_question_group['id']])
+        end
+        exec("DELETE FROM assignment WHERE classid=$1", [classid]).first
+      end
+
+      ##
+      # Delete the assignment_class database row for a given classid
+      def delete_assignment_class(classid)
+        raise Errors::DatabaseError.new("Must pass classid") unless classid
+        assignment_class = assignment_class(classid)
+        return unless assignment_class
+        exec("DELETE FROM assignment_policy WHERE assignment_class_id=$1", [assignment_class['id']]).first
+        exec("DELETE FROM assignment_class WHERE classid=$1", [classid]).first
       end
 
       ##

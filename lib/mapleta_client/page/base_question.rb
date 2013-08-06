@@ -254,6 +254,7 @@ module Page
       form_node.xpath('.//a[contains(@href, "PartialGradingHelp")]').remove
       form_node.xpath('.//a[contains(@onclick, "PartialGradingHelp")]').remove
       form_node.xpath('.//a[contains(@onclick, "gateway.question.NumberHelp")]').remove
+      form_node.xpath('.//a[contains(@onclick, "gateway.question.UnitsHelp")]').remove
       form_node.xpath('.//a[contains(@href, "getHelp")]').each do |node|
         next_node = node.next
         if next_node && next_node.text? && next_node.text =~ /^\s*\|\s*$/
@@ -305,7 +306,6 @@ module Page
     # Returns true or throws an exception
     def validate
       node = @page.parser
-      Rails.logger.info "mapleta : node html : #{node.to_s}"
       error_node   and raise Errors::UnexpectedContentError.new(node, error_node.content.to_s.strip)
       content_node  or raise Errors::UnexpectedContentError.new(node, "Cannot find question content")
       form_node     or raise Errors::UnexpectedContentError.new(node, "Cannot find question form")

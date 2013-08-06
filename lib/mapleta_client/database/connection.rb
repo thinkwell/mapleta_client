@@ -6,6 +6,7 @@ module Maple::MapleTA
       include Macros::Assignment
       include Macros::User
       include Macros::TestRecord
+      include Macros::Classes
 
     end
   end

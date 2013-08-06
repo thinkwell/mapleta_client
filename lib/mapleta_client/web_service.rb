@@ -47,6 +47,23 @@ module Maple::MapleTA
       hydrate('course', response)
     end
 
+    # Retrieves a Maple T.A. class for given cid
+    # Must be connected via #connect
+    #
+    # Returns a Course object or null if no class exists
+    #
+    def clazz(cid, featured_only=false, open_for_registration=false)
+      raise Errors::NotConnectedError unless connected?
+
+      response = fetch('class', {
+        'classId' => cid,
+        'featured' => !!featured_only,
+        'openForRegistration' => !!open_for_registration,
+      })
+
+      hydrate('course', response)
+    end
+
 
     ##
     # Creates new Maple T.A. class

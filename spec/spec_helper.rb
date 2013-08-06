@@ -25,6 +25,15 @@ RSpec.configure do |config|
     :assignment_id   => 29928,
     :assignment_name => 'Easy Test',
   }
+  Maple::MapleTA.database_config = {
+      :host            => 'localhost',
+      :dbname          => 'mapleta',
+      :user            => 'postgres',
+      :password        => '',
+      :sslmode         => 'disable',
+      :port            => 5432,
+      :connect_timeout => 2,
+  }
   config.add_setting :maple_values, :default => {
     :assignment_question_number => 1,
     :assignment_question_count => 22,
