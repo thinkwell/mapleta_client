@@ -159,7 +159,7 @@ module Page
       container_node['class'] = 'eq-editor'
       container_node['style'] = 'display: none;'
       container_node['name'] = node['name'];
-      container_node.inner_html = node.inner_html
+      #container_node.inner_html = node.inner_html
       node.parent.add_child(container_node)
 
       if n = node.at_xpath('.//param[@name="mathml"]')
@@ -209,9 +209,6 @@ module Page
 
     def clickable_image_base_url=(url)
       @clickable_image_base_url = url
-      @page.parser.xpath('//applet[@code="applets.clickableImage.ClickableImageApplet"]/param[@name="baseURL"]').each do |node|
-        node['value'] = url
-      end
     end
 
   private
