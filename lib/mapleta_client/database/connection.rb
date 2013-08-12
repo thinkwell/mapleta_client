@@ -7,6 +7,7 @@ module Maple::MapleTA
       include Macros::User
       include Macros::TestRecord
       include Macros::Classes
+      include Macros::Question
 
     end
   end

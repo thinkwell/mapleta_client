@@ -45,6 +45,7 @@ module Maple
       autoload :StudyFeedback, 'mapleta_client/page/study_feedback'
       autoload :StudyQuestion, 'mapleta_client/page/study_question'
       autoload :NumberHelp, 'mapleta_client/page/number_help'
+      autoload :Question, 'mapleta_client/page/question'
       autoload :TimeLimitExceeded, 'mapleta_client/page/time_limit_exceeded'
     end
 
@@ -56,6 +57,7 @@ module Maple
         autoload :TestRecord, 'mapleta_client/database/macros/test_record'
         autoload :User, 'mapleta_client/database/macros/user'
         autoload :Classes, 'mapleta_client/database/macros/classes'
+        autoload :Question, 'mapleta_client/database/macros/question'
       end
     end
 
