@@ -36,9 +36,9 @@ RSpec.configure do |config|
   }
   config.add_setting :maple_values, :default => {
     :assignment_question_number => 1,
-    :assignment_question_count => 22,
+    :assignment_question_count => 16,
     :assignment_question_points => 1,
-    :assignment_question_text => 'Choose the equations of the graph',
+    :assignment_question_text => '(Click For List)',
   }
 end
 

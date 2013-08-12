@@ -116,6 +116,10 @@ module Maple::MapleTA
       mode == MODE_STUDY_SESSION
     end
 
+    def include_questionid?(questionid)
+      questions.map{|question| question['id']}.include?(questionid)
+    end
+
     def assignment_hash
       {"id" => id, "classid" => class_id, "name" => name, "totalpoints" => total_points, "weighting" => weighting}
     end
@@ -130,15 +134,23 @@ module Maple::MapleTA
       "printable" => printable, "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback}
     end
 
-    def assignment_question_group_hashes
+    def assignment_question_group_hashes(questions=nil)
       hashes = []
-      questions.each {|question| hashes.push({"id" => nil, "assignmentid" => nil, "name" => question['name'], "order_id" => 0})}
+      q = questions
+      unless questions
+        q = self.questions
+      end
+      q.each {|question| hashes.push({"id" => nil, "assignmentid" => nil, "name" => question['name'], "order_id" => 0})}
       hashes
     end
 
-    def assignment_question_group_map_hashes
+    def assignment_question_group_map_hashes(questions=nil)
       hashes = []
-      questions.each {|question| hashes.push({"groupid" => nil, "questionid" => question['id'], "question_uid" => question['uid']})}
+      q = questions
+      unless questions
+        q = self.questions
+      end
+      q.each {|question| hashes.push({"groupid" => nil, "questionid" => question['id'], "question_uid" => question['uid']})}
       hashes
     end
 
