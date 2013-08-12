@@ -4,8 +4,14 @@ require 'logger'
 module Maple::MapleTA
   class Assignment
     include HashInitialize
-    property :class_id,         :type => :integer,      :from => :classId
-    property :id,               :type => :integer
+    property :class_id,           :type => :integer,      :from => :classId
+    property :id,                 :type => :integer
+    property :show_current_grade, :type => :boolean, :default => false
+    property :insession_grade,    :type => :boolean, :default => false
+    property :reworkable,         :type => :boolean, :default => true
+    property :printable,         :type => :boolean,  :default => false
+    property :weighting,         :type => :integer, :default => 0
+    property :show_final_grade_feedback, :default => ''
     property :class_name
     property :name, :default => nil
     property :mode, :type => :integer, :default => nil
@@ -17,6 +23,7 @@ module Maple::MapleTA
     property :end, :type => :time_from_ms, :default => nil
     property :time_limit, :type => :integer, :from => :timeLimit, :default => nil
     property :policy, :default => nil
+    property :questions, :default => []
 
     MODE_PROCTORED_TEST     = 0
     MODE_UNPROCTORED_TEST   = 1
@@ -109,7 +116,46 @@ module Maple::MapleTA
       mode == MODE_STUDY_SESSION
     end
 
+    def assignment_hash
+      {"id" => id, "classid" => class_id, "name" => name, "totalpoints" => total_points, "weighting" => weighting}
+    end
 
+    def assignment_class_hash
+      {"id" => nil, "assignmentid" => id, "classid" => class_id, "name" => name, "totalpoints" => total_points,
+       "order_id" => 0, "weighting" => weighting}
+    end
+
+    def assignment_policy_hash
+      {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
+      "printable" => printable, "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback}
+    end
+
+    def assignment_question_group_hashes
+      hashes = []
+      questions.each {|question| hashes.push({"id" => nil, "assignmentid" => nil, "name" => question['name'], "order_id" => 0})}
+      hashes
+    end
+
+    def assignment_question_group_map_hashes
+      hashes = []
+      questions.each {|question| hashes.push({"groupid" => nil, "questionid" => question['id'], "question_uid" => question['uid']})}
+      hashes
+    end
+
+    def assignment_mastery_policy_hashes
+      hashes = []
+      hashes
+    end
+
+    def assignment_mastery_penalty_hashes
+      hashes = []
+      hashes
+    end
+
+    def assignment_advanced_policy_hashes
+      hashes = []
+      hashes
+    end
 
   private
 
