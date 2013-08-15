@@ -22,8 +22,10 @@ module Database::Macros
     describe "create_assignment" do
       before(:each) do
         @questions = @database_connection.questions_for_assignment_class(@settings[:class_id])
+        question = @questions.first
+        question.weighting = 3
         @assignment = Maple::MapleTA::Assignment.new(:name => "test assignment", :class_id => @mapleta_class.id,
-                                     :questions => [@questions.first], :reworkable => false, :printable => true)
+                                     :questions => [question], :reworkable => false, :printable => true)
         result = @database_connection.create_assignment(@assignment)
         @new_assignment_id = result[0]
         @new_assignment_class_id = result[1]
@@ -88,6 +90,8 @@ module Database::Macros
         assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id)
         assignment_question_groups.count.should == 1
         assignment_question_groups.first['name'].should == @questions.first.name
+        assignment_question_groups.first['order_id'].should == "0"
+        assignment_question_groups.first['weighting'].should == "3"
       end
 
       it "should create the assignment_class" do

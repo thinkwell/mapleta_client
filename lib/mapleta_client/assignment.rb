@@ -143,7 +143,7 @@ module Maple::MapleTA
       unless questions
         q = self.questions
       end
-      q.each {|question| hashes.push({"id" => nil, "assignmentid" => nil, "name" => question.name, "order_id" => 0})}
+      q.each_with_index {|question,i| hashes.push({"id" => nil, "assignmentid" => nil, "name" => question.name, "order_id" => i, "weighting" => question.weighting})}
       hashes
     end
 
