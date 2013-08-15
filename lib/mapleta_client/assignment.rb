@@ -34,6 +34,13 @@ module Maple::MapleTA
     MODE_MASTERY_ASSIGNMENT = 3
     MODE_STUDY_SESSION      = 4
 
+    SCRAMBLE_NEVER = 0
+    SCRAMBLE_FIRST = 1
+    SCRAMBLE_EVERY = 2
+
+    def self.scramble_options
+      [["Never", SCRAMBLE_NEVER], ["On the first attempt", SCRAMBLE_FIRST], ["Every attempt", SCRAMBLE_EVERY]]
+    end
 
     def load(connection)
       defaults!
