@@ -15,8 +15,11 @@ module Database::Macros
     describe "questions" do
 
       it "should return questions for question_ids" do
-        questions = @database_connection.questions(["1","2","3"])
+        questions = @database_connection.questions(["3","1","2"])
         questions.count.should == 3
+        questions[0]['id'].should == "3"
+        questions[1]['id'].should == "1"
+        questions[2]['id'].should == "2"
       end
     end
 

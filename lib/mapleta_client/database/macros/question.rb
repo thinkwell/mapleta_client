@@ -9,7 +9,8 @@ module Maple::MapleTA
 
       def questions(question_ids)
         raise Errors::DatabaseError.new("Must pass question_ids") unless question_ids
-        exec("Select * from question where id IN (#{question_ids.join(",")})", [])
+        values = question_ids.each_with_index.map{ |x,i| "(" + x.to_s + "," + i.to_s + ")" }.join(",")
+        exec("Select * from question q join (values#{values}) as x (id, ordering) on q.id = x.id order by x.ordering", [])
       end
 
       def questions_for_class(classid, search=nil, limit=100, offset=0)
