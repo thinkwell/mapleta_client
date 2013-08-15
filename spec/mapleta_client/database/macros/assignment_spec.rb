@@ -25,7 +25,7 @@ module Database::Macros
         question = @questions.first
         question.weighting = 3
         @assignment = Maple::MapleTA::Assignment.new(:name => "test assignment", :class_id => @mapleta_class.id,
-                                     :questions => [question], :reworkable => false, :printable => true)
+                                     :questions => [question], :reworkable => false, :printable => true, :scramble => 1)
         result = @database_connection.create_assignment(@assignment)
         @new_assignment_id = result[0]
         @new_assignment_class_id = result[1]
@@ -107,6 +107,7 @@ module Database::Macros
         assignment_policy.should_not be_nil
         assignment_policy['reworkable'].should == 'f'
         assignment_policy['printable'].should == 't'
+        assignment_policy['scramble'].should == '1'
       end
     end
 
