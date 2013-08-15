@@ -91,7 +91,11 @@ module Page
       fix_equation_entry_mode_links
       fix_equation_editor
       fix_text_equation_null_value
+      fix_preview_links
+      fix_plot_links
       fix_help_links
+      remove_preview_links
+      remove_plot_links
       remove_equation_editor_label
     end
 
@@ -166,6 +170,63 @@ module Page
       mathML_node['name'] = node['name']+'.mathML'
       node.parent.add_child(mathML_node)
       container_node
+    end
+
+    def fix_preview_links
+      form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
+        if node['href'] =~ /previewFormula\([^,]*getElementsByName\('([^']+)'\)[^,]*,.*'([^\)]+)'\)/
+          node['href'] = "##{$1}"
+          node['data-maple-action'] = $2
+          node['class'] = 'preview'
+          if node.xpath('./img').length > 0
+            node.content = "Preview"
+            node['class'] += " inline-icon"
+            node.remove_attribute 'onmouseout'
+            node.remove_attribute 'onmouseover'
+          end
+        end
+      end
+    end
+
+    def remove_preview_links
+      form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
+        if node.previous_sibling && node.previous_sibling.text? && node.previous_sibling.content =~ /\|/
+          node.previous_sibling.remove
+        end
+        node.remove
+      end
+    end
+
+    def fix_plot_links
+      form_node.xpath('.//a[text()="Plot" or @title="Plot"]').each do |node|
+        if (node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document.getElementsByName\('([^']+)'\)[^']*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/ ||
+            node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document\['([^']+)'\]\.getResponse\(\)\s*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/)
+          node['href'] = "##{$2}"
+          node['class'] = 'plot'
+          node['data-plot'] = $1
+          node['data-type'] = $3
+          node['data-libname'] = $4
+          node['data-driver'] = $5
+          if node.xpath('./img').length > 0
+            node.content = "Plot"
+            node['class'] += " inline-icon"
+            node.remove_attribute 'onmouseout'
+            node.remove_attribute 'onmouseover'
+          end
+        end
+      end
+
+      # Remove disabled inline plot icons
+      form_node.xpath('.//img[contains(@src, "ploton.gif")]').remove
+    end
+
+    def remove_plot_links
+      form_node.xpath('.//font[text()="Plot"]').each do |node|
+        if node.next_sibling && node.next_sibling.text? && node.next_sibling.content =~ /\|/
+          node.next_sibling.remove
+        end
+        node.remove
+      end
     end
 
     def fix_help_links
