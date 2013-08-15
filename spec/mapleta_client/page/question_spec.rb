@@ -11,7 +11,7 @@ module Page
       @connection.connect
       @database_connection = Maple::MapleTA.database_connection
       @question = @database_connection.questions_for_assignment_class(@settings[:class_id]).first
-      @page = @connection.get_question(@question['id'])
+      @page = @connection.get_question(@question.id)
     end
 
     it "parses the question page" do

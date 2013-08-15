@@ -119,7 +119,7 @@ module Maple::MapleTA
     end
 
     def include_questionid?(questionid)
-      questions.map{|question| question['id']}.include?(questionid)
+      questions.map{|question| question.id}.include?(questionid)
     end
 
     def assignment_hash
@@ -143,7 +143,7 @@ module Maple::MapleTA
       unless questions
         q = self.questions
       end
-      q.each {|question| hashes.push({"id" => nil, "assignmentid" => nil, "name" => question['name'], "order_id" => 0})}
+      q.each {|question| hashes.push({"id" => nil, "assignmentid" => nil, "name" => question.name, "order_id" => 0})}
       hashes
     end
 
@@ -153,7 +153,7 @@ module Maple::MapleTA
       unless questions
         q = self.questions
       end
-      q.each {|question| hashes.push({"groupid" => nil, "questionid" => question['id'], "question_uid" => question['uid']})}
+      q.each {|question| hashes.push({"groupid" => nil, "questionid" => question.id, "question_uid" => question.uid})}
       hashes
     end
 

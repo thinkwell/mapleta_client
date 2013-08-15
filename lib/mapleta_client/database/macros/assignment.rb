@@ -362,7 +362,7 @@ module Maple::MapleTA
         assignment_question_group_maps_to_delete = assignment_question_group_maps.select {|map| !assignment.include_questionid?(map['questionid'])}
         delete_assignment_question_groups(assignment_question_group_maps_to_delete)
         questionids = assignment_question_group_maps.map{|a| a['questionid']}
-        questions_to_insert = assignment.questions.select {|question| !questionids.include?(question['id'])}
+        questions_to_insert = assignment.questions.select {|question| !questionids.include?(question.id)}
         insert_assignment_question_groups(assignment.assignment_question_group_hashes(questions_to_insert),
                                           assignment.assignment_question_group_map_hashes(questions_to_insert), assignment.id)
 
