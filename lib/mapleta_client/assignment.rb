@@ -13,6 +13,7 @@ module Maple::MapleTA
     property :reworkable,         :type => :boolean, :default => true
     property :printable,         :type => :boolean,  :default => false
     property :weighting,         :type => :integer, :default => 0
+    property :scramble,         :type => :integer, :default => 0
     property :show_final_grade_feedback, :default => ''
     property :class_name
     property :name, :default => nil
@@ -134,7 +135,7 @@ module Maple::MapleTA
     def assignment_policy_hash
       {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
       "printable" => printable, "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback, "final_grade" => final_grade,
-      "visible" => visible}
+      "visible" => visible, "scramble" => scramble}
     end
 
     def assignment_question_group_hashes(questions=nil)
