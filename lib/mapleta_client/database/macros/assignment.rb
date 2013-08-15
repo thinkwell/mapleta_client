@@ -143,7 +143,7 @@ module Maple::MapleTA
       end
 
       def create_assignment(assignment)
-        new_assignment_id = nil
+        new_assignment_id, new_assignment_class_id = nil
         transaction do
           new_assignment_id = insert_assignment(assignment.assignment_hash, assignment.class_id)
 
@@ -160,7 +160,7 @@ module Maple::MapleTA
           insert_assignment_advanced_policy(assignment.assignment_advanced_policy_hashes, new_assignment_id, new_assignment_class_id)
 
         end
-        new_assignment_id
+        [new_assignment_id, new_assignment_class_id]
       end
 
       def edit_assignment(assignment)
@@ -360,7 +360,7 @@ module Maple::MapleTA
         assignment_question_group_maps = assignment_question_group_maps(assignment.id)
 
         assignment_question_group_maps_to_delete = assignment_question_group_maps.select {|map| !assignment.include_questionid?(map['questionid'])}
-        assignment_question_group_maps_to_delete.each{|map| delete_assignment_question_group(map)}
+        delete_assignment_question_groups(assignment_question_group_maps_to_delete)
         questionids = assignment_question_group_maps.map{|a| a['questionid']}
         questions_to_insert = assignment.questions.select {|question| !questionids.include?(question['id'])}
         insert_assignment_question_groups(assignment.assignment_question_group_hashes(questions_to_insert),
@@ -444,10 +444,24 @@ module Maple::MapleTA
       end
 
       ##
+      # Get the assignment database row for a given classid
+      def assignment_by_id(assignment_id)
+        raise Errors::DatabaseError.new("Must pass assignment_id") unless assignment_id
+        exec("SELECT * FROM assignment WHERE id=$1", [assignment_id]).first
+      end
+
+      ##
       # Get the assignment_class database row for a given classid
       def assignment_class(classid)
         raise Errors::DatabaseError.new("Must pass classid") unless classid
         exec("SELECT * FROM assignment_class WHERE classid=$1", [classid]).first
+      end
+
+      ##
+      # Get the assignment_class database row for a given assignment_class_id
+      def assignment_class_by_id(assignment_class_id)
+        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        exec("SELECT * FROM assignment_class WHERE id=$1", [assignment_class_id]).first
       end
 
       ##
@@ -458,30 +472,35 @@ module Maple::MapleTA
       end
 
       ##
-      # Delete the assignment database row for a given classid
-      def delete_assignment(classid)
-        raise Errors::DatabaseError.new("Must pass classid") unless classid
-        assignment = assignment(classid)
-        return unless assignment
-        assignment_question_group_maps(assignment['id']).each do |assignment_question_group_map|
-          delete_assignment_question_group(assignment_question_group_map)
+      # Delete the assignment database row for a given assignment_class_id
+      def delete_assignment(assignment_class_id)
+        assignment_class = assignment_class_by_id(assignment_class_id)
+        assignment = assignment_by_id(assignment_class['assignmentid'])
+        transaction do
+          delete_assignment_class_row(assignment_class)
+          delete_assignment_row(assignment)
         end
-        exec("DELETE FROM assignment WHERE classid=$1", [classid]).first
       end
 
-      def delete_assignment_question_group(assignment_question_group_map)
-        exec("DELETE FROM assignment_question_group_map WHERE id=$1", [assignment_question_group_map['id']])
-        exec("DELETE FROM assignment_question_group WHERE id=$1", [assignment_question_group_map['groupid']])
+      def delete_assignment_row(assignment)
+        return unless assignment
+        delete_assignment_question_groups(assignment_question_group_maps(assignment['id']))
+        exec("DELETE FROM assignment WHERE id=$1", [assignment['id']]).first
       end
 
-      ##
-      # Delete the assignment_class database row for a given classid
-      def delete_assignment_class(classid)
-        raise Errors::DatabaseError.new("Must pass classid") unless classid
-        assignment_class = assignment_class(classid)
+      def delete_assignment_question_groups(assignment_question_group_maps)
+        assignment_question_group_maps.each do |assignment_question_group_map|
+          exec("DELETE FROM assignment_question_group_map WHERE id=$1", [assignment_question_group_map['id']])
+        end
+        assignment_question_group_maps.each do |assignment_question_group_map|
+          exec("DELETE FROM assignment_question_group WHERE id=$1", [assignment_question_group_map['groupid']])
+        end
+      end
+
+      def delete_assignment_class_row(assignment_class)
         return unless assignment_class
         exec("DELETE FROM assignment_policy WHERE assignment_class_id=$1", [assignment_class['id']]).first
-        exec("DELETE FROM assignment_class WHERE classid=$1", [classid]).first
+        exec("DELETE FROM assignment_class WHERE id=$1", [assignment_class['id']]).first
       end
 
       ##

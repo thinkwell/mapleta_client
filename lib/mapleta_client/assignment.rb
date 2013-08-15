@@ -6,6 +6,8 @@ module Maple::MapleTA
     include HashInitialize
     property :class_id,           :type => :integer,      :from => :classId
     property :id,                 :type => :integer
+    property :visible, :type => :boolean, :default => true
+    property :final_grade, :type => :boolean, :default => true
     property :show_current_grade, :type => :boolean, :default => false
     property :insession_grade,    :type => :boolean, :default => false
     property :reworkable,         :type => :boolean, :default => true
@@ -131,7 +133,8 @@ module Maple::MapleTA
 
     def assignment_policy_hash
       {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
-      "printable" => printable, "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback}
+      "printable" => printable, "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback, "final_grade" => final_grade,
+      "visible" => visible}
     end
 
     def assignment_question_group_hashes(questions=nil)

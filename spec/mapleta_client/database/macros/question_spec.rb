@@ -12,6 +12,14 @@ module Database::Macros
       @class = @database_connection.class(@settings[:class_id])
     end
 
+    describe "questions" do
+
+      it "should return questions for question_ids" do
+        questions = @database_connection.questions(["1","2","3"])
+        questions.count.should == 3
+      end
+    end
+
     describe "questions_for_class" do
 
       it "returns all questions with author == classid or with author == parent of class" do
