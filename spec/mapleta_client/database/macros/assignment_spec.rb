@@ -52,7 +52,7 @@ module Database::Macros
         it "should update the assignment_question_groups" do
           assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id)
           assignment_question_groups.count.should == 1
-          assignment_question_groups.first['name'].should == @questions[1]['name']
+          assignment_question_groups.first['name'].should == @questions[1].name
         end
 
         it "should update the assignment_class" do
@@ -87,7 +87,7 @@ module Database::Macros
       it "should create the assignment_question_group for each question" do
         assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id)
         assignment_question_groups.count.should == 1
-        assignment_question_groups.first['name'].should == @questions.first['name']
+        assignment_question_groups.first['name'].should == @questions.first.name
       end
 
       it "should create the assignment_class" do

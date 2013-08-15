@@ -1,6 +1,7 @@
 module Maple
   module MapleTA
     autoload :Assignment, 'mapleta_client/assignment'
+    autoload :Question, 'mapleta_client/question'
     autoload :Communication, 'mapleta_client/communication'
     autoload :Connection, 'mapleta_client/connection'
     autoload :Course, 'mapleta_client/course'
