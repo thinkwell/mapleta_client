@@ -26,6 +26,14 @@ module Maple::MapleTA
       {}
     end
 
+    def session
+      nil
+    end
+
+    def use_math_editor
+      @use_math_editor
+    end
+
     def fetch_response(uri, method=:get, post_body=nil)
     end
 

@@ -7,6 +7,11 @@ module Maple::MapleTA
         exec("Select q.* from question q left join assignment_question_group_map m on m.questionid = q.id left join assignment_question_group a on a.id = m.groupid left join assignment_class c on c.assignmentid = a.assignmentid where c.classid=$1 and q.latestrevision is null", [assignment_class_id])
       end
 
+      def questions(question_ids)
+        raise Errors::DatabaseError.new("Must pass question_ids") unless question_ids
+        exec("Select * from question where id IN (#{question_ids.join(",")})", [])
+      end
+
       def questions_for_class(classid, search=nil, limit=100, offset=0)
         raise Errors::DatabaseError.new("Must pass classid") unless classid
         sql = questions_for_class_sql(search)

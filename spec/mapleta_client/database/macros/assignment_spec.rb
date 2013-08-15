@@ -24,12 +24,13 @@ module Database::Macros
         @questions = @database_connection.questions_for_assignment_class(@settings[:class_id])
         @assignment = Maple::MapleTA::Assignment.new(:name => "test assignment", :class_id => @mapleta_class.id,
                                      :questions => [@questions.first], :reworkable => false, :printable => true)
-        @new_assignment_id = @database_connection.create_assignment(@assignment)
+        result = @database_connection.create_assignment(@assignment)
+        @new_assignment_id = result[0]
+        @new_assignment_class_id = result[1]
       end
 
       after(:each) do
-        @database_connection.delete_assignment_class(@mapleta_class.id)
-        @database_connection.delete_assignment(@mapleta_class.id)
+        @database_connection.delete_assignment(@new_assignment_class_id)
       end
 
       describe "update_assignment" do
@@ -67,6 +68,11 @@ module Database::Macros
           assignment_policy.should_not be_nil
           assignment_policy['reworkable'].should == 't'
           assignment_policy['printable'].should == 'f'
+        end
+
+        it "should retrieve assignment via web service" do
+          assignment = @connection.ws.assignment(Maple::MapleTA::Assignment.new(:id => @new_assignment_class_id, :class_id => @mapleta_class.id))
+          assignment.should_not be_nil
         end
       end
 
@@ -108,8 +114,7 @@ module Database::Macros
       end
 
       after(:each) do
-        @database_connection.delete_assignment_class(@mapleta_class.id)
-        @database_connection.delete_assignment(@mapleta_class.id)
+        @database_connection.delete_assignment(@new_assignment_class_id)
       end
 
       it "should create a new assignment_class" do

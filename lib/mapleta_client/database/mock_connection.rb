@@ -38,6 +38,16 @@ module Maple::MapleTA
         nil
       end
 
+      def questions(question_ids)
+        result = []
+        question_ids.each {|id| result.push({'id'=>id})}
+        result
+      end
+
+      def create_assignment(assignment)
+        [123, 234]
+      end
+
       def destroy_test_record(try_id)
         nil
       end
