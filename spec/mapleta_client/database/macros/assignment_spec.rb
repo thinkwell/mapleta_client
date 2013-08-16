@@ -22,10 +22,13 @@ module Database::Macros
     describe "create_assignment" do
       before(:each) do
         @questions = @database_connection.questions_for_assignment_class(@settings[:class_id])
-        question = @questions.first
-        question.weighting = 3
+        assignment_question_group_map_1 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[0].id, :question_uid => @questions[0].uid)
+        assignment_question_group_map_2 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[1].id, :question_uid => @questions[1].uid)
+        assignment_question_group_1 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[0].name, :assignment_question_group_maps => [assignment_question_group_map_1], :weighting => 3)
+        assignment_question_group_2 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[1].name, :assignment_question_group_maps => [assignment_question_group_map_2])
         @assignment = Maple::MapleTA::Assignment.new(:name => "test assignment", :class_id => @mapleta_class.id,
-                                     :questions => [question], :reworkable => false, :printable => true, :scramble => 1)
+                                     :assignment_question_groups => [assignment_question_group_1, assignment_question_group_2],
+                                     :reworkable => false, :printable => true, :scramble => 1)
         result = @database_connection.create_assignment(@assignment)
         @new_assignment_id = result[0]
         @new_assignment_class_id = result[1]
@@ -38,7 +41,9 @@ module Database::Macros
       describe "update_assignment" do
         before(:each) do
           @assignment.name = "test assignment edited"
-          @assignment.questions = [@questions[1]]
+          assignment_question_group_map_3 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[2].id, :question_uid => @questions[2].uid)
+          assignment_question_group_3 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[2].name, :assignment_question_group_maps => [assignment_question_group_map_3])
+          @assignment.assignment_question_groups = [@assignment.assignment_question_groups[0], assignment_question_group_3]
           @assignment.reworkable = true
           @assignment.printable = false
           @assignment.id = @new_assignment_id
@@ -51,10 +56,20 @@ module Database::Macros
           assignment['name'].should == "test assignment edited"
         end
 
-        it "should update the assignment_question_groups" do
-          assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id)
-          assignment_question_groups.count.should == 1
-          assignment_question_groups.first['name'].should == @questions[1].name
+        it "should update the assignment_question_groups and maps" do
+          assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id).to_a
+          assignment_question_groups.count.should == 2
+          assignment_question_groups.first.name.should == @questions[0].name
+          assignment_question_groups.last.name.should == @questions[2].name
+
+          assignment_question_group_maps = @database_connection.assignment_question_group_maps(@new_assignment_id).to_a
+          assignment_question_group_maps.count.should == 2
+          assignment_question_group_maps.first.questionid.should == @questions[0].id
+          assignment_question_group_maps.first.groupid.should == assignment_question_groups.first.id
+          assignment_question_group_maps.first.order_id.should == 0
+          assignment_question_group_maps.last.questionid.should == @questions[2].id
+          assignment_question_group_maps.last.groupid.should == assignment_question_groups.last.id
+          assignment_question_group_maps.last.order_id.should == 0
         end
 
         it "should update the assignment_class" do
@@ -86,12 +101,24 @@ module Database::Macros
         assignment['name'].should == "test assignment"
       end
 
-      it "should create the assignment_question_group for each question" do
-        assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id)
-        assignment_question_groups.count.should == 1
-        assignment_question_groups.first['name'].should == @questions.first.name
-        assignment_question_groups.first['order_id'].should == "0"
-        assignment_question_groups.first['weighting'].should == "3"
+      it "should create the assignment_question_group and map for each question" do
+        assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id).to_a
+        assignment_question_groups.count.should == 2
+        assignment_question_groups.first.name.should == @questions[1].name
+        assignment_question_groups.first.order_id.should == 1
+        assignment_question_groups.first.weighting.should == 1
+        assignment_question_groups.last.name.should == @questions[0].name
+        assignment_question_groups.last.order_id.should == 0
+        assignment_question_groups.last.weighting.should == 3
+
+        assignment_question_group_maps = @database_connection.assignment_question_group_maps(@new_assignment_id)
+        assignment_question_group_maps.count.should == 2
+        assignment_question_group_maps.first.questionid.should == @questions[1].id
+        assignment_question_group_maps.first.groupid.should == assignment_question_groups.first.id
+        assignment_question_group_maps.first.order_id.should == 0
+        assignment_question_group_maps.last.questionid.should == @questions[0].id
+        assignment_question_group_maps.last.groupid.should == assignment_question_groups.last.id
+        assignment_question_group_maps.last.order_id.should == 0
       end
 
       it "should create the assignment_class" do

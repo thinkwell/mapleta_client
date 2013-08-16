@@ -1,6 +1,8 @@
 module Maple
   module MapleTA
     autoload :Assignment, 'mapleta_client/assignment'
+    autoload :AssignmentQuestionGroup, 'mapleta_client/assignment_question_group'
+    autoload :AssignmentQuestionGroupMap, 'mapleta_client/assignment_question_group_map'
     autoload :Question, 'mapleta_client/question'
     autoload :Communication, 'mapleta_client/communication'
     autoload :Connection, 'mapleta_client/connection'
