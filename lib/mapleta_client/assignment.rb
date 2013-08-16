@@ -26,7 +26,7 @@ module Maple::MapleTA
     property :end, :type => :time_from_ms, :default => nil
     property :time_limit, :type => :integer, :from => :timeLimit, :default => nil
     property :policy, :default => nil
-    property :questions, :default => []
+    property :assignment_question_groups, :default => []
 
     MODE_PROCTORED_TEST     = 0
     MODE_UNPROCTORED_TEST   = 1
@@ -126,10 +126,6 @@ module Maple::MapleTA
       mode == MODE_STUDY_SESSION
     end
 
-    def include_questionid?(questionid)
-      questions.map{|question| question.id}.include?(questionid)
-    end
-
     def assignment_hash
       {"id" => id, "classid" => class_id, "name" => name, "totalpoints" => total_points, "weighting" => weighting}
     end
@@ -143,26 +139,6 @@ module Maple::MapleTA
       {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
       "printable" => printable, "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback, "final_grade" => final_grade,
       "visible" => visible, "scramble" => scramble}
-    end
-
-    def assignment_question_group_hashes(questions=nil)
-      hashes = []
-      q = questions
-      unless questions
-        q = self.questions
-      end
-      q.each_with_index {|question,i| hashes.push({"id" => nil, "assignmentid" => nil, "name" => question.name, "order_id" => i, "weighting" => question.weighting})}
-      hashes
-    end
-
-    def assignment_question_group_map_hashes(questions=nil)
-      hashes = []
-      q = questions
-      unless questions
-        q = self.questions
-      end
-      q.each {|question| hashes.push({"groupid" => nil, "questionid" => question.id, "question_uid" => question.uid})}
-      hashes
     end
 
     def assignment_mastery_policy_hashes

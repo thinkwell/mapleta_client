@@ -151,7 +151,7 @@ module Maple::MapleTA
 
           insert_assignment_policy(assignment.assignment_policy_hash, new_assignment_class_id)
 
-          insert_assignment_question_groups(assignment.assignment_question_group_hashes, assignment.assignment_question_group_map_hashes, new_assignment_id)
+          insert_assignment_question_groups(assignment.assignment_question_groups, new_assignment_id)
 
           insert_assignment_mastery_policy(assignment.assignment_mastery_policy_hashes, new_assignment_class_id)
 
@@ -214,7 +214,10 @@ module Maple::MapleTA
           t5 = Time.now
           assignment_question_groups = assignment_question_groups(assignment_class['assignmentid'])
           assignment_question_group_maps = assignment_question_group_maps(assignment_class['assignmentid'])
-          insert_assignment_question_groups(assignment_question_groups, assignment_question_group_maps, new_assignment_id)
+          assignment_question_groups.each do |assignment_question_group|
+            assignment_question_group.assignment_question_group_maps = assignment_question_group_maps.select{|map| map.groupid == assignment_question_group.id}
+          end
+          insert_assignment_question_groups(assignment_question_groups, new_assignment_id)
           #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_question_groups in #{time_diff t5, Time.now}"
 
           t6 = Time.now
@@ -340,14 +343,23 @@ module Maple::MapleTA
         assignment_policy_insert_cmd.push(assignment_policy, %w(), {'assignment_class_id' => new_assignment_class_id})
       end
 
-      def insert_assignment_question_groups(assignment_question_group_hashes, assignment_question_group_map_hashes, new_assignment_id)
+      def insert_assignment_question_groups(assignment_question_groups, new_assignment_id)
         t5 = Time.now
         assignment_question_group_insert_cmd = InsertCmd.new('assignment_question_group')
         assignment_question_group_map_insert_cmd = InsertCmd.new('assignment_question_group_map')
 
-        new_group_ids = exec("SELECT nextval('assignment_question_group_id_seq') FROM generate_series(1, #{assignment_question_group_hashes.count})")
+        new_group_ids = exec("SELECT nextval('assignment_question_group_id_seq') FROM generate_series(1, #{assignment_question_groups.count})")
+        assignment_question_groups.each_with_index do |assignment_question_group, index|
+          new_group_id = new_group_ids.instance_of?(Array) ? new_group_ids[index]['nextval'] : new_group_ids.getvalue(index, 0)
+          raise Errors::DatabaseError.new("Cannot determine new assignment_question_group id") unless new_group_id && new_group_id.to_i > 0
 
-        push_assignment_question_groups(assignment_question_group_hashes, assignment_question_group_map_hashes, new_group_ids, new_assignment_id, assignment_question_group_insert_cmd, assignment_question_group_map_insert_cmd)
+          assignment_question_group_hash = assignment_question_group.hash
+          assignment_question_group_hash['order_id'] = index
+          push_assignment_question_group(assignment_question_group_hash, new_group_id, new_assignment_id, assignment_question_group_insert_cmd)
+          assignment_question_group.map_hashes.each do |assignment_question_group_map_hash|
+            push_assignment_question_group_map(assignment_question_group_map_hash, new_group_id, assignment_question_group_map_insert_cmd)
+          end
+        end
 
         execute(assignment_question_group_insert_cmd)
         execute(assignment_question_group_map_insert_cmd)
@@ -355,16 +367,18 @@ module Maple::MapleTA
       end
 
       def update_assignment_question_groups(assignment)
-        assignment_question_groups = assignment_question_groups(assignment.id)
         assignment_question_group_maps = assignment_question_group_maps(assignment.id)
+        delete_assignment_question_groups(assignment_question_group_maps)
 
-        assignment_question_group_maps_to_delete = assignment_question_group_maps.select {|map| !assignment.include_questionid?(map['questionid'])}
-        delete_assignment_question_groups(assignment_question_group_maps_to_delete)
-        questionids = assignment_question_group_maps.map{|a| a['questionid']}
-        questions_to_insert = assignment.questions.select {|question| !questionids.include?(question.id)}
-        insert_assignment_question_groups(assignment.assignment_question_group_hashes(questions_to_insert),
-                                          assignment.assignment_question_group_map_hashes(questions_to_insert), assignment.id)
+        insert_assignment_question_groups(assignment.assignment_question_groups, assignment.id)
+      end
 
+      def push_assignment_question_group(assignment_question_group_hash, new_group_id, new_assignment_id, assignment_question_group_insert_cmd)
+        assignment_question_group_insert_cmd.push(assignment_question_group_hash, [], {'id' => new_group_id, 'assignmentid' => new_assignment_id})
+      end
+
+      def push_assignment_question_group_map(assignment_question_group_map_hash, new_group_id, assignment_question_group_map_insert_cmd)
+        assignment_question_group_map_insert_cmd.push(assignment_question_group_map_hash, %w(id), {'groupid' => new_group_id})
       end
 
       # Copy assignment_question_group and assignment_question_group_map
@@ -374,11 +388,11 @@ module Maple::MapleTA
           new_group_id = new_group_ids.instance_of?(Array) ? new_group_ids[index]['nextval'] : new_group_ids.getvalue(index, 0)
           raise Errors::DatabaseError.new("Cannot determine new assignment_question_group id") unless new_group_id && new_group_id.to_i > 0
 
-          assignment_question_group_insert_cmd.push(assignment_question_group_hash, [], {'id' => new_group_id, 'assignmentid' => new_assignment_id})
+          push_assignment_question_group(assignment_question_group_hash, new_group_id, new_assignment_id, assignment_question_group_insert_cmd)
 
           assignment_question_group_map_hashes = assignment_question_group_maps_all_hashes.select{|a| a['groupid'] == assignment_question_group_hash['id']}
           assignment_question_group_map_hashes.each do |assignment_question_group_map_hash|
-            assignment_question_group_map_insert_cmd.push(assignment_question_group_map_hash, %w(id), {'groupid' => new_group_id})
+            push_assignment_question_group_map(assignment_question_group_map_hash, new_group_id, assignment_question_group_map_insert_cmd)
           end
         end
       end
@@ -425,14 +439,14 @@ module Maple::MapleTA
       # Get the assignment question group database row for a given assignmentid
       def assignment_question_groups(assignmentid)
         raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
-        exec("SELECT * FROM assignment_question_group WHERE assignmentid=$1", [assignmentid])
+        build_assignment_question_groups(exec("SELECT * FROM assignment_question_group WHERE assignmentid=$1", [assignmentid]))
       end
 
       ##
       # Get the assignment question group database row for a given assignmentid
       def assignment_question_group_maps(assignmentid)
         raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
-        exec("SELECT m.* FROM assignment_question_group_map m left join assignment_question_group a on a.id = m.groupid WHERE a.assignmentid=$1", [assignmentid])
+        build_assignment_question_group_maps(exec("SELECT m.* FROM assignment_question_group_map m left join assignment_question_group a on a.id = m.groupid WHERE a.assignmentid=$1", [assignmentid]))
       end
 
       ##
@@ -489,10 +503,10 @@ module Maple::MapleTA
 
       def delete_assignment_question_groups(assignment_question_group_maps)
         assignment_question_group_maps.each do |assignment_question_group_map|
-          exec("DELETE FROM assignment_question_group_map WHERE id=$1", [assignment_question_group_map['id']])
+          exec("DELETE FROM assignment_question_group_map WHERE id=$1", [assignment_question_group_map.id])
         end
         assignment_question_group_maps.each do |assignment_question_group_map|
-          exec("DELETE FROM assignment_question_group WHERE id=$1", [assignment_question_group_map['groupid']])
+          exec("DELETE FROM assignment_question_group WHERE id=$1", [assignment_question_group_map.groupid])
         end
       end
 
@@ -544,6 +558,16 @@ module Maple::MapleTA
 
         return "#{(sec / 60.0).round} min"
       end
+
+      private
+
+        def build_assignment_question_groups(pg_result)
+          pg_result.to_a.map{|assignment_question_group| Maple::MapleTA::AssignmentQuestionGroup.new(assignment_question_group)}
+        end
+
+        def build_assignment_question_group_maps(pg_result)
+          pg_result.to_a.map{|assignment_question_group_map| Maple::MapleTA::AssignmentQuestionGroupMap.new(assignment_question_group_map)}
+        end
 
     end
   end
