@@ -23,6 +23,9 @@ module Page
       @total_questions || (parse_question_numbers && @total_questions)
     end
 
+    def question_node
+      @question_node ||= form_node.at_css("div table")
+    end
 
     def question_list
       return @question_list if @question_list

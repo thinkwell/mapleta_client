@@ -56,12 +56,6 @@ module Page
     alias :question_html :html
 
 
-    def script_html
-      html = ''
-      html << "#{base_url_script_node.to_html}\n" if base_url_script_node
-      html
-    end
-
     #
     ###
 
@@ -78,18 +72,9 @@ module Page
 
 
     def question_node
-      #@question_node ||= form_node.at_xpath("./div[@style='margin: 10px']/table[last()]/tr/td[2]")
       @question_node ||= form_node.at_css("div.questionstyle")
     end
 
-
-    def base_url_script_node
-      return @base_url_script_node if @base_url_script_node
-      return nil if @base_url_script_node == false
-      @base_url_script_node = @page.parser.xpath('//script').detect(false) do |node|
-        node.content.include?('function getBaseURL()')
-      end
-    end
 
     #
     ###
@@ -177,8 +162,10 @@ module Page
 
     def fix_help_links
       form_node.xpath('.//a[contains(@href, "PartialGradingHelp")]').remove
-        form_node.xpath('.//a[contains(@onclick, "PartialGradingHelp")]').remove
-        form_node.xpath('.//a[contains(@href, "getHelp")]').each do |node|
+      form_node.xpath('.//a[contains(@onclick, "PartialGradingHelp")]').remove
+      form_node.xpath('.//a[contains(@onclick, "gateway.question.NumberHelp")]').remove
+      form_node.xpath('.//a[contains(@onclick, "gateway.question.UnitsHelp")]').remove
+      form_node.xpath('.//a[contains(@href, "getHelp")]').each do |node|
         next_node = node.next
         if next_node && next_node.text? && next_node.text =~ /^\s*\|\s*$/
           next_node.remove
