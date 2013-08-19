@@ -107,12 +107,24 @@ module Page
       fix_equation_editor
       fix_text_equation_null_value
       remove_equation_editor_label
+      remove_preview_links
+      remove_plot_links
+      fix_help_links
     end
 
 
     def fix_text_equation_null_value
       form_node.xpath('.//input[contains(@name, "maple[ans.") and @value="NULL"]').each do |node|
         node['value'] = ""
+      end
+    end
+
+    def remove_plot_links
+      form_node.xpath('.//font[text()="Plot"]').each do |node|
+        if node.next_sibling && node.next_sibling.text? && node.next_sibling.content =~ /\|/
+          node.next_sibling.remove
+        end
+        node.remove
       end
     end
 
@@ -151,6 +163,27 @@ module Page
         if tr_node && tr_node.node_name == 'tr'
           tr_node.remove
         end
+      end
+    end
+
+    def remove_preview_links
+        form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
+          if node.previous_sibling && node.previous_sibling.text? && node.previous_sibling.content =~ /\|/
+            node.previous_sibling.remove
+          end
+        node.remove
+      end
+    end
+
+    def fix_help_links
+      form_node.xpath('.//a[contains(@href, "PartialGradingHelp")]').remove
+        form_node.xpath('.//a[contains(@onclick, "PartialGradingHelp")]').remove
+        form_node.xpath('.//a[contains(@href, "getHelp")]').each do |node|
+        next_node = node.next
+        if next_node && next_node.text? && next_node.text =~ /^\s*\|\s*$/
+          next_node.remove
+        end
+        node.remove
       end
     end
 
