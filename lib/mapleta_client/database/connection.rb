@@ -8,6 +8,7 @@ module Maple::MapleTA
       include Macros::TestRecord
       include Macros::Classes
       include Macros::Question
+      include Macros::Answersheetitem
 
     end
   end
