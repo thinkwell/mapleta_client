@@ -51,7 +51,8 @@ module Page
 
     def html
       # inner_xhtml
-      question_node.children.map { |x| x.to_xhtml }.join
+      html = question_node.children.map { |x| x.to_xhtml }.join
+      html.gsub('This question accepts formulas in Maple syntax.', '')
     end
     alias :question_html :html
 
