@@ -57,6 +57,14 @@ module Maple::MapleTA
     alias :launch :launcher
 
 
+    def get_page(action, view_opts={})
+      Maple::MapleTA.Page(fetch_page(action, {}, :get), view_opts)
+    end
+
+    def get_question(question_id)
+      url = "contentmanager/DisplayQuestion.do?actionID=display&questionId=#{question_id}"
+      get_page(url)
+    end
 
 
 

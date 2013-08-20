@@ -68,7 +68,7 @@ module Page
     end
 
     it "sets the form_param_name to question by default" do
-      @qv.hidden_fields_html.should include('question[actionID]')
+      @qv.hidden_fields_html.should include('maple[actionID]')
     end
 
     it "allows changing the form_param_name" do

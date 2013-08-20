@@ -57,12 +57,6 @@ module Page
     alias :question_html :html
 
 
-    def script_html
-      html = ''
-      html << "#{base_url_script_node.to_html}\n" if base_url_script_node
-      html
-    end
-
     #
     ###
 
@@ -79,18 +73,9 @@ module Page
 
 
     def question_node
-      #@question_node ||= form_node.at_xpath("./div[@style='margin: 10px']/table[last()]/tr/td[2]")
       @question_node ||= form_node.at_css("div.questionstyle")
     end
 
-
-    def base_url_script_node
-      return @base_url_script_node if @base_url_script_node
-      return nil if @base_url_script_node == false
-      @base_url_script_node = @page.parser.xpath('//script').detect(false) do |node|
-        node.content.include?('function getBaseURL()')
-      end
-    end
 
     #
     ###
@@ -107,6 +92,11 @@ module Page
       fix_equation_entry_mode_links
       fix_equation_editor
       fix_text_equation_null_value
+      fix_preview_links
+      fix_plot_links
+      fix_help_links
+      remove_preview_links
+      remove_plot_links
       remove_equation_editor_label
       remove_preview_links
       remove_plot_links
@@ -216,6 +206,77 @@ module Page
       container_node
     end
 
+    def fix_preview_links
+      form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
+        if node['href'] =~ /previewFormula\([^,]*getElementsByName\('([^']+)'\)[^,]*,.*'([^\)]+)'\)/
+          node['href'] = "##{$1}"
+          node['data-maple-action'] = $2
+          node['class'] = 'preview'
+          if node.xpath('./img').length > 0
+            node.content = "Preview"
+            node['class'] += " inline-icon"
+            node.remove_attribute 'onmouseout'
+            node.remove_attribute 'onmouseover'
+          end
+        end
+      end
+    end
+
+    def remove_preview_links
+      form_node.xpath('.//a[text()="Preview" or @title="Preview"]').each do |node|
+        if node.previous_sibling && node.previous_sibling.text? && node.previous_sibling.content =~ /\|/
+          node.previous_sibling.remove
+        end
+        node.remove
+      end
+    end
+
+    def fix_plot_links
+      form_node.xpath('.//a[text()="Plot" or @title="Plot"]').each do |node|
+        if (node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document.getElementsByName\('([^']+)'\)[^']*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/ ||
+            node['href'] =~ /popupMaplePlot\('(.+)'\s*,\s*document\['([^']+)'\]\.getResponse\(\)\s*,\s*'(.*)'\s*,\s*'(.*)'\s*,\s*'(.*)'\)/)
+          node['href'] = "##{$2}"
+          node['class'] = 'plot'
+          node['data-plot'] = $1
+          node['data-type'] = $3
+          node['data-libname'] = $4
+          node['data-driver'] = $5
+          if node.xpath('./img').length > 0
+            node.content = "Plot"
+            node['class'] += " inline-icon"
+            node.remove_attribute 'onmouseout'
+            node.remove_attribute 'onmouseover'
+          end
+        end
+      end
+
+      # Remove disabled inline plot icons
+      form_node.xpath('.//img[contains(@src, "ploton.gif")]').remove
+    end
+
+    def remove_plot_links
+      form_node.xpath('.//font[text()="Plot"]').each do |node|
+        if node.next_sibling && node.next_sibling.text? && node.next_sibling.content =~ /\|/
+          node.next_sibling.remove
+        end
+        node.remove
+      end
+    end
+
+    def fix_help_links
+      form_node.xpath('.//a[contains(@href, "PartialGradingHelp")]').remove
+      form_node.xpath('.//a[contains(@onclick, "PartialGradingHelp")]').remove
+      form_node.xpath('.//a[contains(@onclick, "gateway.question.NumberHelp")]').remove
+      form_node.xpath('.//a[contains(@onclick, "gateway.question.UnitsHelp")]').remove
+      form_node.xpath('.//a[contains(@href, "getHelp")]').each do |node|
+        next_node = node.next
+        if next_node && next_node.text? && next_node.text =~ /^\s*\|\s*$/
+          next_node.remove
+        end
+        node.remove
+      end
+    end
+
     def self.convert_to_presentation_mathml(content_mathml)
       return "" if content_mathml.blank?
       file_path = File.expand_path("mmlctop2_0.xsl", File.dirname(__FILE__))
@@ -224,6 +285,7 @@ module Page
       xslt  = Nokogiri::XSLT(File.read(file_path))
       xslt.transform(doc).to_s
     end
+
     # Removes "vertical-align: -\d+px;" inline style that causes images to appear
     # lower than surrounding text.
     # NOTE: Maple adds this to center equation images (such as fractions) with

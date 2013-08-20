@@ -8,13 +8,14 @@ module Maple::MapleTA
   module Page
 
     def self.classes
-      [AssignmentQuestion, StudyQuestion, MasteryQuestion, Grade, MasteryGrade, RestrictedAssignment, TimeLimitExceeded, OtherActiveAssignment, ProctorAuthorization, PrintOrTake, PrintAssignment, Error]
+      [AssignmentQuestion, StudyQuestion, MasteryQuestion, Grade, MasteryGrade, RestrictedAssignment, TimeLimitExceeded, OtherActiveAssignment, ProctorAuthorization, PrintOrTake, PrintAssignment, Error, NumberHelp, Question]
     end
 
     def self.for(page, opts={})
       klass = classes.detect { |c| c.detect(page) }
+      puts "mapleta : page : #{page.parser}"
       raise Errors::UnexpectedContentError.new(page.parser, "Cannot detect page type") unless klass
-
+      puts "mapleta : detected page : #{klass}"
       klass.new(page, opts)
     end
 
