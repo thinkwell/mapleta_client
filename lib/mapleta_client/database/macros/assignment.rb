@@ -186,7 +186,7 @@ module Maple::MapleTA
           #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_mastery_penalty in #{time_diff t7, Time.now}"
 
           t8 = Time.now
-          copy_assignment_advanced_policy(assignment_class['assignmentid'], new_assignment_id, new_assignment_class_id)
+          copy_assignment_advanced_policy(assignment_class_id, new_assignment_id, new_assignment_class_id)
           #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_advanced_policy in #{time_diff t8, Time.now}"
         end
 
@@ -210,10 +210,10 @@ module Maple::MapleTA
         end
       end
 
-      def copy_assignment_advanced_policy(assignment_id, new_assignment_id, new_assignment_class_id)
+      def copy_assignment_advanced_policy(assignment_class_id, new_assignment_id, new_assignment_class_id)
         t7 = Time.now
         assignment_advanced_policy_insert_cmd = InsertCmd.new("assignment_advanced_policy")
-        assignment_advanced_policy = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_id=$1", [assignment_id])
+        assignment_advanced_policy = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_class_id=$1", [assignment_class_id])
         push_assignment_advanced_policy(assignment_advanced_policy, new_assignment_id, new_assignment_class_id, assignment_advanced_policy_insert_cmd)
         execute(assignment_advanced_policy_insert_cmd)
         #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_mastery_penalties in #{time_diff t7, Time.now}"
