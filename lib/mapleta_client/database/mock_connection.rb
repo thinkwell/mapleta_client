@@ -39,9 +39,7 @@ module Maple::MapleTA
       end
 
       def questions(question_ids)
-        result = []
-        question_ids.each {|id| result.push({'id'=>id})}
-        result
+        question_ids.map {|id| Maple::MapleTA::Question.new(:id => id, :name => "name_#{id}")}
       end
 
       def create_assignment(assignment)

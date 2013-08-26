@@ -6,6 +6,7 @@ module Maple::MapleTA
     include HashInitialize
     property :id,                 :type => :integer
     property :groupid,            :type => :integer
+    property :name
     property :questionid,         :type => :integer
     property :order_id, :type => :integer, :default => 0
     property :question_uid

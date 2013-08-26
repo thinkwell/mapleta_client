@@ -6,13 +6,19 @@ module Maple::MapleTA
     include HashInitialize
     property :id,                 :type => :integer
     property :assignmentid,       :type => :integer
+    property :questions_to_pick,  :type => :integer, :default => 1
     property :name
+    property :is_question,        :type => :boolean
     property :order_id, :type => :integer, :default => 0
     property :weighting, :type => :integer, :default => 1
     property :assignment_question_group_maps, :default => []
 
+    def is_question?
+      is_question
+    end
+
     def hash
-      {"id" => id, "assignmentid" => assignmentid, "name" => name, "order_id" => order_id, "weighting" => weighting}
+      {"id" => id, "assignmentid" => assignmentid, "name" => name, "order_id" => order_id, "weighting" => weighting, "questions_to_pick" => questions_to_pick}
     end
 
     def map_hashes

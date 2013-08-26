@@ -16,6 +16,7 @@ module Maple::MapleTA
       def questions_for_class(classid, search=nil, limit=100, offset=0)
         raise Errors::DatabaseError.new("Must pass classid") unless classid
         sql = questions_for_class_sql(search)
+        sql.concat(" group by q.id order by q.id asc")
         build_questions(exec("Select q.* #{sql} limit #{limit} offset #{offset}", [classid]))
       end
 
@@ -30,7 +31,6 @@ module Maple::MapleTA
       def questions_for_class_sql(search)
         sql = "from question q left join classes c on c.cid = q.author or c.parent = q.author where c.cid=$1 and q.latestrevision is null"
         sql.concat(" and (q.name like '%#{search}%' or q.questiontext like '%#{search}%')") if search
-        sql.concat(" group by q.id order by q.id asc")
         sql
       end
 
