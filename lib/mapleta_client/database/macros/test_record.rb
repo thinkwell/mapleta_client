@@ -8,6 +8,11 @@ module Maple::MapleTA
         exec("SELECT * FROM testrecord WHERE id=$1", [try_id]).first
       end
 
+      def test_records_for_assignment_id(assignment_id)
+        raise Errors::DatabaseError.new("Must pass assignment_id") unless assignment_id
+        exec("SELECT * FROM testrecord WHERE assignmentid=$1", [assignment_id])
+      end
+
       def destroy_test_record(try_id)
         test_record = test_record(try_id)
         raise Errors::DatabaseError.new("Cannot find test record with id=#{try_id}") unless test_record && test_record['id']
@@ -15,6 +20,17 @@ module Maple::MapleTA
           exec("DELETE FROM answersheetitem_grade WHERE answersheetitemid IN (SELECT id FROM answersheetitem WHERE testrecordid=$1)", [try_id])
           exec("DELETE FROM answersheetitem WHERE testrecordid=$1", [try_id])
           exec("DELETE FROM testrecord WHERE id=$1", [try_id])
+        end
+      rescue PG::Error => e
+        raise Errors::DatabaseError.new(nil, e)
+      end
+
+      def destroy_test_record_for_assignment_id(assignment_id)
+        test_record_ids = test_records_for_assignment_id(assignment_id).map{|test_record| test_record['id']}
+        transaction do
+          exec("DELETE FROM answersheetitem_grade WHERE answersheetitemid IN (SELECT id FROM answersheetitem WHERE testrecordid IN ($1))", [test_record_ids])
+          exec("DELETE FROM answersheetitem WHERE testrecordid IN ($1)", [test_record_ids])
+          exec("DELETE FROM testrecord WHERE id IN ($1)", [test_record_ids])
         end
       rescue PG::Error => e
         raise Errors::DatabaseError.new(nil, e)

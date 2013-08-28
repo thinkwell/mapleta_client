@@ -61,6 +61,9 @@ module Maple::MapleTA
       def test_records(user_unique_id, assignment_class_id, start_utc)
         []
       end
+
+      def delete_assignment(assignment_class_id)
+      end
     end
   end
 end

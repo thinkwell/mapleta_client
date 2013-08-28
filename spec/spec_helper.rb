@@ -43,6 +43,6 @@ RSpec.configure do |config|
 end
 
 
-def spec_maple_connection
-  Maple::MapleTA::Connection.new(RSpec.configuration.maple_settings)
+def spec_maple_connection(opts={})
+  Maple::MapleTA::Connection.new(RSpec.configuration.maple_settings.merge(opts))
 end

@@ -490,6 +490,7 @@ module Maple::MapleTA
         assignment_class = assignment_class_by_id(assignment_class_id)
         assignment = assignment_by_id(assignment_class['assignmentid'])
         transaction do
+          destroy_test_record_for_assignment_id(assignment_class['assignmentid'])
           delete_assignment_class_row(assignment_class)
           delete_assignment_row(assignment)
         end

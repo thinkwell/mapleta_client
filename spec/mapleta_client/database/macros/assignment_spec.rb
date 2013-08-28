@@ -19,6 +19,45 @@ module Database::Macros
       @database_connection.delete_class(@mapleta_class.id)
     end
 
+    describe "delete_assignment" do
+      before(:each) do
+        @questions = @database_connection.questions_for_assignment_class(@settings[:class_id])
+        assignment_question_group_map_1 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[0].id, :question_uid => @questions[0].uid)
+        assignment_question_group_map_2 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[1].id, :question_uid => @questions[1].uid)
+        assignment_question_group_1 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[0].name, :assignment_question_group_maps => [assignment_question_group_map_1], :weighting => 3)
+        assignment_question_group_2 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[1].name, :assignment_question_group_maps => [assignment_question_group_map_2])
+        @assignment = Maple::MapleTA::Assignment.new(:name => "test assignment", :class_id => @mapleta_class.id,
+                                                     :assignment_question_groups => [assignment_question_group_1, assignment_question_group_2],
+                                                     :reworkable => false, :printable => true, :scramble => 1)
+        result = @database_connection.create_assignment(@assignment)
+        @new_assignment_id = result[0]
+        @new_assignment_class_id = result[1]
+      end
+
+      it "should delete the assignment" do
+        assignment = @database_connection.assignment_by_id(@new_assignment_id)
+        assignment.should_not be_nil
+        @database_connection.delete_assignment(@new_assignment_class_id)
+        assignment = @database_connection.assignment_by_id(@new_assignment_id)
+        assignment.should be_nil
+      end
+
+      describe "with test_record for assignment" do
+        before(:each) do
+          @assignment.id = @new_assignment_class_id
+          @assignment.launch(spec_maple_connection(:class_id => @assignment.class_id))
+        end
+
+        it "should delete the assignment and the test_record" do
+          @database_connection.test_records_for_assignment_id(@new_assignment_id).count.should == 1
+        end
+
+        after(:each) do
+          @database_connection.delete_assignment(@new_assignment_class_id)
+          @database_connection.test_records_for_assignment_id(@new_assignment_id).count.should == 0
+        end
+      end
+    end
     describe "create_assignment" do
       before(:each) do
         @questions = @database_connection.questions_for_assignment_class(@settings[:class_id])
