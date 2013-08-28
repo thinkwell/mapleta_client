@@ -46,7 +46,8 @@ module Database::Macros
           @assignment.assignment_question_groups = [@assignment.assignment_question_groups[0], assignment_question_group_3]
           @assignment.reworkable = true
           @assignment.printable = false
-          @assignment.id = @new_assignment_id
+          @assignment.id = @new_assignment_class_id
+          @assignment.assignmentid = @new_assignment_id
           @database_connection.edit_assignment(@assignment)
         end
 
@@ -59,15 +60,15 @@ module Database::Macros
         it "should update the assignment_question_groups and maps" do
           assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id).to_a
           assignment_question_groups.count.should == 2
-          assignment_question_groups.first.name.should == @questions[0].name
-          assignment_question_groups.last.name.should == @questions[2].name
+          assignment_question_groups.first.name.should == @questions[2].name
+          assignment_question_groups.last.name.should == @questions[0].name
 
           assignment_question_group_maps = @database_connection.assignment_question_group_maps(@new_assignment_id).to_a
           assignment_question_group_maps.count.should == 2
-          assignment_question_group_maps.first.questionid.should == @questions[0].id
+          assignment_question_group_maps.first.questionid.should == @questions[2].id
           assignment_question_group_maps.first.groupid.should == assignment_question_groups.first.id
           assignment_question_group_maps.first.order_id.should == 0
-          assignment_question_group_maps.last.questionid.should == @questions[2].id
+          assignment_question_group_maps.last.questionid.should == @questions[0].id
           assignment_question_group_maps.last.groupid.should == assignment_question_groups.last.id
           assignment_question_group_maps.last.order_id.should == 0
         end
@@ -135,6 +136,14 @@ module Database::Macros
         assignment_policy['reworkable'].should == 'f'
         assignment_policy['printable'].should == 't'
         assignment_policy['scramble'].should == '1'
+      end
+
+      it "should be retrievable by assignment_obj" do
+        assignment = @database_connection.assignment_obj(@new_assignment_class_id)
+        assignment.should_not be_nil
+        assignment.assignmentid.should == @new_assignment_id
+        assignment.id.should == @new_assignment_class_id
+        assignment.assignment_question_groups.count.should == @assignment.assignment_question_groups.count
       end
     end
 

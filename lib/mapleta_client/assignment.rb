@@ -6,6 +6,7 @@ module Maple::MapleTA
     include HashInitialize
     property :class_id,           :type => :integer,      :from => :classId
     property :id,                 :type => :integer
+    property :assignmentid,       :type => :integer
     property :visible, :type => :boolean, :default => true
     property :final_grade, :type => :boolean, :default => true
     property :show_current_grade, :type => :boolean, :default => false
@@ -69,6 +70,9 @@ module Maple::MapleTA
       page(connection.fetch_page(url, data, :post), connection, view_opts)
     end
 
+    def classid=(classid)
+      self.class_id = classid
+    end
 
     def timed?
       time_limit > 0 && self.class.timeable?(mode)

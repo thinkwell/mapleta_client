@@ -293,8 +293,8 @@ module Maple::MapleTA
 
       def update_assignment(assignment)
         assignment_hash = assignment.assignment_hash
-        assignment_update_cmd = UpdateCmd.new("assignment", "id=#{assignment.id}")
-        push_assignment(assignment_hash, assignment.id, assignment.class_id, {}, assignment_update_cmd)
+        assignment_update_cmd = UpdateCmd.new("assignment", "id=#{assignment.assignmentid}")
+        push_assignment(assignment_hash, assignment.assignmentid, assignment.class_id, {}, assignment_update_cmd)
         execute(assignment_update_cmd)
       end
 
@@ -314,9 +314,9 @@ module Maple::MapleTA
       end
 
       def update_assignment_class(assignment)
-        assignment_class = assignment_class_for_assignmentid(assignment.id)
+        assignment_class = assignment_class_for_assignmentid(assignment.assignmentid)
         assignment_class_update_cmd = UpdateCmd.new("assignment_class", "id=#{assignment_class['id']}")
-        push_assignment_class(assignment.assignment_class_hash, assignment_class['id'], assignment.class_id, assignment.id, assignment_class['order_id'], {}, assignment_class_update_cmd)
+        push_assignment_class(assignment.assignment_class_hash, assignment_class['id'], assignment.class_id, assignment.assignmentid, assignment_class['order_id'], {}, assignment_class_update_cmd)
         execute(assignment_class_update_cmd)
       end
 
@@ -333,7 +333,7 @@ module Maple::MapleTA
       end
 
       def update_assignment_policy(assignment)
-        assignment_policy = assignment_policy_for_assignmentid(assignment.id)
+        assignment_policy = assignment_policy_for_assignmentid(assignment.assignmentid)
         assignment_policy_update_cmd = UpdateCmd.new("assignment_policy", "assignment_class_id=#{assignment_policy['assignment_class_id']}")
         push_assignment_policy(assignment.assignment_policy_hash, assignment_policy['assignment_class_id'], assignment_policy_update_cmd)
         execute(assignment_policy_update_cmd)
@@ -367,10 +367,10 @@ module Maple::MapleTA
       end
 
       def update_assignment_question_groups(assignment)
-        assignment_question_group_maps = assignment_question_group_maps(assignment.id)
+        assignment_question_group_maps = assignment_question_group_maps(assignment.assignmentid)
         delete_assignment_question_groups(assignment_question_group_maps)
 
-        insert_assignment_question_groups(assignment.assignment_question_groups, assignment.id)
+        insert_assignment_question_groups(assignment.assignment_question_groups, assignment.assignmentid)
       end
 
       def push_assignment_question_group(assignment_question_group_hash, new_group_id, new_assignment_id, assignment_question_group_insert_cmd)
@@ -447,6 +447,22 @@ module Maple::MapleTA
       def assignment_question_group_maps(assignmentid)
         raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
         build_assignment_question_group_maps(exec("SELECT m.* FROM assignment_question_group_map m left join assignment_question_group a on a.id = m.groupid WHERE a.assignmentid=$1", [assignmentid]))
+      end
+
+      ##
+      # Get the assignment object for a given assignment_class_id
+      def assignment_obj(assignment_class_id)
+        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        assignment_class_hash = assignment_class_by_id(assignment_class_id)
+        assignment_policy_hash = assignment_policy(assignment_class_id)
+        assignment = Maple::MapleTA::Assignment.new(assignment_class_hash.merge(assignment_policy_hash))
+        assignment_question_groups = assignment_question_groups(assignment.assignmentid)
+        assignment_question_group_maps = assignment_question_group_maps(assignment.assignmentid)
+        assignment_question_groups.each do |group|
+          group.assignment_question_group_maps = assignment_question_group_maps.select{|map| map.groupid == group.id}
+        end
+        assignment.assignment_question_groups = assignment_question_groups
+        assignment
       end
 
       ##

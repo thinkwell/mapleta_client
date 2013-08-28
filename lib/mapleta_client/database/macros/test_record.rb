@@ -20,6 +20,18 @@ module Maple::MapleTA
         raise Errors::DatabaseError.new(nil, e)
       end
 
+      def destroy_test_record_for_assignment_id(assignment_id)
+        test_record_ids = test_records_for_assignment_id(assignment_id).map{|test_record| test_record['id']}
+        return if test_record_ids.nil? or test_record_ids.empty?
+        transaction do
+          exec("DELETE FROM answersheetitem_grade WHERE answersheetitemid IN (SELECT id FROM answersheetitem WHERE testrecordid IN ($1))", [test_record_ids])
+          exec("DELETE FROM answersheetitem WHERE testrecordid IN ($1)", [test_record_ids])
+          exec("DELETE FROM testrecord WHERE id IN ($1)", [test_record_ids])
+        end
+      rescue PG::Error => e
+        raise Errors::DatabaseError.new(nil, e)
+      end
+
       def active_test_record(user_unique_id, assignment_class_id)
         raise Errors::DatabaseError.new("Must pass user_unique_id") unless user_unique_id
         raise Errors::DatabaseError.new("Must pass assignment_id") unless assignment_class_id
