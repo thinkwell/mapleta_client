@@ -29,7 +29,7 @@ module Maple::MapleTA
       private
 
       def questions_for_class_sql(search)
-        sql = "from question q left join classes c on c.cid = q.author or c.parent = q.author where c.cid=$1 and q.latestrevision is null"
+        sql = "from question q left join classes c on c.cid = q.author or c.parent = q.author where c.cid=$1 and q.latestrevision is null and q.deleted is FALSE"
         sql.concat(" and (q.name like '%#{search}%' or q.questiontext like '%#{search}%')") if search
         sql
       end
