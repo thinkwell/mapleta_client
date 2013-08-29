@@ -47,7 +47,6 @@ module Database::Macros
           @assignment.reworkable = true
           @assignment.printable = false
           @assignment.id = @new_assignment_class_id
-          @assignment.assignmentid = @new_assignment_id
           @database_connection.edit_assignment(@assignment)
         end
 
@@ -58,12 +57,12 @@ module Database::Macros
         end
 
         it "should update the assignment_question_groups and maps" do
-          assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id).to_a
+          assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_class_id).to_a
           assignment_question_groups.count.should == 2
           assignment_question_groups.first.name.should == @questions[2].name
           assignment_question_groups.last.name.should == @questions[0].name
 
-          assignment_question_group_maps = @database_connection.assignment_question_group_maps(@new_assignment_id).to_a
+          assignment_question_group_maps = @database_connection.assignment_question_group_maps(@new_assignment_class_id).to_a
           assignment_question_group_maps.count.should == 2
           assignment_question_group_maps.first.questionid.should == @questions[2].id
           assignment_question_group_maps.first.groupid.should == assignment_question_groups.first.id
@@ -103,7 +102,7 @@ module Database::Macros
       end
 
       it "should create the assignment_question_group and map for each question" do
-        assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_id).to_a
+        assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_class_id).to_a
         assignment_question_groups.count.should == 2
         assignment_question_groups.first.name.should == @questions[1].name
         assignment_question_groups.first.order_id.should == 1
@@ -112,7 +111,7 @@ module Database::Macros
         assignment_question_groups.last.order_id.should == 0
         assignment_question_groups.last.weighting.should == 3
 
-        assignment_question_group_maps = @database_connection.assignment_question_group_maps(@new_assignment_id)
+        assignment_question_group_maps = @database_connection.assignment_question_group_maps(@new_assignment_class_id)
         assignment_question_group_maps.count.should == 2
         assignment_question_group_maps.first.questionid.should == @questions[1].id
         assignment_question_group_maps.first.groupid.should == assignment_question_groups.first.id
@@ -141,9 +140,10 @@ module Database::Macros
       it "should be retrievable by assignment_obj" do
         assignment = @database_connection.assignment_obj(@new_assignment_class_id)
         assignment.should_not be_nil
-        assignment.assignmentid.should == @new_assignment_id
         assignment.id.should == @new_assignment_class_id
         assignment.assignment_question_groups.count.should == @assignment.assignment_question_groups.count
+        assignment.assignment_question_groups[0].assignment_question_group_maps[0].name.should_not be_nil
+        assignment.assignment_question_groups[0].is_question.should be_true
       end
     end
 

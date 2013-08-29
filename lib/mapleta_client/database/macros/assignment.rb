@@ -212,8 +212,8 @@ module Maple::MapleTA
 
           # We ignore advance policies as they depend on other assignments in the original class
           t5 = Time.now
-          assignment_question_groups = assignment_question_groups(assignment_class['assignmentid'])
-          assignment_question_group_maps = assignment_question_group_maps(assignment_class['assignmentid'])
+          assignment_question_groups = assignment_question_groups(assignment_class['id'])
+          assignment_question_group_maps = assignment_question_group_maps(assignment_class['id'])
           assignment_question_groups.each do |assignment_question_group|
             assignment_question_group.assignment_question_group_maps = assignment_question_group_maps.select{|map| map.groupid == assignment_question_group.id}
           end
@@ -292,9 +292,11 @@ module Maple::MapleTA
       end
 
       def update_assignment(assignment)
+        assignment_class = assignment_class_by_id(assignment.id)
         assignment_hash = assignment.assignment_hash
-        assignment_update_cmd = UpdateCmd.new("assignment", "id=#{assignment.assignmentid}")
-        push_assignment(assignment_hash, assignment.assignmentid, assignment.class_id, {}, assignment_update_cmd)
+        assignment_id = assignment_class['assignmentid']
+        assignment_update_cmd = UpdateCmd.new("assignment", "id=#{assignment_id}")
+        push_assignment(assignment_hash, assignment_id, assignment.class_id, {}, assignment_update_cmd)
         execute(assignment_update_cmd)
       end
 
@@ -314,9 +316,9 @@ module Maple::MapleTA
       end
 
       def update_assignment_class(assignment)
-        assignment_class = assignment_class_for_assignmentid(assignment.assignmentid)
+        assignment_class = assignment_class_by_id(assignment.id)
         assignment_class_update_cmd = UpdateCmd.new("assignment_class", "id=#{assignment_class['id']}")
-        push_assignment_class(assignment.assignment_class_hash, assignment_class['id'], assignment.class_id, assignment.assignmentid, assignment_class['order_id'], {}, assignment_class_update_cmd)
+        push_assignment_class(assignment.assignment_class_hash, assignment_class['id'], assignment.class_id, assignment_class['assignmentid'], assignment_class['order_id'], {}, assignment_class_update_cmd)
         execute(assignment_class_update_cmd)
       end
 
@@ -333,9 +335,8 @@ module Maple::MapleTA
       end
 
       def update_assignment_policy(assignment)
-        assignment_policy = assignment_policy_for_assignmentid(assignment.assignmentid)
-        assignment_policy_update_cmd = UpdateCmd.new("assignment_policy", "assignment_class_id=#{assignment_policy['assignment_class_id']}")
-        push_assignment_policy(assignment.assignment_policy_hash, assignment_policy['assignment_class_id'], assignment_policy_update_cmd)
+        assignment_policy_update_cmd = UpdateCmd.new("assignment_policy", "assignment_class_id=#{assignment.id}")
+        push_assignment_policy(assignment.assignment_policy_hash, assignment.id, assignment_policy_update_cmd)
         execute(assignment_policy_update_cmd)
       end
 
@@ -367,10 +368,11 @@ module Maple::MapleTA
       end
 
       def update_assignment_question_groups(assignment)
-        assignment_question_group_maps = assignment_question_group_maps(assignment.assignmentid)
+        assignment_question_group_maps = assignment_question_group_maps(assignment.id)
         delete_assignment_question_groups(assignment_question_group_maps)
 
-        insert_assignment_question_groups(assignment.assignment_question_groups, assignment.assignmentid)
+        assignment_class = assignment_class_by_id(assignment.id)
+        insert_assignment_question_groups(assignment.assignment_question_groups, assignment_class['assignmentid'])
       end
 
       def push_assignment_question_group(assignment_question_group_hash, new_group_id, new_assignment_id, assignment_question_group_insert_cmd)
@@ -429,24 +431,24 @@ module Maple::MapleTA
       end
 
       ##
-      # Get the assignment policy database row for a given assignmentid
-      def assignment_policy_for_assignmentid(assignmentid)
-        raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
-        exec("SELECT p.* FROM assignment_policy p left join assignment_class a on a.id = p.assignment_class_id WHERE a.assignmentid=$1", [assignmentid]).first
+      # Get the assignment policy database row for a given assignment_class_id
+      def assignment_policy_for_assignment_class_id(assignment_class_id)
+        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        exec("SELECT * FROM assignment_policy WHERE assignment_class_id=$1", [assignment_class_id]).first
       end
 
       ##
-      # Get the assignment question group database row for a given assignmentid
-      def assignment_question_groups(assignmentid)
-        raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
-        build_assignment_question_groups(exec("SELECT * FROM assignment_question_group WHERE assignmentid=$1", [assignmentid]))
+      # Get the assignment question group database row for a given assignment_class_id
+      def assignment_question_groups(assignment_class_id)
+        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        build_assignment_question_groups(exec("SELECT a.* FROM assignment_question_group a left join assignment_class c on c.assignmentid = a.assignmentid WHERE c.id=$1", [assignment_class_id]))
       end
 
       ##
-      # Get the assignment question group database row for a given assignmentid
-      def assignment_question_group_maps(assignmentid)
-        raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
-        build_assignment_question_group_maps(exec("SELECT m.* FROM assignment_question_group_map m left join assignment_question_group a on a.id = m.groupid WHERE a.assignmentid=$1", [assignmentid]))
+      # Get the assignment question group database row for a given assignment_class_id
+      def assignment_question_group_maps(assignment_class_id)
+        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        build_assignment_question_group_maps(exec("SELECT m.*, q.name FROM assignment_question_group_map m left join assignment_question_group a on a.id = m.groupid left join question q on q.id = m.questionid left join assignment_class c on c.assignmentid = a.assignmentid WHERE c.id=$1", [assignment_class_id]))
       end
 
       ##
@@ -456,12 +458,14 @@ module Maple::MapleTA
         assignment_class_hash = assignment_class_by_id(assignment_class_id)
         assignment_policy_hash = assignment_policy(assignment_class_id)
         assignment = Maple::MapleTA::Assignment.new(assignment_class_hash.merge(assignment_policy_hash))
-        assignment_question_groups = assignment_question_groups(assignment.assignmentid)
-        assignment_question_group_maps = assignment_question_group_maps(assignment.assignmentid)
+        assignment_question_groups = assignment_question_groups(assignment.id)
+        assignment_question_group_maps = assignment_question_group_maps(assignment.id)
         assignment_question_groups.each do |group|
-          group.assignment_question_group_maps = assignment_question_group_maps.select{|map| map.groupid == group.id}
+          maps = assignment_question_group_maps.select{|map| map.groupid == group.id}
+          group.assignment_question_group_maps = maps.sort_by{|e| e.order_id}
+          group.is_question = maps.count == 1 and maps[0].name == group.name
         end
-        assignment.assignment_question_groups = assignment_question_groups
+        assignment.assignment_question_groups = assignment_question_groups.sort_by{|e| e.order_id}
         assignment
       end
 
@@ -505,16 +509,17 @@ module Maple::MapleTA
       def delete_assignment(assignment_class_id)
         assignment_class = assignment_class_by_id(assignment_class_id)
         assignment = assignment_by_id(assignment_class['assignmentid'])
+        assignment_question_group_maps = assignment_question_group_maps(assignment_class_id)
         transaction do
-          delete_assignment_class_row(assignment_class)
-          delete_assignment_row(assignment)
+          delete_assignment_class_row(assignment_class_id)
+          delete_assignment_question_groups(assignment_question_group_maps)
+          delete_assignment_row(assignment['id'])
         end
       end
 
-      def delete_assignment_row(assignment)
-        return unless assignment
-        delete_assignment_question_groups(assignment_question_group_maps(assignment['id']))
-        exec("DELETE FROM assignment WHERE id=$1", [assignment['id']]).first
+      def delete_assignment_row(assignment_id)
+        return unless assignment_id
+        exec("DELETE FROM assignment WHERE id=$1", [assignment_id]).first
       end
 
       def delete_assignment_question_groups(assignment_question_group_maps)
@@ -526,10 +531,10 @@ module Maple::MapleTA
         end
       end
 
-      def delete_assignment_class_row(assignment_class)
-        return unless assignment_class
-        exec("DELETE FROM assignment_policy WHERE assignment_class_id=$1", [assignment_class['id']]).first
-        exec("DELETE FROM assignment_class WHERE id=$1", [assignment_class['id']]).first
+      def delete_assignment_class_row(assignment_class_id)
+        return unless assignment_class_id
+        exec("DELETE FROM assignment_policy WHERE assignment_class_id=$1", [assignment_class_id]).first
+        exec("DELETE FROM assignment_class WHERE id=$1", [assignment_class_id]).first
       end
 
       ##

@@ -6,7 +6,6 @@ module Maple::MapleTA
     include HashInitialize
     property :class_id,           :type => :integer,      :from => :classId
     property :id,                 :type => :integer
-    property :assignmentid,       :type => :integer
     property :visible, :type => :boolean, :default => true
     property :final_grade, :type => :boolean, :default => true
     property :show_current_grade, :type => :boolean, :default => false

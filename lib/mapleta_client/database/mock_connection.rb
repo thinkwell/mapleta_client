@@ -46,6 +46,9 @@ module Maple::MapleTA
         [123, 234]
       end
 
+      def edit_assignment(assignment)
+      end
+
       def destroy_test_record(try_id)
         nil
       end
