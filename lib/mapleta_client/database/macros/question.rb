@@ -16,7 +16,7 @@ module Maple::MapleTA
       def questions_for_class(classid, search=nil, limit=100, offset=0)
         raise Errors::DatabaseError.new("Must pass classid") unless classid
         sql = questions_for_class_sql(search)
-        sql.concat(" group by q.id order by q.id asc")
+        sql.concat(" group by q.id order by q.name asc")
         build_questions(exec("Select q.* #{sql} limit #{limit} offset #{offset}", [classid]))
       end
 
