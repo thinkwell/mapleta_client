@@ -13,22 +13,49 @@ module Database::Macros
 
     before(:each) do
       @mapleta_class = @connection.ws.create_class("my-test-class")
+      @questions = @database_connection.questions_for_assignment_class(@settings[:class_id])
+      assignment_question_group_map_1 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[0].id, :question_uid => @questions[0].uid)
+      assignment_question_group_map_2 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[1].id, :question_uid => @questions[1].uid)
+      assignment_question_group_1 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[0].name, :assignment_question_group_maps => [assignment_question_group_map_1], :weighting => 3)
+      assignment_question_group_2 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[1].name, :assignment_question_group_maps => [assignment_question_group_map_2])
+      @assignment = Maple::MapleTA::Assignment.new(:name => "test assignment", :class_id => @mapleta_class.id,
+                      :assignment_question_groups => [assignment_question_group_1, assignment_question_group_2],
+                      :reworkable => false, :printable => true, :scramble => 1, :reuse_algorithmic_variables => true,
+                      :targeted => true)
     end
 
     after(:each) do
       @database_connection.delete_class(@mapleta_class.id)
     end
 
-    describe "create_assignment" do
+    describe "create_assignment for MODE_UNPROCTORED_TEST" do
       before(:each) do
-        @questions = @database_connection.questions_for_assignment_class(@settings[:class_id])
-        assignment_question_group_map_1 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[0].id, :question_uid => @questions[0].uid)
-        assignment_question_group_map_2 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[1].id, :question_uid => @questions[1].uid)
-        assignment_question_group_1 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[0].name, :assignment_question_group_maps => [assignment_question_group_map_1], :weighting => 3)
-        assignment_question_group_2 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[1].name, :assignment_question_group_maps => [assignment_question_group_map_2])
-        @assignment = Maple::MapleTA::Assignment.new(:name => "test assignment", :class_id => @mapleta_class.id,
-                                     :assignment_question_groups => [assignment_question_group_1, assignment_question_group_2],
-                                     :reworkable => false, :printable => true, :scramble => 1)
+        @assignment.mode = Maple::MapleTA::Assignment::MODE_UNPROCTORED_TEST
+        result = @database_connection.create_assignment(@assignment)
+        @new_assignment_id = result[0]
+        @new_assignment_class_id = result[1]
+      end
+
+      after(:each) do
+        @database_connection.delete_assignment(@new_assignment_class_id)
+      end
+
+      it "should create the assignment_policy with the MODE_UNPROCTORED_TEST options" do
+        assignment_class = @database_connection.assignment_class(@mapleta_class.id)
+        assignment_policy = @database_connection.assignment_policy(assignment_class['id'])
+        assignment_policy.should_not be_nil
+        assignment_policy['reuse_algorithmic_variables'].should == 't'
+        assignment_policy['targeted'].should == 't'
+        assignment_policy['reworkable'].should == 'f'
+        assignment_policy['printable'].should == 't'
+        assignment_policy['scramble'].should == '1'
+      end
+
+    end
+
+    describe "create_assignment for MODE_PROCTORED_TEST" do
+      before(:each) do
+        @assignment.mode = Maple::MapleTA::Assignment::MODE_PROCTORED_TEST
         result = @database_connection.create_assignment(@assignment)
         @new_assignment_id = result[0]
         @new_assignment_class_id = result[1]
@@ -83,8 +110,11 @@ module Database::Macros
           assignment_class = @database_connection.assignment_class(@mapleta_class.id)
           assignment_policy = @database_connection.assignment_policy(assignment_class['id'])
           assignment_policy.should_not be_nil
+          assignment_policy['reuse_algorithmic_variables'].should == 'f'
+          assignment_policy['targeted'].should == 'f'
           assignment_policy['reworkable'].should == 't'
           assignment_policy['printable'].should == 'f'
+          assignment_policy['scramble'].should == '0'
         end
 
         it "should retrieve assignment via web service" do
@@ -128,13 +158,15 @@ module Database::Macros
         assignment_class['name'].should == "test assignment"
       end
 
-      it "should create the assignment_policy" do
+      it "should create the assignment_policy with the MODE_PROCTORED_TEST options" do
         assignment_class = @database_connection.assignment_class(@mapleta_class.id)
         assignment_policy = @database_connection.assignment_policy(assignment_class['id'])
         assignment_policy.should_not be_nil
+        assignment_policy['reuse_algorithmic_variables'].should == 'f'
+        assignment_policy['targeted'].should == 'f'
         assignment_policy['reworkable'].should == 'f'
-        assignment_policy['printable'].should == 't'
-        assignment_policy['scramble'].should == '1'
+        assignment_policy['printable'].should == 'f'
+        assignment_policy['scramble'].should == '0'
       end
 
       it "should be retrievable by assignment_obj" do

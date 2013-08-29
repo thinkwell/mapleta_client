@@ -6,6 +6,8 @@ module Maple::MapleTA
     include HashInitialize
     property :class_id,           :type => :integer,      :from => :classId
     property :id,                 :type => :integer
+    property :reuse_algorithmic_variables, :type => :boolean, :default => false
+    property :targeted, :type => :boolean, :default => false
     property :visible, :type => :boolean, :default => true
     property :final_grade, :type => :boolean, :default => true
     property :show_current_grade, :type => :boolean, :default => false
@@ -139,9 +141,14 @@ module Maple::MapleTA
     end
 
     def assignment_policy_hash
-      {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
-      "printable" => printable, "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback, "final_grade" => final_grade,
-      "visible" => visible, "scramble" => scramble}
+      hash = {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
+      "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback, "final_grade" => final_grade,
+      "visible" => visible}
+      if(hash["mode"] == MODE_UNPROCTORED_TEST)
+        hash = hash.merge({"scramble" => scramble, "printable" => printable,
+                    "reuse_algorithmic_variables" => reuse_algorithmic_variables, "targeted" => targeted})
+      end
+      hash
     end
 
     def assignment_mastery_policy_hashes
