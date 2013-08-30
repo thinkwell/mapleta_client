@@ -117,7 +117,7 @@ module Maple::MapleTA
         when :integer
           "#{value} && #{value}.to_i"
         when :integer_nilable
-          "#{value} && #{value}.blank? ? nil : #{value}.to_i"
+          "#{value}.blank? ? nil : #{value}.to_i"
         when :float
           "#{value} && #{value}.to_f"
         when :time_from_s
