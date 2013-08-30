@@ -16,7 +16,7 @@ module Maple::MapleTA
     property :printable,         :type => :boolean,  :default => false
     property :final_feedback_date, :type => :date, :default => nil
     property :allow_resubmit_question, :type => :boolean, :default => true
-    property :max_attempts,         :type => :integer, :default => nil
+    property :max_attempts,         :type => :integer_nilable, :default => nil
     property :weighting,         :type => :integer, :default => 0
     property :scramble,         :type => :integer, :default => 0
     property :show_final_grade_feedback, :default => ''
@@ -29,7 +29,7 @@ module Maple::MapleTA
     property :weight, :type => :float, :default => nil
     property :start, :type => :time_from_ms, :default => nil
     property :end, :type => :time_from_ms, :default => nil
-    property :time_limit, :type => :integer, :from => :timeLimit, :default => nil
+    property :time_limit, :type => :integer_nilable, :from => :timeLimit, :default => nil
     property :policy, :default => nil
     property :assignment_question_groups, :default => []
 

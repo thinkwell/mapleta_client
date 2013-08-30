@@ -116,6 +116,8 @@ module Maple::MapleTA
           "case #{value}\n when nil then nil\n when \"false\" then false\n else !!#{value}\n end"
         when :integer
           "#{value} && #{value}.to_i"
+        when :integer_nilable
+          "#{value} && #{value}.blank? ? nil : #{value}.to_i"
         when :float
           "#{value} && #{value}.to_f"
         when :time_from_s
