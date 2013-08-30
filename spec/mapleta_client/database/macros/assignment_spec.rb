@@ -197,6 +197,7 @@ module Database::Macros
         assignment.assignment_question_groups.count.should == @assignment.assignment_question_groups.count
         assignment.assignment_question_groups[0].assignment_question_group_maps[0].name.should_not be_nil
         assignment.assignment_question_groups[0].is_question.should be_true
+        assignment.max_attempts.should == @assignment.max_attempts
       end
     end
 

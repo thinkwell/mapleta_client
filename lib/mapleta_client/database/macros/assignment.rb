@@ -463,7 +463,12 @@ module Maple::MapleTA
         raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
         assignment_class_hash = assignment_class_by_id(assignment_class_id)
         assignment_policy_hash = assignment_policy(assignment_class_id)
-        assignment = Maple::MapleTA::Assignment.new(assignment_class_hash.merge(assignment_policy_hash))
+        assignment_advanced_policy_hashes = assignment_advanced_policies(assignment_class_id)
+        hash = assignment_class_hash.merge(assignment_policy_hash)
+        if assignment_advanced_policy_hashes.count > 0
+          hash["max_attempts"] = assignment_advanced_policy_hashes[0]['keyword']
+        end
+        assignment = Maple::MapleTA::Assignment.new(hash)
         assignment_question_groups = assignment_question_groups(assignment.id)
         assignment_question_group_maps = assignment_question_group_maps(assignment.id)
         assignment_question_groups.each do |group|
