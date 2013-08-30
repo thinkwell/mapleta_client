@@ -21,7 +21,7 @@ module Database::Macros
       @assignment = Maple::MapleTA::Assignment.new(:name => "test assignment", :class_id => @mapleta_class.id,
                       :assignment_question_groups => [assignment_question_group_1, assignment_question_group_2],
                       :reworkable => false, :printable => true, :scramble => 1, :reuse_algorithmic_variables => true,
-                      :targeted => true)
+                      :targeted => true, :final_feedback_date => '')
     end
 
     after(:each) do

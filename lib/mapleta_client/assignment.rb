@@ -144,6 +144,7 @@ module Maple::MapleTA
     end
 
     def assignment_policy_hash
+      final_feedback_date = self.final_feedback_date.blank? ? nil : self.final_feedback_date
       hash = {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
       "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback, "final_grade" => final_grade,
       "visible" => visible, "time_limit" => (time_limit.nil? ? -1 : time_limit), "final_feedback_date" => final_feedback_date, "final_feedback_delayed" => !final_feedback_date.nil?,
