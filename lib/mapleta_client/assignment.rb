@@ -14,6 +14,9 @@ module Maple::MapleTA
     property :insession_grade,    :type => :boolean, :default => false
     property :reworkable,         :type => :boolean, :default => true
     property :printable,         :type => :boolean,  :default => false
+    property :final_feedback_date, :type => :date, :default => nil
+    property :allow_resubmit_question, :type => :boolean, :default => true
+    property :max_attempts,         :type => :integer, :default => nil
     property :weighting,         :type => :integer, :default => 0
     property :scramble,         :type => :integer, :default => 0
     property :show_final_grade_feedback, :default => ''
@@ -132,18 +135,19 @@ module Maple::MapleTA
     end
 
     def assignment_hash
-      {"id" => id, "classid" => class_id, "name" => name, "totalpoints" => total_points, "weighting" => weighting}
+      {"id" => nil, "classid" => class_id, "name" => name, "totalpoints" => total_points, "weighting" => weighting}
     end
 
     def assignment_class_hash
-      {"id" => nil, "assignmentid" => id, "classid" => class_id, "name" => name, "totalpoints" => total_points,
+      {"id" => id, "assignmentid" => nil, "classid" => class_id, "name" => name, "totalpoints" => total_points,
        "order_id" => 0, "weighting" => weighting}
     end
 
     def assignment_policy_hash
       hash = {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
       "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback, "final_grade" => final_grade,
-      "visible" => visible}
+      "visible" => visible, "time_limit" => (time_limit.nil? ? -1 : time_limit), "final_feedback_date" => final_feedback_date, "final_feedback_delayed" => !final_feedback_date.nil?,
+      "allow_resubmit_question" => allow_resubmit_question}
       if(hash["mode"] == MODE_UNPROCTORED_TEST)
         hash = hash.merge({"scramble" => scramble, "printable" => printable,
                     "reuse_algorithmic_variables" => reuse_algorithmic_variables, "targeted" => targeted})
@@ -163,6 +167,9 @@ module Maple::MapleTA
 
     def assignment_advanced_policy_hashes
       hashes = []
+      unless max_attempts.nil?
+        hashes.push({"assignment_class_id" => id, "assignment_id" => nil , "and_id" => 0, "or_id" => 0, "keyword" => max_attempts, "has" => false})
+      end
       hashes
     end
 

@@ -177,8 +177,7 @@ module Maple::MapleTA
           #
           #insert_assignment_mastery_penalty(assignment.assignment_mastery_penalty_hashes, new_assignment_class_id)
           #
-          #insert_assignment_advanced_policy(assignment.assignment_advanced_policy_hashes, new_assignment_id, new_assignment_class_id)
-          #
+          update_assignment_advanced_policy(assignment)
         end
       end
 
@@ -367,6 +366,13 @@ module Maple::MapleTA
         #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_question_group in #{time_diff t5, Time.now}"
       end
 
+      def update_assignment_advanced_policy(assignment)
+        delete_assignment_advanced_policies(assignment.id)
+
+        assignment_class = assignment_class_by_id(assignment.id)
+        insert_assignment_advanced_policy(assignment.assignment_advanced_policy_hashes, assignment_class['assignmentid'], assignment.id)
+      end
+
       def update_assignment_question_groups(assignment)
         assignment_question_group_maps = assignment_question_group_maps(assignment.id)
         delete_assignment_question_groups(assignment_question_group_maps)
@@ -470,6 +476,13 @@ module Maple::MapleTA
       end
 
       ##
+      # Get the assignment_advanced_policies database rows for a given assignment_class_id
+      def assignment_advanced_policies(assignment_class_id)
+        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        exec("SELECT * FROM assignment_advanced_policy WHERE assignment_class_id=$1", [assignment_class_id])
+      end
+
+      ##
       # Get the assignment database row for a given classid
       def assignment(classid)
         raise Errors::DatabaseError.new("Must pass classid") unless classid
@@ -511,6 +524,7 @@ module Maple::MapleTA
         assignment = assignment_by_id(assignment_class['assignmentid'])
         assignment_question_group_maps = assignment_question_group_maps(assignment_class_id)
         transaction do
+          delete_assignment_advanced_policies(assignment_class_id)
           delete_assignment_class_row(assignment_class_id)
           delete_assignment_question_groups(assignment_question_group_maps)
           delete_assignment_row(assignment['id'])
@@ -520,6 +534,11 @@ module Maple::MapleTA
       def delete_assignment_row(assignment_id)
         return unless assignment_id
         exec("DELETE FROM assignment WHERE id=$1", [assignment_id]).first
+      end
+
+      def delete_assignment_advanced_policies(assignment_class_id)
+        return unless assignment_class_id
+        exec("DELETE FROM assignment_advanced_policy WHERE assignment_class_id=$1", [assignment_class_id]).first
       end
 
       def delete_assignment_question_groups(assignment_question_group_maps)

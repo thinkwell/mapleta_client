@@ -31,6 +31,7 @@ module Database::Macros
     describe "create_assignment for MODE_UNPROCTORED_TEST" do
       before(:each) do
         @assignment.mode = Maple::MapleTA::Assignment::MODE_UNPROCTORED_TEST
+        @assignment.max_attempts = nil
         result = @database_connection.create_assignment(@assignment)
         @new_assignment_id = result[0]
         @new_assignment_class_id = result[1]
@@ -51,11 +52,18 @@ module Database::Macros
         assignment_policy['scramble'].should == '1'
       end
 
+      it "should not create the assignment_advanced_policies" do
+        assignment_advanced_policies = @database_connection.assignment_advanced_policies(@new_assignment_class_id)
+        assignment_advanced_policies.count.should == 0
+      end
+
+
     end
 
     describe "create_assignment for MODE_PROCTORED_TEST" do
       before(:each) do
         @assignment.mode = Maple::MapleTA::Assignment::MODE_PROCTORED_TEST
+        @assignment.max_attempts = 5
         result = @database_connection.create_assignment(@assignment)
         @new_assignment_id = result[0]
         @new_assignment_class_id = result[1]
@@ -68,6 +76,7 @@ module Database::Macros
       describe "update_assignment" do
         before(:each) do
           @assignment.name = "test assignment edited"
+          @assignment.max_attempts = nil
           assignment_question_group_map_3 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[2].id, :question_uid => @questions[2].uid)
           assignment_question_group_3 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[2].name, :assignment_question_group_maps => [assignment_question_group_map_3])
           @assignment.assignment_question_groups = [@assignment.assignment_question_groups[0], assignment_question_group_3]
@@ -117,6 +126,11 @@ module Database::Macros
           assignment_policy['scramble'].should == '0'
         end
 
+        it "should update the assignment_advanced_policy" do
+          assignment_advanced_policies = @database_connection.assignment_advanced_policies(@new_assignment_class_id)
+          assignment_advanced_policies.count.should == 0
+        end
+
         it "should retrieve assignment via web service" do
           assignment = @connection.ws.assignment(Maple::MapleTA::Assignment.new(:id => @new_assignment_class_id, :class_id => @mapleta_class.id))
           assignment.should_not be_nil
@@ -156,6 +170,13 @@ module Database::Macros
         assignment_class.should_not be_nil
         assignment_class['assignmentid'].should == "#{@new_assignment_id}"
         assignment_class['name'].should == "test assignment"
+      end
+
+      it "should create the assignment_advanced_policies for max_attempt" do
+        assignment_advanced_policies = @database_connection.assignment_advanced_policies(@new_assignment_class_id)
+        assignment_advanced_policies.should_not be_nil
+        assignment_advanced_policies.count.should == 1
+        assignment_advanced_policies[0]['keyword'].should == @assignment.max_attempts.to_s
       end
 
       it "should create the assignment_policy with the MODE_PROCTORED_TEST options" do
