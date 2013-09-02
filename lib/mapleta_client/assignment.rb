@@ -10,6 +10,7 @@ module Maple::MapleTA
     property :targeted, :type => :boolean, :default => false
     property :visible, :type => :boolean, :default => true
     property :final_grade, :type => :boolean, :default => true
+    property :create_assignment, :type => :boolean, :default => false
     property :show_current_grade, :type => :boolean, :default => false
     property :insession_grade,    :type => :boolean, :default => false
     property :reworkable,         :type => :boolean, :default => true
@@ -149,9 +150,11 @@ module Maple::MapleTA
       "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback, "final_grade" => final_grade,
       "visible" => visible, "time_limit" => (time_limit.nil? ? -1 : time_limit), "final_feedback_date" => final_feedback_date, "final_feedback_delayed" => !final_feedback_date.nil?,
       "allow_resubmit_question" => allow_resubmit_question}
-      if(hash["mode"] == MODE_UNPROCTORED_TEST)
-        hash = hash.merge({"scramble" => scramble, "printable" => printable,
+      if hash["mode"] == MODE_UNPROCTORED_TEST
+        hash.merge!({"scramble" => scramble, "printable" => printable,
                     "reuse_algorithmic_variables" => reuse_algorithmic_variables, "targeted" => targeted})
+      elsif hash["mode"] == MODE_PROCTORED_TEST
+        hash.merge!({"start_authorization_required" => "true"})
       end
       hash
     end

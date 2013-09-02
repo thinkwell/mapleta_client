@@ -46,6 +46,16 @@ module Maple::MapleTA
         [123, 234]
       end
 
+      def questions_for_class(classid, search=nil, limit=100, offset=0)
+        []
+      end
+
+      def questions_for_class_count(classid, search=nil)
+      end
+
+      def delete_assignment(assigment_class_id)
+      end
+
       def edit_assignment(assignment)
       end
 

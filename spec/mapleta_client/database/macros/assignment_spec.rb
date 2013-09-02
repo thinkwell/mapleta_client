@@ -188,6 +188,7 @@ module Database::Macros
         assignment_policy['reworkable'].should == 'f'
         assignment_policy['printable'].should == 'f'
         assignment_policy['scramble'].should == '0'
+        assignment_policy['start_authorization_required'].should == 't'
       end
 
       it "should be retrievable by assignment_obj" do
