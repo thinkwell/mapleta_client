@@ -113,7 +113,7 @@ module Maple::MapleTA
 
         case type.to_sym
         when :boolean
-          "case #{value}\n when nil then nil\n when \"false\" then false\n else !!#{value}\n end"
+          "case #{value}\n when nil then nil\n when \"false\" then false\n when \"f\" then false\n else !!#{value}\n end"
         when :integer
           "#{value} && #{value}.to_i"
         when :integer_nilable
