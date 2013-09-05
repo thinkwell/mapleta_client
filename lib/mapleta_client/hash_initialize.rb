@@ -123,7 +123,7 @@ module Maple::MapleTA
         when :time_from_s
           "case #{value}\n when nil then nil\n when Time then #{value}\n else Time.at(#{value}.to_i)\n end"
         when :time_from_ms
-          "case #{value}\n when nil then nil\n when Time then #{value}\n when String then #{value}.to_time\n else Time.at(#{value}.to_i / 1000, #{value}.to_i % 1000 * 1000)\n end"
+          "case #{value}\n when nil then nil\n when Time then #{value}\n when #{value}.include?('-') then #{value}.to_time\n else Time.at(#{value}.to_i / 1000, #{value}.to_i % 1000 * 1000)\n end"
         else
           value
         end
