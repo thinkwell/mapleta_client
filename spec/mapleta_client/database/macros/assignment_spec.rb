@@ -21,7 +21,7 @@ module Database::Macros
       @assignment = Maple::MapleTA::Assignment.new(:name => "test assignment", :class_id => @mapleta_class.id,
                       :assignment_question_groups => [assignment_question_group_1, assignment_question_group_2],
                       :reworkable => false, :printable => true, :scramble => 1, :reuse_algorithmic_variables => true,
-                      :targeted => true, :final_feedback_date => '')
+                      :targeted => true, :final_feedback_date => '', :start => '2012-08-22 23:15:30'.to_time, :end => '2013-08-22 23:15:30'.to_time)
     end
 
     after(:each) do
@@ -71,6 +71,65 @@ module Database::Macros
 
       after(:each) do
         @database_connection.delete_assignment(@new_assignment_class_id)
+      end
+
+      it "should create the assignment_question_group and map for each question" do
+        assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_class_id).to_a
+        assignment_question_groups.count.should == 2
+        assignment_question_groups.first.name.should == @questions[1].name
+        assignment_question_groups.first.order_id.should == 1
+        assignment_question_groups.first.weighting.should == 1
+        assignment_question_groups.last.name.should == @questions[0].name
+        assignment_question_groups.last.order_id.should == 0
+        assignment_question_groups.last.weighting.should == 3
+
+        assignment_question_group_maps = @database_connection.assignment_question_group_maps(@new_assignment_class_id)
+        assignment_question_group_maps.count.should == 2
+        assignment_question_group_maps.first.questionid.should == @questions[1].id
+        assignment_question_group_maps.first.groupid.should == assignment_question_groups.first.id
+        assignment_question_group_maps.first.order_id.should == 0
+        assignment_question_group_maps.last.questionid.should == @questions[0].id
+        assignment_question_group_maps.last.groupid.should == assignment_question_groups.last.id
+        assignment_question_group_maps.last.order_id.should == 0
+      end
+
+      it "should create the assignment_class" do
+        assignment_class = @database_connection.assignment_class(@mapleta_class.id)
+        assignment_class.should_not be_nil
+        assignment_class['assignmentid'].should == "#{@new_assignment_id}"
+        assignment_class['name'].should == "test assignment"
+      end
+
+      it "should create the assignment_advanced_policies for max_attempt" do
+        assignment_advanced_policies = @database_connection.assignment_advanced_policies(@new_assignment_class_id)
+        assignment_advanced_policies.should_not be_nil
+        assignment_advanced_policies.count.should == 1
+        assignment_advanced_policies[0]['keyword'].should == @assignment.max_attempts.to_s
+      end
+
+      it "should create the assignment_policy with the MODE_PROCTORED_TEST options" do
+        assignment_class = @database_connection.assignment_class(@mapleta_class.id)
+        assignment_policy = @database_connection.assignment_policy(assignment_class['id'])
+        assignment_policy.should_not be_nil
+        assignment_policy['reuse_algorithmic_variables'].should == 'f'
+        assignment_policy['targeted'].should == 'f'
+        assignment_policy['reworkable'].should == 'f'
+        assignment_policy['printable'].should == 'f'
+        assignment_policy['scramble'].should == '0'
+        assignment_policy['start_authorization_required'].should == 't'
+      end
+
+      it "should be retrievable by assignment_obj" do
+        assignment = @database_connection.assignment_obj(@new_assignment_class_id)
+        assignment.should_not be_nil
+        assignment.id.should == @new_assignment_class_id
+        assignment.assignment_question_groups.count.should == @assignment.assignment_question_groups.count
+        assignment.assignment_question_groups[0].assignment_question_group_maps[0].name.should_not be_nil
+        assignment.assignment_question_groups[0].is_question.should be_true
+        assignment.max_attempts.should == @assignment.max_attempts
+        assignment.printable.should be_false
+        assignment.start.should == '2012-08-22 23:15:30'.to_time
+        assignment.end.should == '2013-08-22 23:15:30'.to_time
       end
 
       describe "update_assignment" do
@@ -143,63 +202,6 @@ module Database::Macros
         assignment = @database_connection.assignment(@mapleta_class.id)
         assignment.should_not be_nil
         assignment['name'].should == "test assignment"
-      end
-
-      it "should create the assignment_question_group and map for each question" do
-        assignment_question_groups = @database_connection.assignment_question_groups(@new_assignment_class_id).to_a
-        assignment_question_groups.count.should == 2
-        assignment_question_groups.first.name.should == @questions[1].name
-        assignment_question_groups.first.order_id.should == 1
-        assignment_question_groups.first.weighting.should == 1
-        assignment_question_groups.last.name.should == @questions[0].name
-        assignment_question_groups.last.order_id.should == 0
-        assignment_question_groups.last.weighting.should == 3
-
-        assignment_question_group_maps = @database_connection.assignment_question_group_maps(@new_assignment_class_id)
-        assignment_question_group_maps.count.should == 2
-        assignment_question_group_maps.first.questionid.should == @questions[1].id
-        assignment_question_group_maps.first.groupid.should == assignment_question_groups.first.id
-        assignment_question_group_maps.first.order_id.should == 0
-        assignment_question_group_maps.last.questionid.should == @questions[0].id
-        assignment_question_group_maps.last.groupid.should == assignment_question_groups.last.id
-        assignment_question_group_maps.last.order_id.should == 0
-      end
-
-      it "should create the assignment_class" do
-        assignment_class = @database_connection.assignment_class(@mapleta_class.id)
-        assignment_class.should_not be_nil
-        assignment_class['assignmentid'].should == "#{@new_assignment_id}"
-        assignment_class['name'].should == "test assignment"
-      end
-
-      it "should create the assignment_advanced_policies for max_attempt" do
-        assignment_advanced_policies = @database_connection.assignment_advanced_policies(@new_assignment_class_id)
-        assignment_advanced_policies.should_not be_nil
-        assignment_advanced_policies.count.should == 1
-        assignment_advanced_policies[0]['keyword'].should == @assignment.max_attempts.to_s
-      end
-
-      it "should create the assignment_policy with the MODE_PROCTORED_TEST options" do
-        assignment_class = @database_connection.assignment_class(@mapleta_class.id)
-        assignment_policy = @database_connection.assignment_policy(assignment_class['id'])
-        assignment_policy.should_not be_nil
-        assignment_policy['reuse_algorithmic_variables'].should == 'f'
-        assignment_policy['targeted'].should == 'f'
-        assignment_policy['reworkable'].should == 'f'
-        assignment_policy['printable'].should == 'f'
-        assignment_policy['scramble'].should == '0'
-        assignment_policy['start_authorization_required'].should == 't'
-      end
-
-      it "should be retrievable by assignment_obj" do
-        assignment = @database_connection.assignment_obj(@new_assignment_class_id)
-        assignment.should_not be_nil
-        assignment.id.should == @new_assignment_class_id
-        assignment.assignment_question_groups.count.should == @assignment.assignment_question_groups.count
-        assignment.assignment_question_groups[0].assignment_question_group_maps[0].name.should_not be_nil
-        assignment.assignment_question_groups[0].is_question.should be_true
-        assignment.max_attempts.should == @assignment.max_attempts
-        assignment.printable.should be_false
       end
     end
 

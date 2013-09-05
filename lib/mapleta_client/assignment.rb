@@ -28,8 +28,8 @@ module Maple::MapleTA
     property :passing_score, :type => :integer, :from => :passingScore, :default => nil
     property :total_points, :type => :float, :from => :totalPoints, :default => nil
     property :weight, :type => :float, :default => nil
-    property :start, :type => :time_from_ms, :default => nil
-    property :end, :type => :time_from_ms, :default => nil
+    property :start, :type => :time_from_ms, :from => :start_time, :default => nil
+    property :end, :type => :time_from_ms, :from => :end_time, :default => nil
     property :time_limit, :type => :integer_nilable, :from => :timeLimit, :default => nil
     property :policy, :default => nil
     property :assignment_question_groups, :default => []
@@ -149,7 +149,7 @@ module Maple::MapleTA
       hash = {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
       "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback, "final_grade" => final_grade,
       "visible" => visible, "time_limit" => (time_limit.nil? ? -1 : time_limit), "final_feedback_date" => final_feedback_date, "final_feedback_delayed" => !final_feedback_date.nil?,
-      "allow_resubmit_question" => allow_resubmit_question}
+      "allow_resubmit_question" => allow_resubmit_question, "start_time" => start, "end_time" => self.end}
       if hash["mode"] == MODE_UNPROCTORED_TEST
         hash.merge!({"scramble" => scramble, "printable" => printable,
                     "reuse_algorithmic_variables" => reuse_algorithmic_variables, "targeted" => targeted})
