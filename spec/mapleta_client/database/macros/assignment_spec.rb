@@ -64,6 +64,7 @@ module Database::Macros
       before(:each) do
         @assignment.mode = Maple::MapleTA::Assignment::MODE_PROCTORED_TEST
         @assignment.max_attempts = 5
+        @assignment.final_feedback_date = "Sep 16, 2003"
         result = @database_connection.create_assignment(@assignment)
         @new_assignment_id = result[0]
         @new_assignment_class_id = result[1]
@@ -117,6 +118,7 @@ module Database::Macros
         assignment_policy['printable'].should == 'f'
         assignment_policy['scramble'].should == '0'
         assignment_policy['start_authorization_required'].should == 't'
+        assignment_policy['final_feedback_date'].should == '2003-09-16 00:00:00'
       end
 
       it "should be retrievable by assignment_obj" do
@@ -128,6 +130,7 @@ module Database::Macros
         assignment.assignment_question_groups[0].is_question.should be_true
         assignment.max_attempts.should == @assignment.max_attempts
         assignment.printable.should be_false
+        assignment.final_feedback_date.should == "Sep 16, 2003".to_time
         assignment.start.should == '2012-08-22 23:15:30'.to_time
         assignment.end.should == '2013-08-22 23:15:30'.to_time
       end
@@ -151,6 +154,7 @@ module Database::Macros
           @assignment.assignment_question_groups = [@assignment.assignment_question_groups[0], assignment_question_group_3]
           @assignment.reworkable = true
           @assignment.printable = false
+          @assignment.final_feedback_date = ''
           @assignment.id = @new_assignment_class_id
           @database_connection.edit_assignment(@assignment)
         end
@@ -214,6 +218,7 @@ module Database::Macros
           assignment.assignment_question_groups[0].is_question.should be_true
           assignment.max_attempts.should == @assignment.max_attempts
           assignment.printable.should be_false
+          assignment.final_feedback_date.should be_nil
           assignment.start.should == '2012-09-22 23:15:30'.to_time
           assignment.end.should == '2013-09-22 23:15:30'.to_time
         end
