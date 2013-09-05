@@ -132,10 +132,20 @@ module Database::Macros
         assignment.end.should == '2013-08-22 23:15:30'.to_time
       end
 
+      it "should create a new assignment" do
+        @new_assignment_id.should_not be_nil
+
+        assignment = @database_connection.assignment(@mapleta_class.id)
+        assignment.should_not be_nil
+        assignment['name'].should == "test assignment"
+      end
+
       describe "update_assignment" do
         before(:each) do
           @assignment.name = "test assignment edited"
           @assignment.max_attempts = nil
+          @assignment.start = '2012-09-22 23:15:30'
+          @assignment.end = '2013-09-22 23:15:30'
           assignment_question_group_map_3 = Maple::MapleTA::AssignmentQuestionGroupMap.new(:questionid => @questions[2].id, :question_uid => @questions[2].uid)
           assignment_question_group_3 = Maple::MapleTA::AssignmentQuestionGroup.new(:name => @questions[2].name, :assignment_question_group_maps => [assignment_question_group_map_3])
           @assignment.assignment_question_groups = [@assignment.assignment_question_groups[0], assignment_question_group_3]
@@ -194,15 +204,22 @@ module Database::Macros
           assignment = @connection.ws.assignment(Maple::MapleTA::Assignment.new(:id => @new_assignment_class_id, :class_id => @mapleta_class.id))
           assignment.should_not be_nil
         end
+
+        it "should be retrievable by assignment_obj" do
+          assignment = @database_connection.assignment_obj(@new_assignment_class_id)
+          assignment.should_not be_nil
+          assignment.id.should == @new_assignment_class_id
+          assignment.assignment_question_groups.count.should == @assignment.assignment_question_groups.count
+          assignment.assignment_question_groups[0].assignment_question_group_maps[0].name.should_not be_nil
+          assignment.assignment_question_groups[0].is_question.should be_true
+          assignment.max_attempts.should == @assignment.max_attempts
+          assignment.printable.should be_false
+          assignment.start.should == '2012-09-22 23:15:30'.to_time
+          assignment.end.should == '2013-09-22 23:15:30'.to_time
+        end
+
       end
 
-      it "should create a new assignment" do
-        @new_assignment_id.should_not be_nil
-
-        assignment = @database_connection.assignment(@mapleta_class.id)
-        assignment.should_not be_nil
-        assignment['name'].should == "test assignment"
-      end
     end
 
     describe "copy_assignment_to_class" do
