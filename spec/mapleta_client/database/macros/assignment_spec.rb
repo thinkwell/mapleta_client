@@ -154,7 +154,7 @@ module Database::Macros
           @assignment.assignment_question_groups = [@assignment.assignment_question_groups[0], assignment_question_group_3]
           @assignment.reworkable = true
           @assignment.printable = false
-          @assignment.final_feedback_date = ''
+          @assignment.final_feedback_date = "Sep 16, 2003"
           @assignment.id = @new_assignment_class_id
           @database_connection.edit_assignment(@assignment)
         end
@@ -197,6 +197,7 @@ module Database::Macros
           assignment_policy['reworkable'].should == 't'
           assignment_policy['printable'].should == 'f'
           assignment_policy['scramble'].should == '0'
+          assignment_policy['final_feedback_date'].should == '2003-09-16 00:00:00'
         end
 
         it "should update the assignment_advanced_policy" do
@@ -218,7 +219,7 @@ module Database::Macros
           assignment.assignment_question_groups[0].is_question.should be_true
           assignment.max_attempts.should == @assignment.max_attempts
           assignment.printable.should be_false
-          assignment.final_feedback_date.should be_nil
+          assignment.final_feedback_date.should == '2003-09-16 00:00:00'.to_time
           assignment.start.should == '2012-09-22 23:15:30'.to_time
           assignment.end.should == '2013-09-22 23:15:30'.to_time
         end
