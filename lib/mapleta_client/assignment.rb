@@ -15,7 +15,7 @@ module Maple::MapleTA
     property :insession_grade,    :type => :boolean, :default => false
     property :reworkable,         :type => :boolean, :default => true
     property :printable,         :type => :boolean,  :default => false
-    property :final_feedback_date, :type => :time_from_ms, :default => nil
+    property :final_feedback_date, :type => :datetime, :default => nil
     property :allow_resubmit_question, :type => :boolean, :default => true
     property :max_attempts,         :type => :integer_nilable, :default => nil
     property :weighting,         :type => :integer, :default => 0
