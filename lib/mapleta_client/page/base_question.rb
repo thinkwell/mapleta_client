@@ -128,7 +128,7 @@ module Page
         node.remove
       end
       form_node.xpath('.//img[contains(@src, "/ploton.gif")]').each do |node|
-        if node.next_element.name == 'span' && node.next_element.content =~ /^\s*/ && node.next_element.content.length < 3
+        if node.next_element && node.next_element.name == 'span' && node.next_element.content =~ /^\s*/ && node.next_element.content.length < 3
           node.next_element.remove
         end
         node.remove
