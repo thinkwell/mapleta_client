@@ -2,14 +2,14 @@ require 'spec_helper'
 
 
 module Maple::MapleTA
-  class MockConnection < Maple::MapleTA::Connection
+  class MockSpecConnection < Maple::MapleTA::Connection
     include Communication
   end
 
   describe Communication::InstanceMethods do
     before(:each) do
       @settings = RSpec.configuration.maple_settings
-      @connection = MockConnection.new
+      @connection = MockSpecConnection.new
       @connection.base_url = @settings[:base_url]
     end
 
@@ -76,16 +76,16 @@ module Maple::MapleTA
     describe "#abs_url_for" do
       it "returns absolute urls unmodified" do
         ['http://www.thinkwell.com/', 'https://www.thinkwell.com/', 'ftp://ftp.thinkwell.com', 'market://cool'].each do |url|
-          MockConnection.abs_url_for(url, 'http://www.foobar.com/').should == url
+          MockSpecConnection.abs_url_for(url, 'http://www.foobar.com/').should == url
         end
       end
 
       it "returns an absolute url for a root-relative url" do
-        MockConnection.abs_url_for('/images/123.gif', 'http://www.foobar.com/foo').should == "http://www.foobar.com/images/123.gif"
+        MockSpecConnection.abs_url_for('/images/123.gif', 'http://www.foobar.com/foo').should == "http://www.foobar.com/images/123.gif"
       end
 
       it "returns an absolute url for a relative url" do
-        MockConnection.abs_url_for('http.gif', 'http://www.foobar.com/foo').should == "http://www.foobar.com/foo/http.gif"
+        MockSpecConnection.abs_url_for('http.gif', 'http://www.foobar.com/foo').should == "http://www.foobar.com/foo/http.gif"
       end
     end
 

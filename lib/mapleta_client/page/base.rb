@@ -152,7 +152,37 @@ module Page
     end
 
 
-  private
+    def script_html
+      html = ''
+      html << "#{base_url_script_node.to_html}\n" if base_url_script_node
+      html << "#{math_jax_script_node.to_html}\n" if math_jax_script_node
+      html
+    end
+
+    def math_jax_script_html
+      html = ''
+      html << "#{math_jax_script_node.to_html}\n" if math_jax_script_node
+      html
+    end
+
+    def base_url_script_node
+      return @base_url_script_node if @base_url_script_node
+      return nil if @base_url_script_node == false
+      @base_url_script_node = @page.parser.xpath('//script').detect(false) do |node|
+        node.content.include?('function getBaseURL()')
+      end
+    end
+
+    def math_jax_script_node
+      return @math_jax_script_node if @math_jax_script_node
+      return nil if @math_jax_script_node == false
+      @math_jax_script_node = @page.parser.xpath('//script').detect(false) do |node|
+        node['src'] and node['src'].include?('MathJax.js')
+      end
+    end
+
+
+    private
 
     def validate
       true

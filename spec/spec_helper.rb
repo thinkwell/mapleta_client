@@ -9,26 +9,36 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
   config.add_setting :maple_settings, :default => {
-    :base_url        => 'http://localhost:8080/mapleta',
-    :secret          => 'Mk0W1b4Cwa-m',
-    :first_name      => 'Brandon',
+    :base_url        => 'http://localhost:8081/mapleta',
+    :secret          => '',
+    :first_name      => 'Maple T.A.',
     :middle_name     => nil,
-    :last_name       => 'Turner',
-    :user_login      => 'brandont@thinkwell.com',
-    :user_email      => 'brandont@thinkwell.com',
-    :student_id      => 1,
-    :class_id        => 2,
+    :last_name       => 'Administrator',
+    :user_login      => 'admin',
+    :user_email      => 'mapleta@thinkwell.com',
+    :user_role       => 'ADMINISTRATOR',
+    :student_id      => 'admin',
+    :class_id        => 330,
     :class_name      => 'Calculus I',
     :course_id       => 1,
 
-    :assignment_id   => 3,
+    :assignment_id   => 29928,
     :assignment_name => 'Easy Test',
+  }
+  Maple::MapleTA.database_config = {
+      :host            => 'localhost',
+      :dbname          => 'mapleta',
+      :user            => 'postgres',
+      :password        => '',
+      :sslmode         => 'disable',
+      :port            => 5432,
+      :connect_timeout => 2,
   }
   config.add_setting :maple_values, :default => {
     :assignment_question_number => 1,
-    :assignment_question_count => 2,
-    :assignment_question_points => 40,
-    :assignment_question_text => 'What is 2+2?',
+    :assignment_question_count => 16,
+    :assignment_question_points => 1,
+    :assignment_question_text => '(Click For List)',
   }
 end
 

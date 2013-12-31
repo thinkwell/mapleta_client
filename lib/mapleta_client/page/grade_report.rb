@@ -261,7 +261,7 @@ module Page
       column_table.xpath('.//th[@bgcolor]').remove_attr('bgcolor')
 
       # Remove correct/incorrect icon
-      column_table.xpath('./tr/td[div/img[contains(@src, "/correct.gif") or contains(@src, "/incorrect.gif")]]').remove
+      column_table.xpath('./tr/td[div/img[contains(@src, "/correct.png") or contains(@src, "/incorrect.png")]]').remove
 
       # Remove total grade
       node.xpath('.//p[*="Total grade:"]').remove
@@ -330,7 +330,7 @@ module Page
       #end
 
       # Remove correct/incorrect icon
-      node.xpath('./table/tr/td[div/img[contains(@src, "/correct.gif") or contains(@src, "/incorrect.gif")]]').remove
+      node.xpath('./table/tr/td[div/img[contains(@src, "/correct.png") or contains(@src, "/incorrect.png")]]').remove
 
       # Remove partial grading
       node.xpath('.//tr[*="Partial Grading Explained"]').remove
@@ -373,7 +373,7 @@ module Page
           response_node = tr.at_xpath('./td[2]')
           if response_node.xpath('./table').length == 1 && response_node.xpath('./table/tr[1]/td/table/tr[1]/th[@bgcolor]').length > 0
             fix_two_column_response response_node
-          elsif response_node.xpath('./table/tr[1]/td[2]//img[contains(@src, "/correct.gif") or contains(@src, "/incorrect.gif")]').length == 1
+          elsif response_node.xpath('./table/tr[1]/td[2]//img[contains(@src, "/correct.png") or contains(@src, "/incorrect.png")]').length == 1
             fix_row_response response_node
           end
         end
@@ -490,9 +490,9 @@ module Page
         new_container = @page.parser.create_element 'fieldset'
         new_container['class'] = "question #{odd_even[i%2]}"
         new_container.inner_html = "<legend class=\"header\"><span class=\"name question_name\">Question #{i+1}</span></legend>"
-        if table_node.xpath('.//td[@class="response"]//img[contains(@src, "/incorrect.gif")]').length > 0
+        if table_node.xpath('.//td[@class="response"]//img[contains(@src, "/incorrect.png")]').length > 0
           new_container['class'] += ' incorrect'
-        elsif table_node.xpath('.//td[@class="response"]//img[contains(@src, "/correct.gif")]').length > 0
+        elsif table_node.xpath('.//td[@class="response"]//img[contains(@src, "/correct.png")]').length > 0
           new_container['class'] += ' correct'
         end
         new_container.parent = new_node
