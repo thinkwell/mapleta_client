@@ -10,9 +10,12 @@ module Page
 
 
     def html
-      content_node.children.map { |x| x.to_xhtml }.join
+      reason_node.children.map { |x| x.to_xhtml }.join
     end
 
+    def reason_node
+      @reason_node ||= @page.parser.at_css('div.reason')
+    end
 
   private
 
@@ -30,7 +33,7 @@ module Page
     # function properly
     def fix_reason_node
       new_node = nil
-      content_node.children.each do |node|
+      content_node.css('div#pageContainer').children.each do |node|
         if new_node == nil
           if node.name == "p"
             new_node = @page.parser.create_element 'div'
