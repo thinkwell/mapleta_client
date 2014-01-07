@@ -10,12 +10,7 @@ module Page
 
 
     def html
-      reason_node.children.map { |x| x.to_xhtml }.join
-    end
-
-
-    def reason_node
-      @reason_node ||= @page.parser.at_css('div.reason')
+      content_node.children.map { |x| x.to_xhtml }.join
     end
 
 
