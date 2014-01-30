@@ -62,6 +62,14 @@ module Maple
       end
     end
 
+    module Orm
+      require 'mapleta_client/orm/base'
+      autoload :Class, 'mapleta_client/orm/class'
+      autoload :Assignment, 'mapleta_client/orm/assignment'
+      autoload :AssignmentClass, 'mapleta_client/orm/assignment_class'
+      autoload :AssignmentPolicy, 'mapleta_client/orm/assignment_policy'
+    end
+
     require 'mapleta_client/page'
     require 'mapleta_client/database'
     require 'mapleta_client/tomcat_manager'
