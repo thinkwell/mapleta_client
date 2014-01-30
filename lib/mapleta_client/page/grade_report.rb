@@ -43,19 +43,12 @@ module Page
         if key =~ /^grade(\d+)_(\d+)$/ && $2.to_i == try_id
           position = $1.to_i
           grade = val
-          comment = params["comment#{position}_#{try_id}"]
 
-          grade = nil if grade.blank?
+          comment = params["comment#{position}_#{try_id}"]
+          grade = 0 if grade.blank?
           grade = grade.to_f if grade
           comment = nil if comment.blank?
           comment.strip! if comment
-
-          if grade.nil? && (comment.to_s != page.question_comment(position + 1).to_s)
-            # The teacher changed the comment, but did not change the grade.
-            # If we send nothing as the grade, Maple will change the grade to 0.
-            # We need to use the existing grade.
-            grade = page.question_score(position + 1)
-          end
 
           unless grade.nil?
             maple_params = {
@@ -68,16 +61,13 @@ module Page
               'comment' => comment.nil? ? ' ' : comment,
             }
 
-            #Rails.logger.warn("UPDATING GRADE: #{maple_params.inspect}")
-            return_page = connection.fetch_page('gradebook/UpdateGradeItem.do', maple_params, :post)
+            connection.fetch_page('gradebook/UpdateGradeItem.do', maple_params, :post)
             question_update_count += 1
             # TODO: Check the return page for errors
           end
         end
-
-        question_update_count
       end
-
+      question_update_count
     end
 
 
@@ -120,16 +110,8 @@ module Page
     # Return the instructor comment for the given question number.
     # NOTE: question_num is indexed from 1.
     def question_comment(question_num)
-      qnode = question_node_for(question_num)
-      label_node = qnode.at_xpath('.//strong[text()="Instructors Comment:"]')
-      if label_node
-        tr_node = label_node.parent.parent
-        tr_node = tr_node.parent unless tr_node.node_name == 'tr'
-        if tr_node
-          return tr_node.next_element.at_xpath('./td/textarea').text.strip
-        end
-      end
-      nil
+      cnode = question_node_for(question_num).at_xpath('.//textarea[contains(@id, "comment")]')
+      cnode ? cnode.content.strip : nil
     end
 
 
