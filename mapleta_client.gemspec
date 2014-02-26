@@ -19,20 +19,18 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  # specify any dependencies here; for example:
-  # s.add_development_dependency "rspec"
-  s.add_runtime_dependency(%q<activesupport>, ["~> 2.3"])
-  s.add_runtime_dependency(%q<nokogiri>, ["= 1.5.0"])
+  s.add_runtime_dependency     "activesupport", "~> 2.3.14"
+  s.add_runtime_dependency     "nokogiri", "1.5.0"
   # 2.0.1 is causing problems with Net::HTTP::Persistent
   # https://github.com/tenderlove/mechanize/issues/123
-  s.add_runtime_dependency(%q<mechanize>, ["= 1.0.0"])
-  s.add_runtime_dependency(%q<pg>, [">= 0.14.0"])
-  s.add_runtime_dependency(%q<uuid>, [">= 2.3.0"])
+  s.add_runtime_dependency     "mechanize", "1.0.0"
+  s.add_runtime_dependency     "pg", ">= 0.14.0"
+  s.add_runtime_dependency     "uuid", ">= 2.3.0"
 
-  s.add_development_dependency(%q<ruby-debug>, ["= 0.10.4"])
-  s.add_development_dependency(%q<rspec>, ["~> 2.6"])
-  s.add_development_dependency(%q<bundler>, [">= 0"])
-  s.add_development_dependency(%q<rcov>, [">= 0"])
-  s.add_development_dependency(%q<rake>, [">= 0"])
+  s.add_development_dependency "bundler"
+  s.add_development_dependency "rspec", "~> 2.14"
+  s.add_development_dependency "rake"
+  # s.add_development_dependency "rcov", ">= 0"
+  # s.add_development_dependency "rcov", ">= 0"
 end
 
