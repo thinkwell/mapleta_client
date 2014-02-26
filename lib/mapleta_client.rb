@@ -1,3 +1,5 @@
+require 'active_support/base64'
+
 module Maple
   module MapleTA
     autoload :Assignment, 'mapleta_client/assignment'
