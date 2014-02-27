@@ -80,7 +80,7 @@ module Maple::MapleTA
 
       def fetch_api(method, params={}, reconnect_if_expired=true)
         begin
-          parse_api_response(fetch_api_response(method, params, :xml))
+          parse_api_response fetch_api_response(method, params, :xml)
         rescue Errors::SessionExpiredError => e
           if connected? && reconnect_if_expired
             disconnect
@@ -172,13 +172,15 @@ module Maple::MapleTA
         data = data && data['Response'] || data
 
         # Raise some exceptions if we can't understand the response
+        err = 
         if response.code.to_i != 200
-          err = data['status']['message'] rescue "#{response.code}: #{response.message}"
+          data['status']['message'] rescue "#{response.code}: #{response.message}"
         elsif !data.is_a?(Hash)
-          err = "Cannot parse response"
+          "Cannot parse response"
         elsif data['status'] && !data['status'].has_key?('code')
-          err = data['status']['message'] rescue "Cannot read status code"
+          data['status']['message'] rescue "Cannot read status code"
         end
+
         raise Errors::InvalidResponseError.new(response, "An error occurred while fetching data from the server.\n#{err}") if err
 
         if data['status'] && data['status']['code'].to_i == 1

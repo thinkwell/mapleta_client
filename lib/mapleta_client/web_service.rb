@@ -180,7 +180,7 @@ module Maple::MapleTA
   protected
 
     def fetch(method, params={})
-      parse_data(connection.fetch_api(method, params))
+      parse_data connection.fetch_api(method, params)
     end
 
 
