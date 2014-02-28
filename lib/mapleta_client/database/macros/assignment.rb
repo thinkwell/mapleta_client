@@ -6,7 +6,6 @@ module Maple::MapleTA
 
       def execute(cmd)
         return if cmd.empty?
-        #Rails.logger.debug "insert sql : #{cmd.sql}, insert values #{cmd.values.join(",")}"
         exec(cmd.sql, cmd.values)
       end
 
@@ -14,26 +13,20 @@ module Maple::MapleTA
         raise Errors::DatabaseError.new("Must pass new_class_id") unless new_class_id
 
         assignment_class_id_old_to_new = {}
-        t1 = Time.now
+        
         assignment_classes_query_sql = "SELECT * FROM assignment_class WHERE id IN (#{recorded_assignment_ids.join(",")})"
         assignment_classes = exec(assignment_classes_query_sql)
         raise Errors::DatabaseError.new("Cannot find assignment_classes in recorded_assignment_ids=#{recorded_assignment_ids}") unless assignment_classes && assignment_classes.count > 0
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#select_assignment_classes #{assignment_classes.count} in #{time_diff t1, Time.now}"
 
-        t11 = Time.now
         assignment_ids = assignment_classes.map{|a| a['assignmentid'].to_i}
         assignments_query_sql = "SELECT * FROM assignment WHERE id IN (#{assignment_ids.join(",")})"
         assignments = exec(assignments_query_sql)
         raise Errors::DatabaseError.new("Cannot find assignments in recorded_assignment_ids=#{recorded_assignment_ids}") unless assignments && assignments.count > 0
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#select_assignments #{assignments.count} in #{time_diff t11, Time.now}"
 
-        t12 = Time.now
         assignment_class_ids = assignment_classes.map{|a| a['id'].to_i}
         assignment_policies_query_sql = "SELECT * FROM assignment_policy WHERE assignment_class_id IN (#{assignment_class_ids.join(",")})"
         assignment_policies = exec(assignment_policies_query_sql)
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#select_assignment_policies #{assignment_policies.count} in #{time_diff t12, Time.now}"
 
-        t13 = Time.now
         assignment_question_groups_query_sql = "SELECT * FROM assignment_question_group WHERE assignmentid IN (#{assignment_ids.join(",")})"
         assignment_question_groups = exec(assignment_question_groups_query_sql)
         assignment_question_group_ids = assignment_question_groups.map{|a| a['id']}
@@ -41,22 +34,15 @@ module Maple::MapleTA
         assignment_question_group_maps = exec(assignment_question_groups_query_sql)
         new_group_ids = exec("SELECT nextval('assignment_question_group_id_seq') FROM generate_series(1, #{assignment_question_groups.count})")
         new_group_ids_index = 0
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#select_assignment_question_groups #{assignment_question_groups.count}/#{assignment_question_group_maps.count} in #{time_diff t13, Time.now}"
 
-        t14 = Time.now
         assignment_mastery_policies_query_sql = "SELECT * FROM assignment_mastery_policy WHERE assignment_class_id IN (#{assignment_class_ids.join(",")})"
         assignment_mastery_policies = exec(assignment_mastery_policies_query_sql)
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#select_assignment_mastery_policies #{assignment_mastery_policies.count} in #{time_diff t14, Time.now}"
 
-        t15 = Time.now
         assignment_mastery_penalties_query_sql = "SELECT * FROM assignment_mastery_penalty WHERE assignment_class_id IN (#{assignment_class_ids.join(",")})"
         assignment_mastery_penalties = exec(assignment_mastery_penalties_query_sql)
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#select_assignment_mastery_penalties #{assignment_mastery_penalties.count} in #{time_diff t15, Time.now}"
 
-        t16 = Time.now
         assignment_advanced_policies_query_sql = "SELECT * FROM assignment_advanced_policy WHERE assignment_id IN (#{assignment_ids.join(",")})"
         assignment_advanced_policies = exec(assignment_advanced_policies_query_sql)
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#select_assignment_mastery_penalties #{assignment_mastery_penalties.count} in #{time_diff t15, Time.now}"
 
         new_assignment_ids = exec("SELECT nextval('assignment_id_seq') FROM generate_series(1, #{assignment_classes.count})")
         raise Errors::DatabaseError.new("Cannot determine new assignment ids") unless new_assignment_ids && new_assignment_ids.count > 0
@@ -111,30 +97,21 @@ module Maple::MapleTA
             push_assignment_advanced_policy(assignment_advanced_policies_sub, new_assignment_id, new_assignment_class_id, assignment_advanced_policy_insert_cmd)
           end
 
-          t7 = Time.now
           execute(assignment_insert_cmd)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#insert_assignments in #{time_diff t7, Time.now}"
-          t71 = Time.now
+          
           execute(assignment_class_insert_cmd)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#insert_assignment_classes in #{time_diff t71, Time.now}"
-          t72 = Time.now
+          
           execute(assignment_policy_insert_cmd)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#insert_assignment_policies in #{time_diff t72, Time.now}"
-          t73 = Time.now
+          
           execute(assignment_question_group_insert_cmd)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#insert_assignment_question_groups in #{time_diff t73, Time.now}"
-          t74 = Time.now
+          
           execute(assignment_question_group_map_insert_cmd)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#insert_assignment_question_group_maps in #{time_diff t74, Time.now}"
-          t75 = Time.now
+          
           execute(assignment_mastery_policy_insert_cmd)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#insert_assignment_mastery_policies in #{time_diff t75, Time.now}"
-          t76 = Time.now
+          
           execute(assignment_mastery_penalty_insert_cmd)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#insert_assignment_mastery_penalties in #{time_diff t76, Time.now}"
-          t77 = Time.now
+          
           execute(assignment_advanced_policy_insert_cmd)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_batch_assignments_to_class#assignment_advanced_policy_insert_cmd in #{time_diff t77, Time.now}"
         end
         assignment_class_id_old_to_new
       rescue PG::Error => e
@@ -144,22 +121,39 @@ module Maple::MapleTA
 
       def create_assignment(assignment)
         new_assignment_id = nil
-        transaction do
-          new_assignment_id = insert_assignment(assignment.assignment_hash, assignment.class_id)
 
+        transaction do
+          new_assignment_id       = insert_assignment(assignment.assignment_hash, assignment.class_id)
           new_assignment_class_id = insert_assignment_class(assignment.assignment_class_hash, assignment.class_id, new_assignment_id)
 
-          insert_assignment_policy(assignment.assignment_policy_hash, new_assignment_class_id)
+          insert_assignment_policy(
+            assignment.assignment_policy_hash,
+            new_assignment_class_id
+          )
 
-          insert_assignment_question_groups(assignment.assignment_question_group_hashes, assignment.assignment_question_group_map_hashes, new_assignment_id)
+          insert_assignment_question_groups(
+            assignment.assignment_question_group_hashes,
+            assignment.assignment_question_group_map_hashes,
+            new_assignment_id
+          )
 
-          insert_assignment_mastery_policy(assignment.assignment_mastery_policy_hashes, new_assignment_class_id)
+          insert_assignment_mastery_policy(
+            assignment.assignment_mastery_policy_hashes,
+            new_assignment_class_id
+          )
 
-          insert_assignment_mastery_penalty(assignment.assignment_mastery_penalty_hashes, new_assignment_class_id)
+          insert_assignment_mastery_penalty(
+            assignment.assignment_mastery_penalty_hashes,
+            new_assignment_class_id
+          )
 
-          insert_assignment_advanced_policy(assignment.assignment_advanced_policy_hashes, new_assignment_id, new_assignment_class_id)
-
+          insert_assignment_advanced_policy(
+            assignment.assignment_advanced_policy_hashes,
+            new_assignment_id,
+            new_assignment_class_id
+          )
         end
+
         new_assignment_id
       end
 
@@ -186,52 +180,35 @@ module Maple::MapleTA
         raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
         raise Errors::DatabaseError.new("Must pass new_class_id") unless new_class_id
 
-        t1 = Time.now
         assignment_class = exec("SELECT * FROM assignment_class WHERE id=$1", [assignment_class_id]).first
         raise Errors::DatabaseError.new("Cannot find assignment_class with id=#{assignment_class_id}") unless assignment_class && assignment_class['assignmentid']
 
         assignment = exec("SELECT * FROM assignment WHERE id=$1", [assignment_class['assignmentid']]).first
         raise Errors::DatabaseError.new("Cannot find assignment with id=#{assignment_class['assignmentid']}") unless assignment
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#select in #{time_diff t1, Time.now}"
 
         new_assignment_class_id = nil
         transaction do
-          t2 = Time.now
           new_assignment_id = insert_assignment(assignment, new_class_id)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment in #{time_diff t2, Time.now}"
 
-          t3 = Time.now
           new_assignment_class_id = insert_assignment_class(assignment_class, new_class_id, new_assignment_id)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_class in #{time_diff t3, Time.now}"
 
-          t4 = Time.now
           assignment_policy = exec("SELECT * FROM assignment_policy WHERE assignment_class_id=$1", [assignment_class_id]).first
           raise Errors::DatabaseError.new("Cannot find assignment_policy with assignment_class_id=#{assignment_class_id}") unless assignment_policy
           insert_assignment_policy(assignment_policy, new_assignment_class_id)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_policy in #{time_diff t4, Time.now}"
 
           # We ignore advance policies as they depend on other assignments in the original class
-          t5 = Time.now
           assignment_question_groups = assignment_question_groups(assignment_class['assignmentid'])
           assignment_question_group_maps = assignment_question_group_maps(assignment_class['assignmentid'])
           insert_assignment_question_groups(assignment_question_groups, assignment_question_group_maps, new_assignment_id)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_question_groups in #{time_diff t5, Time.now}"
 
-          t6 = Time.now
           assignment_mastery_policies = exec("SELECT * FROM assignment_mastery_policy WHERE assignment_class_id=$1", [assignment_class_id])
           insert_assignment_mastery_policy(assignment_mastery_policies, new_assignment_class_id)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_mastery_policy in #{time_diff t6, Time.now}"
 
-          t7 = Time.now
           assignment_mastery_penalties = exec("SELECT * FROM assignment_mastery_penalty WHERE assignment_class_id=$1", [assignment_class_id])
           insert_assignment_mastery_penalty(assignment_mastery_penalties, new_assignment_class_id)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_mastery_penalty in #{time_diff t7, Time.now}"
 
-          t8 = Time.now
           assignment_advanced_policy = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_id=$1", [assignment_class['assignmentid']])
           insert_assignment_advanced_policy(assignment_advanced_policy, new_assignment_id, new_assignment_class_id)
-          #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_advanced_policy in #{time_diff t8, Time.now}"
-
         end
 
         new_assignment_class_id
@@ -240,11 +217,9 @@ module Maple::MapleTA
       end
 
       def insert_assignment_mastery_penalty(assignment_mastery_penalty_hashes, new_assignment_class_id)
-        t7 = Time.now
         assignment_mastery_penalty_insert_cmd = InsertCmd.new("assignment_mastery_penalty")
         push_assignment_mastery_penalty(assignment_mastery_penalty_hashes, new_assignment_class_id, assignment_mastery_penalty_insert_cmd)
         execute(assignment_mastery_penalty_insert_cmd)
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_mastery_penalties in #{time_diff t7, Time.now}"
       end
 
       def push_assignment_mastery_penalty(assignment_mastery_penalties, new_assignment_class_id, assignment_mastery_penalty_insert_cmd)
@@ -254,11 +229,9 @@ module Maple::MapleTA
       end
 
       def insert_assignment_advanced_policy(assignment_advanced_policy_hashes, new_assignment_id, new_assignment_class_id)
-        t7 = Time.now
         assignment_advanced_policy_insert_cmd = InsertCmd.new("assignment_advanced_policy")
         push_assignment_advanced_policy(assignment_advanced_policy_hashes, new_assignment_id, new_assignment_class_id, assignment_advanced_policy_insert_cmd)
         execute(assignment_advanced_policy_insert_cmd)
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_mastery_penalties in #{time_diff t7, Time.now}"
       end
 
       def push_assignment_advanced_policy(assignment_advanced_policies, new_assignment_id, new_assignment_class_id, assignment_advanced_policy_insert_cmd)
@@ -268,11 +241,9 @@ module Maple::MapleTA
       end
 
       def insert_assignment_mastery_policy(assignment_mastery_policy_hashes, new_assignment_class_id)
-        t6 = Time.now
         assignment_mastery_policy_insert_cmd = InsertCmd.new("assignment_mastery_policy")
         push_assignment_mastery_policy(assignment_mastery_policy_hashes, new_assignment_class_id, assignment_mastery_policy_insert_cmd)
         execute(assignment_mastery_policy_insert_cmd)
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_mastery_policy  in #{time_diff t6, Time.now}"
       end
 
       def push_assignment_mastery_policy(assignment_mastery_policies, new_assignment_class_id, assignment_mastery_policy_insert_cmd)
@@ -302,7 +273,6 @@ module Maple::MapleTA
       end
 
       def insert_assignment_class(assignment_class_hash, new_class_id, new_assignment_id)
-        t3 = Time.now
         assignment_class_insert_cmd = InsertCmd.new("assignment_class")
         new_assignment_class_id = exec("SELECT nextval('assignment_class_id_seq')").first['nextval'].to_i
         new_order_id = exec("SELECT MAX(order_id) FROM assignment_class WHERE classid=$1", [new_class_id]).first['max'].to_i + 1
@@ -323,11 +293,9 @@ module Maple::MapleTA
       end
 
       def insert_assignment_policy(assignment_policy_hash, new_assignment_class_id)
-        t4 = Time.now
         assignment_policy_insert_cmd = InsertCmd.new("assignment_policy")
         push_assignment_policy(assignment_policy_hash, new_assignment_class_id, assignment_policy_insert_cmd)
         execute(assignment_policy_insert_cmd)
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_policy new assignment class in #{time_diff t4, Time.now}"
       end
 
       def update_assignment_policy(assignment)
@@ -342,7 +310,6 @@ module Maple::MapleTA
       end
 
       def insert_assignment_question_groups(assignment_question_group_hashes, assignment_question_group_map_hashes, new_assignment_id)
-        t5 = Time.now
         assignment_question_group_insert_cmd = InsertCmd.new('assignment_question_group')
         assignment_question_group_map_insert_cmd = InsertCmd.new('assignment_question_group_map')
 
@@ -352,7 +319,6 @@ module Maple::MapleTA
 
         execute(assignment_question_group_insert_cmd)
         execute(assignment_question_group_map_insert_cmd)
-        #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#copy_assignment_question_group in #{time_diff t5, Time.now}"
       end
 
       def update_assignment_question_groups(assignment)

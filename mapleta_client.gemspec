@@ -26,11 +26,13 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency     "mechanize", "1.0.0"
   s.add_runtime_dependency     "pg", ">= 0.14.0"
   s.add_runtime_dependency     "uuid", ">= 2.3.0"
+  s.add_runtime_dependency     "sequel", "~> 4.7"
 
   s.add_development_dependency "bundler"
   s.add_development_dependency "rspec", "~> 2.14"
+  s.add_development_dependency "webmock", "~> 1.16"
+  s.add_development_dependency "vcr", "~> 2.8"
   s.add_development_dependency "rake"
   # s.add_development_dependency "rcov", ">= 0"
   # s.add_development_dependency "rcov", ">= 0"
 end
-

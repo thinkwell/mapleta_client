@@ -4,15 +4,19 @@ module Maple::MapleTA
 module Database::Macros
   describe Assignment do
 
-    before(:all) do
-      @settings = RSpec.configuration.maple_settings
-      @connection = spec_maple_connection
-      @database_connection = Maple::MapleTA.database_connection
-      @connection.connect
+    let(:class_name) { "test-class-#{ ActiveSupport::SecureRandom.hex }"  }
+    let(:settings)            { RSpec.configuration.maple_settings }
+    let(:connection)          { spec_maple_connection }
+    let(:database_connection) { Maple::MapleTA.database_connection }
+
+    before :all do
+      VCR.use_cassette('ws/connect') { connection.connect }
     end
 
     before(:each) do
-      @mapleta_class = @connection.ws.create_class("my-test-class")
+      VCR.use_cassette 'ws/createclass' do
+        @mapleta_class = connection.ws.create_class class_name
+      end
     end
 
     after(:each) do
