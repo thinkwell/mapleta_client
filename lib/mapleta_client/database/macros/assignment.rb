@@ -52,7 +52,7 @@ module Maple::MapleTA
 
         max_order_id = exec("SELECT MAX(order_id) FROM assignment_class WHERE classid=$1", [new_class_id]).first['max'].to_i
 
-        transaction do
+        # transaction do
           assignment_insert_cmd = InsertCmd.new("assignment")
           assignment_class_insert_cmd = InsertCmd.new("assignment_class")
           assignment_policy_insert_cmd = InsertCmd.new("assignment_policy")
@@ -68,7 +68,6 @@ module Maple::MapleTA
             name = assignment_ids_and_names[assignment_class['id'].to_i]
             unless name
               name = assignment_class['name']
-              #puts "No name found for assignment class id #{assignment_class['id'].to_i} - using #{name}"
             end
             assignment_class_id_old_to_new[assignment_class['id'].to_i] = new_assignment_class_id
 
@@ -112,7 +111,8 @@ module Maple::MapleTA
           execute(assignment_mastery_penalty_insert_cmd)
           
           execute(assignment_advanced_policy_insert_cmd)
-        end
+        # end
+        
         assignment_class_id_old_to_new
       rescue PG::Error => e
         Rails.logger.error e.backtrace.join("\n")
@@ -122,9 +122,17 @@ module Maple::MapleTA
       def create_assignment(assignment)
         new_assignment_id = nil
 
-        transaction do
-          new_assignment_id       = insert_assignment(assignment.assignment_hash, assignment.class_id)
-          new_assignment_class_id = insert_assignment_class(assignment.assignment_class_hash, assignment.class_id, new_assignment_id)
+        # transaction do
+          new_assignment_id = insert_assignment(
+            assignment.assignment_hash,
+            assignment.class_id
+          )
+
+          new_assignment_class_id = insert_assignment_class(
+            assignment.assignment_class_hash,
+            assignment.class_id,
+            new_assignment_id
+          )
 
           insert_assignment_policy(
             assignment.assignment_policy_hash,
@@ -152,13 +160,13 @@ module Maple::MapleTA
             new_assignment_id,
             new_assignment_class_id
           )
-        end
+        # end
 
         new_assignment_id
       end
 
       def edit_assignment(assignment)
-        transaction do
+        # transaction do
           update_assignment(assignment)
 
           update_assignment_class(assignment)
@@ -173,7 +181,7 @@ module Maple::MapleTA
           #
           #insert_assignment_advanced_policy(assignment.assignment_advanced_policy_hashes, new_assignment_id, new_assignment_class_id)
           #
-        end
+        # end
       end
 
       def copy_assignment_to_class(assignment_class_id, new_class_id)
@@ -187,7 +195,7 @@ module Maple::MapleTA
         raise Errors::DatabaseError.new("Cannot find assignment with id=#{assignment_class['assignmentid']}") unless assignment
 
         new_assignment_class_id = nil
-        transaction do
+        # transaction do
           new_assignment_id = insert_assignment(assignment, new_class_id)
 
           new_assignment_class_id = insert_assignment_class(assignment_class, new_class_id, new_assignment_id)
@@ -209,7 +217,7 @@ module Maple::MapleTA
 
           assignment_advanced_policy = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_id=$1", [assignment_class['assignmentid']])
           insert_assignment_advanced_policy(assignment_advanced_policy, new_assignment_id, new_assignment_class_id)
-        end
+        # end
 
         new_assignment_class_id
       rescue PG::Error => e
@@ -344,6 +352,7 @@ module Maple::MapleTA
           assignment_question_group_insert_cmd.push(assignment_question_group_hash, [], {'id' => new_group_id, 'assignmentid' => new_assignment_id})
 
           assignment_question_group_map_hashes = assignment_question_group_maps_all_hashes.select{|a| a['groupid'] == assignment_question_group_hash['id']}
+
           assignment_question_group_map_hashes.each do |assignment_question_group_map_hash|
             assignment_question_group_map_insert_cmd.push(assignment_question_group_map_hash, %w(id), {'groupid' => new_group_id})
           end

@@ -49,7 +49,7 @@ module Maple::MapleTA
         'testId' => id,
       }
 
-      page(connection.launch('assignment', params), connection, view_opts)
+      page connection.launch('assignment', params), connection, view_opts
     end
 
 
@@ -134,14 +134,8 @@ module Maple::MapleTA
       "printable" => printable, "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback}
     end
 
-    def assignment_question_group_hashes(questions=nil)
-      hashes = []
-      q = questions
-      unless questions
-        q = self.questions
-      end
-      q.each {|question| hashes.push({"id" => nil, "assignmentid" => nil, "name" => question['name'], "order_id" => 0})}
-      hashes
+    def assignment_question_group_hashes(questions = self.questions)
+      questions.map { |question| {"id" => nil, "assignmentid" => nil, "name" => question['name'], "order_id" => 0} }
     end
 
     def assignment_question_group_map_hashes(questions=nil)

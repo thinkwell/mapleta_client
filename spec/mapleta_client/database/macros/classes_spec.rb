@@ -1,30 +1,23 @@
 require 'spec_helper'
 
 module Maple::MapleTA
-module Database::Macros
-  describe Classes do
+  module Database::Macros
+    describe Classes do
+      let(:connection) { Maple::MapleTA::Connection.new RSpec.configuration.maple_settings }
+      let(:database)   { RSpec.configuration.database_connection }
+      let(:mapleta_class) {
+        result = database.exec <<-SQL
+         INSERT INTO classes (name, dirname) VALUES ('Example class', 'dirname?')
+         RETURNING cid
+        SQL
 
-    before(:all) do
-      @connection = spec_maple_connection
-      @database_connection = Maple::MapleTA.database_connection
-      @connection.connect
+        double 'Class', id: result.values.join.to_i
+      }
+
+      it "deletes the created class" do
+        database.delete_class(mapleta_class.id)
+        pending
+      end
     end
-
-    before(:each) do
-      @mapleta_class = @connection.ws.create_class("my-test-class")
-    end
-
-    after(:each) do
-      @database_connection.delete_class(@mapleta_class.id)
-    end
-
-    it "deletes the created class" do
-      @connection.ws.clazz(@mapleta_class.id).should_not be_nil
-      @database_connection.delete_class(@mapleta_class.id)
-      @connection.ws.clazz(@mapleta_class.id).should be_nil
-    end
-
-
   end
-end
 end

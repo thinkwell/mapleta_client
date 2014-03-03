@@ -1,68 +1,72 @@
 require 'spec_helper'
 
-
 module Maple::MapleTA
   class MockSpecConnection < Maple::MapleTA::Connection
     include Communication
   end
 
   describe Communication::InstanceMethods do
+    let(:connection) { MockSpecConnection.new }
+    let(:base_url)   { RSpec.configuration.maple_settings['base_url'] }
+
     before(:each) do
-      @settings = RSpec.configuration.maple_settings
-      @connection = MockSpecConnection.new
-      @connection.base_url = @settings[:base_url]
+      connection.base_url = base_url
     end
 
     it "adds instance methods to a class when included" do
-      @connection.should respond_to(:fetch_response)
-      @connection.should respond_to(:fetch_page)
-      @connection.should respond_to(:fetch_api)
-      @connection.should respond_to(:fetch_api_page)
+      connection.should respond_to(:fetch_response)
+      connection.should respond_to(:fetch_page)
+      connection.should respond_to(:fetch_api)
+      connection.should respond_to(:fetch_api_page)
     end
 
     describe "#fetch_response" do
       it "fetches a response over HTTP" do
-        @connection.fetch_response(@settings[:base_url]).should be_a(Net::HTTPResponse)
+        VCR.use_cassette('get-mapleta') do
+          connection.fetch_response(base_url).should be_a Net::HTTPResponse
+        end
       end
 
       it "accepts a block" do
-        block_called = 0
-        @connection.fetch_response(@settings[:base_url]) do |request|
-          block_called += 1
-          request.should be_a(Net::HTTPRequest)
+        VCR.use_cassette('get-mapleta') do
+          expect { |block| connection.fetch_response base_url, &block }.
+            to yield_with_args an_instance_of Net::HTTP::Get
         end
-        block_called.should == 1
       end
 
       it "sets the JSESSION cookie if session exists" do
-        block_called = 0
-        @connection.stub(:session).and_return('foobar')
-        @connection.fetch_response(@settings[:base_url]) do |request|
-          block_called += 1
+        connection.stub(:session).and_return('foobar')
+
+        block = lambda do |request|
           request['Cookie'].should == 'JSESSIONID=foobar'
         end
-        block_called.should == 1
+
+        VCR.use_cassette('get-mapleta') do
+          connection.fetch_response(base_url, &block)
+        end
       end
 
       it "raises a NetworkError when errors occur" do
         Net::HTTP.stub(:new).and_raise(Timeout::Error)
         expect {
-          @connection.fetch_response(@settings[:base_url])
+          connection.fetch_response(base_url)
         }.to raise_error(Errors::NetworkError)
       end
     end
 
     it "fetches a Mechanize page" do
-      @connection.fetch_page(@settings[:base_url]).should be_a(Mechanize::Page)
+      VCR.use_cassette('get-page-mapleta') do
+        connection.fetch_page(base_url).should be_a Mechanize::Page
+      end
     end
 
     describe "#fetch_api" do
-
       it "uses the correct URL" do
-        expected_uri = URI.parse("#{@settings[:base_url]}/ws/ping")
-        @connection.should_receive(:fetch_response).with(expected_uri, :post).and_throw(Exception)
+        expected_uri = URI.parse("#{base_url}/ws/ping")
+
+        connection.should_receive(:fetch_response).with(expected_uri, :post).and_throw(Exception)
         expect {
-          @connection.fetch_api('ping')
+          connection.fetch_api('ping')
         }.to raise_error
       end
     end

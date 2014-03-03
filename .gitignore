@@ -2,3 +2,4 @@
 Gemfile.lock
 tags
 *.swo
+spec/support/settings.yml

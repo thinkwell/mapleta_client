@@ -9,7 +9,6 @@ module Maple::MapleTA
       include Macros::Classes
       include Macros::Question
       include Macros::Answersheetitem
-
     end
   end
 end

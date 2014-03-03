@@ -13,9 +13,7 @@ module Maple::MapleTA
 
     def self.for(page, opts={})
       klass = classes.detect { |c| c.detect(page) }
-      puts "mapleta : page : #{page.parser}"
       raise Errors::UnexpectedContentError.new(page.parser, "Cannot detect page type") unless klass
-      puts "mapleta : detected page : #{klass}"
       klass.new(page, opts)
     end
 

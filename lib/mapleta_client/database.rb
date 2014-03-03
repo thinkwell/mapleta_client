@@ -23,8 +23,14 @@ module Maple::MapleTA
     self.database_config = args unless args.empty?
     begin
       remove_database_connection
-      opts = self.database_config.is_a?(Array) ? self.database_config : [self.database_config]
-      @database_connection = Maple::MapleTA::Database::Connection.new(*opts)
+      # opts = self.database_config.is_a?(Array) ? self.database_config : [self.database_config]
+      # puts opts.inspect
+
+      @database_connection = Database::Connection.new(
+        :host   => database_config['host'],
+        :dbname => database_config['database']
+      )
+
       @database_connection.exec("SET TIMEZONE='#{self.database_timezone.name}'")
       @database_connection
     rescue PG::Error => e

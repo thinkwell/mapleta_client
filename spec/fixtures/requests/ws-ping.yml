@@ -1,0 +1,57 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://mapletadev.thinkwell.com/mapleta/ws/ping
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <Request>
+          <timestamp>1394040663000</timestamp>
+          <signature>UzoYW3FW8k2DCTsbHZ+vMw==</signature>
+          <value>foobar</value>
+        </Request>
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+      Cookie:
+      - ''
+      Content-Type:
+      - text/xml
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Set-Cookie:
+      - JSESSIONID=3E9239543726B16BE4F99E40BCE8614D; Path=/mapleta/; HttpOnly
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Date:
+      - Wed, 05 Mar 2014 17:31:03 GMT
+      X-Cache:
+      - MISS from dawcons.site
+      X-Cache-Lookup:
+      - MISS from dawcons.site:3128
+      Via:
+      - 1.0 dawcons.site:3128 (squid/2.6.STABLE14)
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: |-
+        <Response>
+          <element>
+            <value>foobar</value>
+          </element>
+        </Response>
+    http_version: 
+  recorded_at: Wed, 05 Mar 2014 17:31:03 GMT
+recorded_with: VCR 2.8.0
