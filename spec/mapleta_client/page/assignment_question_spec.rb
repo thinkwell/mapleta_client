@@ -24,11 +24,11 @@ module Maple::MapleTA
       end
 
       it "returns the question number" do
-        qv.number.should == values[:assignment_question_number]
+        qv.number.should == values['assignment_question_number']
       end
 
       it "returns the total number of questions" do
-        qv.total_questions.should == values[:assignment_question_count]
+        qv.total_questions.should == values['assignment_question_count']
       end
 
       it "returns a list of questions" do
@@ -37,13 +37,13 @@ module Maple::MapleTA
       end
 
       it "returns the point value" do
-        qv.points.should == values[:assignment_question_points]
+        qv.points.should == values['assignment_question_points']
       end
 
       it "returns the question html" do
         html = qv.html
         html.should be_a(String)
-        html.should include(values[:assignment_question_text])
+        html.should include(values['assignment_question_text'])
       end
 
       it "returns the forms hidden fields" do

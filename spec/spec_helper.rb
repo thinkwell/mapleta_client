@@ -16,12 +16,7 @@ settings = YAML.load_file("#{File.dirname(__FILE__)}/support/settings.yml")
 Maple::MapleTA.database_config = settings['database_settings']
 
 RSpec.configure do |config|
-  config.add_setting :maple_values, :default => {
-    :assignment_question_number => 1,
-    :assignment_question_count => 16,
-    :assignment_question_points => 1,
-    :assignment_question_text => '(Click For List)',
-  }
+  config.add_setting :maple_values, default: settings['maple_values']
   config.add_setting :maple_settings, default: settings['maple_settings']
   config.add_setting :database_connection, default: Maple::MapleTA.database_connection
 
