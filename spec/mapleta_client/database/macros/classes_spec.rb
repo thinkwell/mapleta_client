@@ -6,17 +6,35 @@ module Maple::MapleTA
       let(:connection) { Maple::MapleTA::Connection.new RSpec.configuration.maple_settings }
       let(:database)   { RSpec.configuration.database_connection }
       let(:mapleta_class) {
-        result = database.exec <<-SQL
-         INSERT INTO classes (name, dirname) VALUES ('Example class', 'dirname?')
-         RETURNING cid
-        SQL
-
-        double 'Class', id: result.values.join.to_i
+        cid = database.dataset[:classes].insert(name: 'Example class', dirname: 'dirname?')
+        double 'Class', id: cid, save: true
       }
 
-      it "deletes the created class" do
-        database.delete_class(mapleta_class.id)
-        pending
+      let(:user_class) {
+        id = database.dataset[:user_classes].insert(
+          classid: mapleta_class.id,
+          roleid: database.dataset[:roles].insert(id: 1, role: 'student')
+        )
+        double 'UserClass', id: id,  save: true
+      }
+
+      before do
+        mapleta_class.save
+        user_class.save
+      end
+
+      describe 'deleteting a class' do
+        it "deletes the class" do
+          expect {
+            database.delete_class mapleta_class.id
+          }.to change{ database.dataset[:classes].count }.by(-1)
+        end
+
+        it "deletes the user class" do
+          expect {
+            database.delete_class mapleta_class.id
+          }.to change{ database.dataset[:user_classes].count }.by(-1)
+        end
       end
     end
   end

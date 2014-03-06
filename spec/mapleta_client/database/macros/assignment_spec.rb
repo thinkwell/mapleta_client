@@ -5,43 +5,55 @@ module Maple::MapleTA
     describe Assignment do
       let(:settings)      { RSpec.configuration.maple_settings }
       let(:database)      { RSpec.configuration.database_connection }
-      let(:questions)     { 
-        result = database.exec <<-SQL
-         INSERT INTO question (name, mode, questiontext, questionfields,
-            created, algorithm, description, hint, comment, info,
-            solution, lastmodified, annotation, modedescription,
-            tags, author) 
-         VALUES ('Example question', '?', '?',
-            '?', now(), '?', '?', '?', '?', '?',
-            '?', now(), '?', '?',
-            '?', #{mapleta_class.id})
-         RETURNING id
-        SQL
+      let(:questions)     {
+        id = database.dataset[:question].insert(
+          name: 'Example question',
+          mode: '?',
+          questiontext: '?',
+          questionfields: '?',
+          created: 'now()',
+          algorithm: '?',
+          description: '?',
+          hint: '?',
+          comment: '?',
+          info: '?',
+          solution: '?',
+          lastmodified: 'now()',
+          annotation: '?',
+          modedescription: '?',
+          tags: '?',
+          author: mapleta_class.id
+        )
 
-        [ {'id' => result.values.join.to_i, 'name' => 'Example question'} ]
+        [ {'name' => 'Example question', 'id' => id} ]
       }
-      let(:other_questions)     { 
-        result = database.exec <<-SQL
-         INSERT INTO question (name, mode, questiontext, questionfields,
-            created, algorithm, description, hint, comment, info,
-            solution, lastmodified, annotation, modedescription,
-            tags, author) 
-         VALUES ('Example question 2', '?', '?',
-            '?', now(), '?', '?', '?', '?', '?',
-            '?', now(), '?', '?',
-            '?', #{mapleta_class.id})
-         RETURNING id
-        SQL
 
-        [ {'id' => result.values.join.to_i, 'name' => 'Example question 2'} ]
+      let(:other_questions)     {
+        id = database.dataset[:question].insert(
+          name: 'Example question 2',
+          mode: '?',
+          questiontext: '?',
+          questionfields: '?',
+          created: 'now()',
+          algorithm: '?',
+          description: '?',
+          hint: '?',
+          comment: '?',
+          info: '?',
+          solution: '?',
+          lastmodified: 'now()',
+          annotation: '?',
+          modedescription: '?',
+          tags: '?',
+          author: mapleta_class.id
+        )
+
+        [ {'name' => 'Example question 2', 'id' => id} ]
       }
+
       let(:mapleta_class) {
-        result = database.exec <<-SQL
-         INSERT INTO classes (name, dirname) VALUES ('Example class', 'dirname?')
-         RETURNING cid
-        SQL
-
-        double 'Class', id: result.values.join.to_i
+        cid = database.dataset[:classes].insert(name: 'Example class', dirname: 'dirname?')
+        double 'Class', id: cid
       }
 
       let(:assignment) {
@@ -55,37 +67,41 @@ module Maple::MapleTA
       }
 
       before(:each) do
-        @new_assignment_id = database.create_assignment assignment
+        @assignment_id = database.create_assignment assignment
       end
 
       describe "Assignment creation" do
         it "should create a new assignment" do
-          @new_assignment_id.should_not be_nil
+          @assignment_id.should_not be_nil
 
           assignment = database.assignment mapleta_class.id
           assignment.should_not be_nil
           assignment['name'].should == "test assignment"
         end
 
-        it "should create the assignment_question_group for each question" do
-          assignment_question_groups = database.assignment_question_groups @new_assignment_id
+        it "should create the assignment question group for each question" do
+          assignment_question_groups = database.assignment_question_groups @assignment_id
           assignment_question_groups.count.should == 1
           assignment_question_groups.first['name'].should == 'Example question'
         end
+        
+        it "creates the assignment question group map" do
+          pending
+        end
 
-        it "should create the assignment_class" do
+        it "should create the assignment class" do
           assignment_class = database.assignment_class mapleta_class.id
           assignment_class.should_not be_nil
-          assignment_class['assignmentid'].should == @new_assignment_id.to_s
+          assignment_class['assignmentid'].should == @assignment_id
           assignment_class['name'].should == "test assignment"
         end
 
-        it "should create the assignment_policy" do
+        it "should create the assignment policy" do
           assignment_class  = database.assignment_class mapleta_class.id
-          assignment_policy = database.assignment_policy(assignment_class['id'])
+          assignment_policy = database.assignment_policy assignment_class['id']
           assignment_policy.should_not be_nil
-          assignment_policy['reworkable'].should == 'f'
-          assignment_policy['printable'].should == 't'
+          assignment_policy['reworkable'].should be false
+          assignment_policy['printable'].should be true
         end
       end
 
@@ -95,7 +111,7 @@ module Maple::MapleTA
           assignment.questions  = other_questions
           assignment.reworkable = true
           assignment.printable  = false
-          assignment.id         = @new_assignment_id
+          assignment.id         = @assignment_id
           database.edit_assignment assignment
         end
 
@@ -106,7 +122,7 @@ module Maple::MapleTA
         end
 
         it "should update the assignment_question_groups" do
-          assignment_question_groups = database.assignment_question_groups @new_assignment_id
+          assignment_question_groups = database.assignment_question_groups @assignment_id
           assignment_question_groups.count.should == 1
           assignment_question_groups.first['name'].should == 'Example question 2'
         end
@@ -114,7 +130,7 @@ module Maple::MapleTA
         it "should update the assignment_class" do
           assignment_class = database.assignment_class(mapleta_class.id)
           assignment_class.should_not be_nil
-          assignment_class['assignmentid'].should == @new_assignment_id.to_s
+          assignment_class['assignmentid'].should == @assignment_id
           assignment_class['name'].should == "test assignment edited"
         end
 
@@ -122,8 +138,8 @@ module Maple::MapleTA
           assignment_class = database.assignment_class mapleta_class.id
           assignment_policy = database.assignment_policy assignment_class['id']
           assignment_policy.should_not be_nil
-          assignment_policy['reworkable'].should == 't'
-          assignment_policy['printable'].should == 'f'
+          assignment_policy['reworkable'].should be true
+          assignment_policy['printable'].should be false
         end
       end
 
