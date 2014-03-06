@@ -1,431 +1,473 @@
----
-http_interactions:
-- request:
+--- 
+http_interactions: 
+- request: 
     method: get
     uri: http://mapletadev.thinkwell.com/mapleta
-    body:
+    body: 
       encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip,identity
-      Accept:
-      - '*/*'
-      User-Agent:
+      string: ""
+    headers: 
+      Accept: 
+      - "*/*"
+      User-Agent: 
       - WWW-Mechanize/1.0.0 (http://rubyforge.org/projects/mechanize/)
-      Connection:
+      Connection: 
       - keep-alive
-      Keep-Alive:
-      - '300'
-      Accept-Language:
+      Keep-Alive: 
+      - "300"
+      Accept-Encoding: 
+      - gzip,identity
+      Accept-Language: 
       - en-us,en;q=0.5
-      Host:
+      Host: 
       - mapletadev.thinkwell.com
-      Accept-Charset:
+      Accept-Charset: 
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
-  response:
-    status:
+  response: 
+    status: 
       code: 302
-      message: Moved Temporarily
-    headers:
-      Server:
+      message: Found
+    headers: 
+      Server: 
       - Apache-Coyote/1.1
-      Location:
+      Location: 
       - http://mapletadev.thinkwell.com/mapleta/
-      Date:
-      - Wed, 05 Mar 2014 17:31:00 GMT
-      X-Cache:
-      - MISS from dawcons.site
-      X-Cache-Lookup:
-      - MISS from dawcons.site:3128
-      Via:
-      - 1.0 dawcons.site:3128 (squid/2.6.STABLE14)
-      Connection:
-      - close
-    body:
-      encoding: UTF-8
-      string: ''
+      Transfer-Encoding: 
+      - chunked
+      Date: 
+      - Thu, 06 Mar 2014 19:24:50 GMT
+    body: 
+      encoding: US-ASCII
+      string: ""
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:01 GMT
-- request:
+  recorded_at: Thu, 06 Mar 2014 19:24:50 GMT
+- request: 
     method: get
     uri: http://mapletadev.thinkwell.com/mapleta/
-    body:
+    body: 
       encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip,identity
-      Accept:
-      - '*/*'
-      User-Agent:
+      string: ""
+    headers: 
+      Accept: 
+      - "*/*"
+      User-Agent: 
       - WWW-Mechanize/1.0.0 (http://rubyforge.org/projects/mechanize/)
-      Connection:
+      Connection: 
       - keep-alive
-      Keep-Alive:
-      - '300'
-      Accept-Language:
+      Keep-Alive: 
+      - "300"
+      Accept-Encoding: 
+      - gzip,identity
+      Accept-Language: 
       - en-us,en;q=0.5
-      Host:
+      Host: 
       - mapletadev.thinkwell.com
-      Accept-Charset:
+      Accept-Charset: 
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
-      Referer:
+      Referer: 
       - http://mapletadev.thinkwell.com/mapleta
-  response:
-    status:
+  response: 
+    status: 
       code: 200
       message: OK
-    headers:
-      Server:
+    headers: 
+      Server: 
       - Apache-Coyote/1.1
-      Set-Cookie:
-      - JSESSIONID=8E2BCC4F6952991C87D59B75AB8A1DCF; Path=/mapleta/; HttpOnly
-      Content-Type:
+      Set-Cookie: 
+      - JSESSIONID=751F510834BB979DE73CC918AA101809; Path=/mapleta/; HttpOnly
+      Content-Type: 
       - text/html;charset=UTF-8
-      Content-Language:
+      Content-Language: 
       - en-US
-      Content-Length:
-      - '1414'
-      Date:
-      - Wed, 05 Mar 2014 17:31:00 GMT
-      X-Cache:
-      - MISS from dawcons.site
-      X-Cache-Lookup:
-      - MISS from dawcons.site:3128
-      Via:
-      - 1.0 dawcons.site:3128 (squid/2.6.STABLE14)
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: "\n\n\n\n\n\n\n\n\n\n\n\n<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01
-        Transitional//EN\">\n<html lang=\"en-US\">\n<head>\n\t<base href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/ForwardHandlerAction.do\">\n\n\t<title>Redirector</title>\n\n\t<meta
-        http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">\n\t<meta
-        http-equiv=\"pragma\" content=\"no-cache\">\n\t<meta http-equiv=\"cache-control\"
-        content=\"no-cache\">\n\t<meta http-equiv=\"expires\" content=\"0\">\n\t<meta
-        http-equiv=\"description\"\n\t\tcontent=\"Execute a redirection to another
-        frame\">\n\n\t<script type=\"text/javascript\">\n\t\tfunction doSubmit() {\n\t\t\tvar
-        dosubmit = true;\n\t\t\tvar confirm = document.forms[0].confirmation;\n\t\t\tif
-        (confirm) {\n\t\t\t\tvar msg = document.forms[0].confirmation.value;\n\t\t\t\tif
-        (msg.length > 0) {\n\t\t\t\t\tvar doAlternateLocation = window.confirm(msg);\n\t\t\t\t\tif
-        (!doAlternateLocation) {\n\t\t\t\t\t\t//purge the current actionID\n\t\t\t\t\t\tobjActionID
-        = document.forms[0].actionID;\n\t\t\t\t\t\tobjCancelActionID = document.forms[0].cancelActionID;\n\t\t\t\t\t\tif
-        (objActionID && objCancelActionID) {\n\t\t\t\t\t\t\t\tobjActionID.value =
-        objCancelActionID.value;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tdocument.forms[0].action
-        = \"\";\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tdocument.forms[0].submit();\n\t\t}\n\t\t\n\t\tfunction
-        throwAlert(msg) {\n\t\t\tif (msg.length > 0) {\n\t\t\t\talert(msg);\n\t\t\t}\n\t\t}\n\t</script>\n</head>\n\n<body
-        onload=\"doSubmit();\">\n\t<form action=\"/mapleta/login/login.do\"\n\t\ttarget=\"_top\"\n\t\tmethod=\"post\">\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t</form>\n</body>\n</html>\n"
+      Content-Length: 
+      - "1414"
+      Date: 
+      - Thu, 06 Mar 2014 19:24:50 GMT
+    body: 
+      encoding: US-ASCII
+      string: "\n\n\n\n\n\n\n\n\n\n\n\n\
+        <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n\
+        <html lang=\"en-US\">\n\
+        <head>\n\
+        \t<base href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/ForwardHandlerAction.do\">\n\n\
+        \t<title>Redirector</title>\n\n\
+        \t<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">\n\
+        \t<meta http-equiv=\"pragma\" content=\"no-cache\">\n\
+        \t<meta http-equiv=\"cache-control\" content=\"no-cache\">\n\
+        \t<meta http-equiv=\"expires\" content=\"0\">\n\
+        \t<meta http-equiv=\"description\"\n\
+        \t\tcontent=\"Execute a redirection to another frame\">\n\n\
+        \t<script type=\"text/javascript\">\n\
+        \t\tfunction doSubmit() {\n\
+        \t\t\tvar dosubmit = true;\n\
+        \t\t\tvar confirm = document.forms[0].confirmation;\n\
+        \t\t\tif (confirm) {\n\
+        \t\t\t\tvar msg = document.forms[0].confirmation.value;\n\
+        \t\t\t\tif (msg.length > 0) {\n\
+        \t\t\t\t\tvar doAlternateLocation = window.confirm(msg);\n\
+        \t\t\t\t\tif (!doAlternateLocation) {\n\
+        \t\t\t\t\t\t//purge the current actionID\n\
+        \t\t\t\t\t\tobjActionID = document.forms[0].actionID;\n\
+        \t\t\t\t\t\tobjCancelActionID = document.forms[0].cancelActionID;\n\
+        \t\t\t\t\t\tif (objActionID && objCancelActionID) {\n\
+        \t\t\t\t\t\t\t\tobjActionID.value = objCancelActionID.value;\n\
+        \t\t\t\t\t\t}\n\
+        \t\t\t\t\t\tdocument.forms[0].action = \"\";\n\
+        \t\t\t\t\t}\n\
+        \t\t\t\t}\n\
+        \t\t\t}\n\
+        \t\t\tdocument.forms[0].submit();\n\
+        \t\t}\n\
+        \t\t\n\
+        \t\tfunction throwAlert(msg) {\n\
+        \t\t\tif (msg.length > 0) {\n\
+        \t\t\t\talert(msg);\n\
+        \t\t\t}\n\
+        \t\t}\n\
+        \t</script>\n\
+        </head>\n\n\
+        <body onload=\"doSubmit();\">\n\
+        \t<form action=\"/mapleta/login/login.do\"\n\
+        \t\ttarget=\"_top\"\n\
+        \t\tmethod=\"post\">\n\
+        \t\t\n\
+        \t\t\n\
+        \t\t\n\
+        \t\t\n\
+        \t\t\n\
+        \t\t\n\
+        \t</form>\n\
+        </body>\n\
+        </html>\n"
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:01 GMT
-- request:
+  recorded_at: Thu, 06 Mar 2014 19:24:50 GMT
+- request: 
     method: post
     uri: http://mapletadev.thinkwell.com/mapleta/login/login.do
-    body:
+    body: 
       encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip,identity
-      Accept:
-      - '*/*'
-      User-Agent:
+      string: ""
+    headers: 
+      Accept: 
+      - "*/*"
+      User-Agent: 
       - WWW-Mechanize/1.0.0 (http://rubyforge.org/projects/mechanize/)
-      Connection:
+      Connection: 
       - keep-alive
-      Keep-Alive:
-      - '300'
-      Accept-Language:
+      Keep-Alive: 
+      - "300"
+      Accept-Encoding: 
+      - gzip,identity
+      Accept-Language: 
       - en-us,en;q=0.5
-      Host:
+      Host: 
       - mapletadev.thinkwell.com
-      Accept-Charset:
+      Accept-Charset: 
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
-      Cookie:
-      - JSESSIONID=8E2BCC4F6952991C87D59B75AB8A1DCF
-      Referer:
+      Cookie: 
+      - JSESSIONID=751F510834BB979DE73CC918AA101809
+      Referer: 
       - http://mapletadev.thinkwell.com/mapleta/
-      Content-Type:
+      Content-Type: 
       - application/x-www-form-urlencoded
-      Content-Length:
-      - '0'
-  response:
-    status:
+      Content-Length: 
+      - "0"
+  response: 
+    status: 
       code: 200
       message: OK
-    headers:
-      Server:
+    headers: 
+      Server: 
       - Apache-Coyote/1.1
-      Set-Cookie:
-      - JSESSIONID=EAECDABD1B960CE46AABA7E14163F6C2; Path=/mapleta/; HttpOnly
-      Content-Type:
+      Set-Cookie: 
+      - JSESSIONID=8E5C21293AD0704180CAAC6C461CBB4C; Path=/mapleta/; HttpOnly
+      Content-Type: 
       - text/html;charset=UTF-8
-      Content-Language:
+      Content-Language: 
       - en-US
-      Date:
-      - Wed, 05 Mar 2014 17:31:00 GMT
-      X-Cache:
-      - MISS from dawcons.site
-      X-Cache-Lookup:
-      - MISS from dawcons.site:3128
-      Via:
-      - 1.0 dawcons.site:3128 (squid/2.6.STABLE14)
-      Connection:
-      - close
-    body:
-      encoding: UTF-8
-      string: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<!DOCTYPE html>\n<html lang=\"en-US\">\n<head>\n\t<!--
-        \ stdLayout.jsp -->\n\t<base href=\"http://mapletadev.thinkwell.com:80/mapleta/\">\n\n\n\t<title>Maple
-        T.A. - \n\t\t\n\t\t\tLogin\n\t\t\n\t</title>\n\n\t<meta http-equiv=\"Content-Type\"
-        content=\"text/html;charset=UTF-8\">\n\t<meta http-equiv=\"Pragma\" content=\"no-cache\">\n\t<meta
-        http-equiv=\"Cache-Control\" content=\"no-cache\">\n\t<meta http-equiv=\"Expires\"
-        content=\"0\">\n\t<meta http-equiv=\"description\"\n\t\tcontent=\"This is
-        the standard page layout\">\n\n\t<link rel=\"stylesheet\" type=\"text/css\"
-        href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/jquery.ui.css\">\n\t<link
-        rel=\"stylesheet\" href=\"/mapleta/modules/repository/css/bootstrap.min.css\">\n\t<link
-        rel=\"stylesheet\" href=\"/mapleta/modules/repository/css/bootstrap-responsive.min.css\">\n\t
-        \n\t<link rel=\"stylesheet\" type=\"text/css\"\n\t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/main.css\">\n\t<link
-        rel=\"stylesheet\" type=\"text/css\"\n\t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/menubar.css\">\n\t<link
-        rel=\"stylesheet\" type=\"text/css\"\n\t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/questions.css\">\n\t\t\n\t<link
-        rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/print.css\"
-        media=\"print\">  \n\n\t\n\t\n\t<script language=\"JavaScript\">\n\t// strings
-        for main.js\n\tvar msgMainScriptImminentSessionTimeoutWarningPart1 = \"DISCONNECTION
-        WARNING\\n\\nYou may be in danger of losing your work on this page. The internet
-        server\\nthat sent this question to you needs a reply. To save your work and
-        continue\\nworking, do the following within the next \";\n\tvar msgMainScriptImminentSessionTimeoutWarningPart2
-        = \"minutes:\\n\\n1) Click the Next or Back button above.\\n\\n2) When the
-        new question appears, click the Back or Next button to return to this\\nquestion.
-        \ Your work will be saved and you can then continue to enter responses\\non
-        this page.\\n\\n(If the Next or Back buttons are greyed out, click the Save
-        & Quit button.  You\\nwill have to log-in again to return to this question,
-        but your work will be preserved.)\\n\\nMessage time: \";\n\tvar msgMainScriptTimedAssignmentWarning
-        = \"This is a timed assignment.  Once it has been started the timer cannot\\nbe
-        stopped until it runs out or the assignment is graded.\";\n\tvar msgMainScriptFinishOtherAssignmentFirst
-        = \"You are currently either taking an assignment, or you\\r\\nhave another
-        browser window open to the class homepage.\\r\\n\\r\\nPlease finish the assignment
-        and/or close the other browser before\\r\\nattempting another assignment.\";\n\t</script>\n\n\t\n\n\n\n\n\n\n\n<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery.min.js\"></script>\n\t\n\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/mathjax/MathJax.js?config=TeX-MML-AM_HTMLorMML\"></script>\n\t\t
-        \   \n\t<script type=\"text/javascript\">\n\t\n\t\tMathJax.Hub.Config({    \n\t\t
-        \   menuSettings: {\n\t\t    \t    zoom: \"Click\"\n\t\t   \t}\n\t\t});  \n\t\t\n\t\tMathJax.Hub.Register.StartupHook(\"mml
-        Jax Ready\", function (){ \t\n\t\t\t // Set the amount that math's font size
-        is multiplied by in fractions\n\t\t\t // Defaulting to 1 to look like Maple
-        T.A. 8's images., the MathML default is 0.72\n\t\t\tMathJax.ElementJax.mml.math.prototype.defaults.scriptsizemultiplier
-        = 1;\t\t\t   \n\t\t}); \n\t</script>\n\n\n<script type=\"text/javascript\">\n\tvar
-        wsQuestionEngine = false;\n\tvar wsExpanded = false;\n</script>\n\n\n   \n\n
-        \ <script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery-ui.min.js\"></script>\n\n\n\n\n\n\n\n\t<script\n\t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/buttons.js\"></script>\n\t<script\n\t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/scripts/buttons.js\"></script>\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/main.js\"></script>\n\t<script\n\t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/scripts/menubar.js\"></script>\n\t<script\n\t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/twisty.js\"></script>\n\t\t\n\t<link
-        rel=\"shortcut icon\"\n\t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/images/titlebar/favicon.ico\"
-        />\n</head>\n\n\n\n\n\n\n\n\n\n\n<script type=\"text/javascript\">\n\n\tvar
-        theLocale = \"en_US\";\n\n\tif (theLocale.substr(0,2) == \"en\") {\n\t\ttheLocale
-        = \"en_US\";\n\t}\n\t\n\t/*\n\t * Return the root URL for the server.\n\t
-        */\n\tfunction getBaseURL() {\n\t\treturn \"http://mapletadev.thinkwell.com:80/mapleta/\";\n\t}\n\n</script>\n\n\n\n\n\n\n\n\n\n<body
-        onload=\"onLoad();\">\n\n\t\t<script language=\"Javascript\" type=\"text/javascript\">\n\t\t\tfunction
-        confirmAction() {\n\t\t\t\t\n\t\t\t\treturn false;\n\t\t\t}\n\t\t</script>\n\t\t<div
-        id=\"top\">\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"pageHeader\">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\n\t\n\n\t\t<img\n\t\t\tsrc=\"/mapleta/modules/skin/images/titlebar/logo.gif\"\n\t\t\twidth=163
-        height=60 border=\"0\" id=\"logo\" />\n\n\t\t\n\t\t\n\t\t\t\n\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t\n\t\t<div
-        id=\"title\"><h1>\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\tLogin\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t</h1></div>\n\t\t\n\t\t\n\n\t\t<div
-        id=\"welcome\">\n\t\t</div>\n\n\t\n\t\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<div
-        class=\"crumbTrail\">\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div
-        style=\"float:left;\">\n\n</div>\n\n\n\n\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t<div
-        class=\"menu\">\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\n\t\t\t\t\n\t\t\t\t<div
-        id=\"holder\">\n\t\t\t\t\t\t\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t<div
-        id=\"pageContainer\">\n\t\t\t\t\t\n\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\n\n<style>\n\ttable.login
-        {\n\t\tborder: solid #777777 10px;\n\t\tmargin: 1em;\n\t\tpadding: 10px;\n\t\tbackground-color:
-        #cccccc;\n\t\tfont-family: sans-serif;\n\t}\n\ttable.errors {\n\t\tborder:
-        solid white 10 px;\n\t\tmargin: 1em;\n\t\tfont-family: sans-serif;\n\t}\n\ttd.login
-        td.errors{\n\t\tpadding: 10px;\n\t\t\n\t}\n</style>\n\n\n\n\n\t\n\n\n<div
-        class=\"container\">\n\n<div class=\"hero-unit row\">\n\t<h1 class=\"span4\">Thinkwell\n</h1>\n\t<form
-        name=\"LoginActionForm\" id=\"LoginActionForm\" method=\"post\" action=\"/mapleta/login/login.do\"
-        class=\"form-horizontal span6\" onsubmit=\"return validateLoginActionForm(this);\">\n\t\t<input
-        type=\"hidden\" name=\"terminateOldSession\" value=\"false\">\n\t\t<input
-        type=\"hidden\" name=\"lockdownToken\" value=\"\">\n\t\t\n\t\t\n\t\t\t<div
-        class=\"control-group\">\n\t\t\t\t<span class=\"control-label\">\n\t\t\t\t\t<label
-        for=\"LoginActionForm.login\" id=\"LoginActionForm.login.label\">User login</label>\n\t\t\t\t</span>\n\t\t\t\t<div
-        class=\"controls\">\n\t\t\t\t\t<input type=\"text\" name=\"login\" value=\"\"
-        onchange=\"return validateLoginActionForm_login(document.LoginActionForm,
-        this, true, null);\" id=\"LoginActionForm.login\"><br/>\n\t\t\t\t\t<span id=\"LoginActionForm.login.error\"
-        style=\"display:none\" class=\"errorStyle1\"></span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\n\t\t\n\t\t\t<div
-        class=\"control-group\">\n\t\t\t\t<span class=\"control-label\">\n\t\t\t\t\t<label
-        for=\"LoginActionForm.password\" id=\"LoginActionForm.password.label\">Password</label>\n\t\t\t\t</span>\n\t\t\t\t<div
-        class=\"controls\">\n\t\t\t\t\t<input type=\"password\" name=\"password\"
-        value=\"\" onchange=\"return validateLoginActionForm_password(document.LoginActionForm,
-        this, true, null);\" id=\"LoginActionForm.password\"><br/>\n\t\t\t\t\t<span
-        id=\"LoginActionForm.password.error\" style=\"display:none\" class=\"errorStyle1\"></span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\n\t\t\t<div
-        class=\"control-group\">\n\t\t\t\t<div class=\"controls\">\n\t\t\t\t\t<input
-        type=\"submit\" value=\"Log in\" class=\"btn btn-primary\">\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t\n\t\n\t\t\t\n\t\t\t<div
-        class=\"control-group\">\n\t\t\t\t<div class=\"controls\">\n\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t<a
-        href=\"passwordreset/PasswordReset.do\">\t      \t\t\t\n\t\t\t\t\t\t\t\t\t\tForgot
-        your Password?\n\t\t\t\t\t\t\t\t\t</a>\n\n\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t\t\t</div>\t\n\t\t\t\n\t\t\t\n\t\n\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t<div
-        class=\"control-group\">\n\t\t\t\t<div class=\"controls\">\n\t\t\n\t\t\t\t\t<a
-        href=\"\" onclick=\"javascript:displayPopupDialog('Supported Browsers', getBaseURL()+'modules/supported.jsp',650,450);
-        return false;\">\t      \t\t\t\n\t      \t\t\t\tSee the list of supported
-        browsers.\n\t\t\t\t\t</a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t</form>\n<script
-        type=\"text/javascript\" language=\"JavaScript\">\n  <!--\n  var focusControl
-        = document.forms[\"LoginActionForm\"].elements[\"login\"];\n\n  if (focusControl
-        != null && focusControl.type != \"hidden\" && !focusControl.disabled && focusControl.style.display
-        != \"none\") {\n     focusControl.focus();\n  }\n  // -->\n</script>\n\n<script
-        type=\"text/javascript\" language=\"JavaScript1.1\">\n<!-- Begin\n\n    var
-        bCancel = false;\n\n    function validateLoginActionForm(form) {\n        if
-        (bCancel) {\n            return true;\n        }\n        var messages = new
-        Array();\n        validateLoginActionForm_login(form, form[\"login\"], messages.length
-        == 0, messages);\n        validateLoginActionForm_password(form, form[\"password\"],
-        messages.length == 0, messages);\n        if (messages.length > 0) {\n            return
-        handleFormErrors(form, messages);\n        }\n        return true;\n    }\n\n
-        \   function validateLoginActionForm_login(form, field, setFocus, messages)
-        {\n        if (!validateRequired(field)) {\n            return processError(form,
-        field, -1, null, setFocus, messages, \"User login is required.\");\n        }\n
-        \       if (window.html2ProcessFormField) {\n            html2ProcessFormField(form.name,
-        field.name, true, \"\")\n        }\n        return true;\n    }\n\n    function
-        validateLoginActionForm_password(form, field, setFocus, messages) {\n        if
-        (!validateRequired(field)) {\n            return processError(form, field,
-        -1, null, setFocus, messages, \"Password is required.\");\n        }\n        if
-        (window.html2ProcessFormField) {\n            html2ProcessFormField(form.name,
-        field.name, true, \"\")\n        }\n        return true;\n    }\n\n   /*$RCSfile:
-        RequiredValidator.js,v $ $Revision: 1.1 $ $Date: 2004/11/15 00:00:00 $ */\n
-        \  /**\n    * Check to see that a field does contain a value.\n    */\n    function
-        validateRequired(field) {\n        if (field == null) {\n            return
-        false;\n        }\n        if ((field.type == 'hidden' ||\n            field.type
-        == 'text' ||\n            field.type == 'textarea' ||\n            field.type
-        == 'file' ||\n            field.type == 'checkbox' ||\n            field.type
-        == 'select-one' ||\n            field.type == 'password') &&\n            field.disabled
-        == false) {\n\n            var value = '';\n            // get field's value\n
-        \           if (field.type == \"select-one\") {\n                var si =
-        field.selectedIndex;\n                if (si >= 0) {\n                    value
-        = field.options[si].value;\n                }\n            } else if (field.type
-        == 'checkbox') {\n                if (field.checked) {\n                    value
-        = field.value;\n                }\n            } else {\n                value
-        = field.value;\n            }\n\n            if (value == null || trim(value).length
-        == 0) {\n                return false;\n            }\n        } else if (field.type
-        == \"select-multiple\") { \n            var numOptions = field.options.length;\n
-        \           lastSelected=-1;\n            for(loop=numOptions-1;loop>=0;loop--)
-        {\n                if(field.options[loop].selected) {\n                    lastSelected
-        = loop;\n                    value = field.options[loop].value;\n                    return
-        true;\n                }\n            }\n            return false;\n        }
-        else if ((field.length > 0) && (field[0].type == 'radio' || field[0].type
-        == 'checkbox')) {\n            isChecked=-1;\n            for (loop=0;loop
-        < field.length;loop++) {\n                if (field[loop].checked) {\n                    isChecked=loop;\n
-        \                   break; // only one needs to be checked\n                }\n
-        \           }\n            if (isChecked < 0) {\n                return false;\n
-        \           }\n        }\n        return true;\n    }\n\n\n    /**\n     *
-        Get the value from a field.\n     */\n    function getValueFromField(field)
-        {\n        var fieldValue = '';\n        if (field != null && field.length
-        > 0 && field[0].type == 'radio') {\n            for (var x=0; x < field.length;
-        x++) {\n                if (field[x].disabled == false && field[x].checked)
-        {\n                    fieldValue = field[x].value;\n                    break;\n
-        \               }\n            }\n        } else if (field != null && field.disabled
-        == false) {\n            if (field.type == 'hidden' || field.type == 'password'
-        ||\n                field.type == 'text'   || field.type == 'textarea' ||\n
-        \               field.type == 'radio'  || field.type == 'file') {\n                fieldValue
-        = field.value;\n            }\n            if (field.type == 'select-one')
-        {\n                var si = field.selectedIndex;\n                if (si >=
-        0) {\n                    fieldValue = field.options[si].value;\n                }\n
-        \           }\n        }\n        return fieldValue == null ? '' : fieldValue;\n
-        \   }\n\n    /**\n     * Determine the size of an Indexed Field.\n     */\n
-        \   function findIndexedSize(form, start, indexedProp, prop) {\n        var
-        x = start;\n        while (true) { \n            var field = form[indexedProp
-        + \"[\" + x + \"].\" + prop];\n            if (field == null) {\n               return
-        x;\n            }\n            x++;\n        }\n        return 0;\n    }\n\n
-        \   /**\n     * Process an Error.\n     */\n    function processError(form,
-        field, idx, indexProp, setFocus, messages, msg) {\n\n        // Set Focus\n
-        \       if (setFocus && field != null && !(field.type == 'hidden')) {\n            field.focus();\n
-        \       }\n\n        // Replace message $[bean:property] occurances with their
-        values\n        msg = replaceMsgProperties(msg, form, idx, indexProp);\n\n
-        \       // Set Focus\n        if (messages == null) {\n            if (window.html2ProcessFormField)
-        {\n                html2ProcessFormField(form.name, field.name, false, msg);\n
-        \           } else {\n                handleFieldError(field, msg);\n            }\n
-        \       } else {\n            var temp = new Array();\n            temp[0]
-        = field.name;\n            temp[1] = msg;\n            messages[messages.length]
-        = temp;\n        }\n\n        return false;\n    }\n\n    /**\n     * Handle
-        an Individual Field Error.\n     */\n    function handleFieldError(field,
-        message) {\n        alert(message); return false;\n    }\n \n    /**\n     *
-        Handle a set of Form errors.\n     */\n    function handleFormErrors(form,
-        messages) {\n        if (!window.html2ProcessFormField) {\n            var
-        errorMessages = new Array();\n            for (var i=0; i < messages.length;
-        i++) {\n                errorMessages[errorMessages.length] = messages[i][1];\n
-        \           }\n            alert(errorMessages.join('\\n')); \n            return
-        false;\n        }\n\n        // get the HTML form's elements\n        var
-        htmlFormElements = form.elements;\n     \n        // loop through the elements
-        of the HTML form\n        for (var i=0; i < htmlFormElements.length; i++)
-        {\n            var htmlFieldNode = htmlFormElements.item(i);\n            var
-        attributes = htmlFieldNode.attributes;\n            if ((attributes == null)
-        || (attributes.length==0)) {\n                continue;\n            }\n                    \n
-        \           //var name = htmlFieldNode.attributes.getNamedItem(\"name\");\n
-        \           var htmlFieldName = htmlFieldNode.name;\n            if ((htmlFieldName
-        == null) || (htmlFieldName.length == 0)) {\n                // skip those
-        elements without a name\n                continue;\n            }\n\n            //
-        look for the html field among the messages\n            var error = null;
-        \n            for (var j=0; j < messages.length; j++) {\n                var
-        temp = messages[j];\n                if (temp == null) {\n                    //
-        skip null value\n                    continue;\n                }\n                \n
-        \               var tempFieldName = temp[0];\n                if (tempFieldName
-        == htmlFieldName) {\n                    // found it\n                    error
-        = temp;\n                    break; \n                }\n            }\n            \n
-        \           var isValid = true;\n            var errorMessage = \"\";\n            if
-        (error != null) {\n                isValid = false;\n                errorMessage
-        = error[1];\n            }\n\n            html2ProcessFormField(form.name,
-        htmlFieldName, isValid, errorMessage);\n        }\n        return false;\n
-        \   }\n \n    /**\n     *  replace $[bean:property] occurances with values.\n
-        \    */\n    function replaceMsgProperties(msg, form, idx, indexProp) {\n
-        \       if (form != null && msg != null) {\n            var PREFIX = \"$[bean:\";\n
-        \           var start  = 0;\n            while (start >= 0) {\n                var
-        start = msg.indexOf(PREFIX);\n                if (start >= 0) {\n                    var
-        end = start + msg.substring(start, msg.length).indexOf(']');\n                    if
-        (end < start) {\n                        msg = replaceValue(msg, PREFIX, \"$[????:\");\n
-        \                   } else {\n                        var propName = msg.substring(start
-        + PREFIX.length, end);\n                        var othField = form[propName];\n
-        \                       if (idx >= 0) {\n                           var indexedFieldName
-        = indexProp + \"[\" + idx + \"].\" + propName;\n                           othField
-        = (form[indexedFieldName] == null) ? form[propName] : form[indexedFieldName];\n
-        \                       }\n                        msg = replaceValue(msg,
-        PREFIX + propName + \"]\", (othField == null) ? \"????\" : othField.value);\n
-        \                   }\n                }\n            }\n        }\n        return
-        msg;\n    }\n \n    /**\n     *  Replace a value.\n     */\n    function replaceValue(inputValue,
-        fromValue, toValue) {\n        var pos = inputValue.indexOf(fromValue);\n
-        \       return (pos < 0) ? inputValue : inputValue.substring(0, pos) + toValue
-        + \n                                        inputValue.substring(pos + fromValue.length,
-        inputValue.length);\n    }\n    \n    /**\n     * Trim whitespace from left
-        and right sides of s.\n     */\n    function trim(s) {return s.replace( /^\\s*/,
-        \"\" ).replace( /\\s*$/, \"\" );}\n    \n\n\n//End -->\n</script>\n\t</div>\n</div>\t\n\t\n\t\n<script
-        type=\"text/javascript\" language=\"JavaScript1.1\">\n<!-- Begin\nvar html2LabelClassNameNormal
-        = \"\";\nvar html2LabelClassNameError = \"errorStyle1\";\nvar html2ErrorDisplay
-        = \"inline\";\n\n    /*\n    This javascript needs the following variables
-        in order to function properly:\n        html2LabelClassNameNormal   - Style
-        class to use for a label when its \n                                        associated
-        property changes from being \n                                        invalid
-        to valid. \n        html2LabelClassNameError    - Style class to use for a
-        label when its \n                                        associated property
-        is invalid. \n        html2ErrorDisplay           - Value to use for an <html2:error>'s
-        \n                                        \"display\" style when the property
-        \n                                        associated with it is invalid. \n
-        \   */\n\n    /**\n     * Show or hide error indicators for a specific field
-        depending on\n     * the isValid flag.\n     */\n    function html2ProcessFormField(formName,
-        fieldName, isValid, errorMessage) {\n\n        // look for a label control
-        for the field\n        var labelElementId = formName + \".\" + fieldName +
-        \".label\";\n        var element = document.getElementById(labelElementId);\n
-        \       if (element != null) {\n            if (isValid) {\n                element.className
-        = html2LabelClassNameNormal;\n            } else {\n                element.className
-        = html2LabelClassNameError;\n            }\n        //} else {\n            //debug(\"Label
-        element not found\");\n        }\n\n        // look for an error message area
-        for the field\n        var errorElementId = formName + \".\" + fieldName +
-        \".error\";\n        element = document.getElementById(errorElementId);\n
-        \       if (element != null) {\n            if (isValid) {\n                element.style.display
-        = \"none\";\n            } else {\n                element.innerHTML = errorMessage;\n
-        \               element.style.display = html2ErrorDisplay;\n            }\n
-        \       //} else {\n            //debug(\"Error element not found\");\n        }\n
-        \       //alert(\"labelElementId=\" + labelElementId  + \" \\nerrorElementId=\"
-        + errorElementId);\n        //alert(\"form=\" + formName + \" \\nid=\" + id
-        + \" \\nerror=\" + error + \" \\nelementId=\" + errorElementId);\n    }\n\n//End
-        -->\n</script>\n\t\n\t<script type=\"text/javascript\">\n\t\tvar msg = \"Maple
-        TA allows only one active session per user!\\n\\nYou see this message because
-        you either have already Maple TA running in another\\nbrowser window or you
-        have not terminated your previous session properly.\\n\\nTo proceed with new
-        Maple TA session you need to either terminate existing session\\nor let Maple
-        TA do it for you.\\n\\nClick OK button if you would like Maple TA to terminate
-        your old session and start new one.\\nClick Cancel to return to the login
-        screen.\";\n\t\tsetInAssignment(false);\n\t\tfunction setLockdownToken( token
-        )\n\t\t{\n\t\t\tdocument.LoginActionForm.lockdownToken.value = token;\n\t\t}\n\t</script>\n\t\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t</div>\t\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t</div>\n\t<div
-        id=\"pageDialog\"></div>\n\t<div id=\"modal\" class=\"modal hide fade\"></div>\n\t\n\t\t\n</body>\n</html>\n"
+      Transfer-Encoding: 
+      - chunked
+      Date: 
+      - Thu, 06 Mar 2014 19:24:50 GMT
+    body: 
+      encoding: US-ASCII
+      string: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
+        <!DOCTYPE html>\n\
+        <html lang=\"en-US\">\n\
+        <head>\n\
+        \t<!--  stdLayout.jsp -->\n\
+        \t<base href=\"http://mapletadev.thinkwell.com:80/mapleta/\">\n\n\n\
+        \t<title>Maple T.A. - \n\
+        \t\t\n\
+        \t\t\tLogin\n\
+        \t\t\n\
+        \t</title>\n\n\
+        \t<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">\n\
+        \t<meta http-equiv=\"Pragma\" content=\"no-cache\">\n\
+        \t<meta http-equiv=\"Cache-Control\" content=\"no-cache\">\n\
+        \t<meta http-equiv=\"Expires\" content=\"0\">\n\
+        \t<meta http-equiv=\"description\"\n\
+        \t\tcontent=\"This is the standard page layout\">\n\n\
+        \t<link rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/jquery.ui.css\">\n\
+        \t<link rel=\"stylesheet\" href=\"/mapleta/modules/repository/css/bootstrap.min.css\">\n\
+        \t<link rel=\"stylesheet\" href=\"/mapleta/modules/repository/css/bootstrap-responsive.min.css\">\n\
+        \t \n\
+        \t<link rel=\"stylesheet\" type=\"text/css\"\n\
+        \t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/main.css\">\n\
+        \t<link rel=\"stylesheet\" type=\"text/css\"\n\
+        \t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/menubar.css\">\n\
+        \t<link rel=\"stylesheet\" type=\"text/css\"\n\
+        \t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/questions.css\">\n\
+        \t\t\n\
+        \t<link rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/print.css\" media=\"print\">  \n\n\
+        \t\n\
+        \t\n\
+        \t<script language=\"JavaScript\">\n\
+        \t// strings for main.js\n\
+        \tvar msgMainScriptImminentSessionTimeoutWarningPart1 = \"DISCONNECTION WARNING\\n\\nYou may be in danger of losing your work on this page. The internet server\\nthat sent this question to you needs a reply. To save your work and continue\\nworking, do the following within the next \";\n\
+        \tvar msgMainScriptImminentSessionTimeoutWarningPart2 = \"minutes:\\n\\n1) Click the Next or Back button above.\\n\\n2) When the new question appears, click the Back or Next button to return to this\\nquestion.  Your work will be saved and you can then continue to enter responses\\non this page.\\n\\n(If the Next or Back buttons are greyed out, click the Save & Quit button.  You\\nwill have to log-in again to return to this question, but your work will be preserved.)\\n\\nMessage time: \";\n\
+        \tvar msgMainScriptTimedAssignmentWarning = \"This is a timed assignment.  Once it has been started the timer cannot\\nbe stopped until it runs out or the assignment is graded.\";\n\
+        \tvar msgMainScriptFinishOtherAssignmentFirst = \"You are currently either taking an assignment, or you\\r\\nhave another browser window open to the class homepage.\\r\\n\\r\\nPlease finish the assignment and/or close the other browser before\\r\\nattempting another assignment.\";\n\
+        \t</script>\n\n\
+        \t\n\n\n\n\n\n\n\n\
+        <script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery.min.js\"></script>\n\
+        \t\n\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/mathjax/MathJax.js?config=TeX-MML-AM_HTMLorMML\"></script>\n\
+        \t\t    \n\
+        \t<script type=\"text/javascript\">\n\
+        \t\n\
+        \t\tMathJax.Hub.Config({    \n\
+        \t\t    menuSettings: {\n\
+        \t\t    \t    zoom: \"Click\"\n\
+        \t\t   \t}\n\
+        \t\t});  \n\
+        \t\t\n\
+        \t\tMathJax.Hub.Register.StartupHook(\"mml Jax Ready\", function (){ \t\n\
+        \t\t\t // Set the amount that math's font size is multiplied by in fractions\n\
+        \t\t\t // Defaulting to 1 to look like Maple T.A. 8's images., the MathML default is 0.72\n\
+        \t\t\tMathJax.ElementJax.mml.math.prototype.defaults.scriptsizemultiplier = 1;\t\t\t   \n\
+        \t\t}); \n\
+        \t</script>\n\n\n\
+        <script type=\"text/javascript\">\n\
+        \tvar wsQuestionEngine = false;\n\
+        \tvar wsExpanded = false;\n\
+        </script>\n\n\n   \n\n  <script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery-ui.min.js\"></script>\n\n\n\n\n\n\n\n\
+        \t<script\n\
+        \t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/buttons.js\"></script>\n\
+        \t<script\n\
+        \t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/scripts/buttons.js\"></script>\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/main.js\"></script>\n\
+        \t<script\n\
+        \t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/scripts/menubar.js\"></script>\n\
+        \t<script\n\
+        \t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/twisty.js\"></script>\n\
+        \t\t\n\
+        \t<link rel=\"shortcut icon\"\n\
+        \t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/images/titlebar/favicon.ico\" />\n\
+        </head>\n\n\n\n\n\n\n\n\n\n\n\
+        <script type=\"text/javascript\">\n\n\
+        \tvar theLocale = \"en_US\";\n\n\
+        \tif (theLocale.substr(0,2) == \"en\") {\n\
+        \t\ttheLocale = \"en_US\";\n\
+        \t}\n\
+        \t\n\
+        \t/*\n\
+        \t * Return the root URL for the server.\n\
+        \t */\n\
+        \tfunction getBaseURL() {\n\
+        \t\treturn \"http://mapletadev.thinkwell.com:80/mapleta/\";\n\
+        \t}\n\n\
+        </script>\n\n\n\n\n\n\n\n\n\n\
+        <body onload=\"onLoad();\">\n\n\
+        \t\t<script language=\"Javascript\" type=\"text/javascript\">\n\
+        \t\t\tfunction confirmAction() {\n\
+        \t\t\t\t\n\
+        \t\t\t\treturn false;\n\
+        \t\t\t}\n\
+        \t\t</script>\n\
+        \t\t<div id=\"top\">\n\
+        \t\t\t\t\t\n\
+        \t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t<div class=\"pageHeader\">\n\
+        \t\t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\n\
+        \t\n\n\
+        \t\t<img\n\
+        \t\t\tsrc=\"/mapleta/modules/skin/images/titlebar/logo.gif\"\n\
+        \t\t\twidth=163 height=60 border=\"0\" id=\"logo\" />\n\n\
+        \t\t\n\
+        \t\t\n\
+        \t\t\t\n\
+        \t\t\t\n\
+        \t\t\t\t\n\
+        \t\t\t\n\
+        \t\t\n\
+        \t\t<div id=\"title\"><h1>\n\
+        \t\t\t\t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\t\t\tLogin\n\
+        \t\t\t\t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\t</h1></div>\n\
+        \t\t\n\
+        \t\t\n\n\
+        \t\t<div id=\"welcome\">\n\
+        \t\t</div>\n\n\
+        \t\n\
+        \t\n\n\
+        \t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t<div class=\"crumbTrail\">\n\
+        \t\t\t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
+        <div style=\"float:left;\">\n\n\
+        </div>\n\n\n\n\n\n\
+        \t\t\t\t\t\t\t\t</div>\n\
+        \t\t\t\t\t\t\t</div>\n\
+        \t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\n\
+        \t\n\
+        \t\t\t\t\t\t\n\
+        \t\t\t\t\t\n\
+        \t\t\t\t\t\n\
+        \t\t\t\t\t\t<div class=\"menu\">\n\
+        \t\t\t\t\t\t\t\n\
+        \t\t\t\t\t\t</div>\n\
+        \t\t\t\t\t\n\
+        \t\t\t\t</div>\n\
+        \t\t\t\n\
+        \t\t\t\t\n\
+        \t\t\t\t<div id=\"holder\">\n\
+        \t\t\t\t\t\t\n\
+        \t\t\t\t\t<div class=\"content\">\n\
+        \t\t\t\t\t\t\n\
+        \t\t\t\t\t\t<div id=\"pageContainer\">\n\
+        \t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
+        <style>\n\
+        \ttable.login {\n\
+        \t\tborder: solid #777777 10px;\n\
+        \t\tmargin: 1em;\n\
+        \t\tpadding: 10px;\n\
+        \t\tbackground-color: #cccccc;\n\
+        \t\tfont-family: sans-serif;\n\
+        \t}\n\
+        \ttable.errors {\n\
+        \t\tborder: solid white 10 px;\n\
+        \t\tmargin: 1em;\n\
+        \t\tfont-family: sans-serif;\n\
+        \t}\n\
+        \ttd.login td.errors{\n\
+        \t\tpadding: 10px;\n\
+        \t\t\n\
+        \t}\n\
+        </style>\n\n\n\n\n\
+        \t\n\n\n\
+        <div class=\"container\">\n\n\
+        <div class=\"hero-unit row\">\n\
+        \t<h1 class=\"span4\">Thinkwell\n\
+        </h1>\n\
+        \t<form name=\"LoginActionForm\" id=\"LoginActionForm\" method=\"post\" action=\"/mapleta/login/login.do\" class=\"form-horizontal span6\" onsubmit=\"return validateLoginActionForm(this);\">\n\
+        \t\t<input type=\"hidden\" name=\"terminateOldSession\" value=\"false\">\n\
+        \t\t<input type=\"hidden\" name=\"lockdownToken\" value=\"\">\n\
+        \t\t\n\
+        \t\t\n\
+        \t\t\t<div class=\"control-group\">\n\
+        \t\t\t\t<span class=\"control-label\">\n\
+        \t\t\t\t\t<label for=\"LoginActionForm.login\" id=\"LoginActionForm.login.label\">User login</label>\n\
+        \t\t\t\t</span>\n\
+        \t\t\t\t<div class=\"controls\">\n\
+        \t\t\t\t\t<input type=\"text\" name=\"login\" value=\"\" onchange=\"return validateLoginActionForm_login(document.LoginActionForm, this, true, null);\" id=\"LoginActionForm.login\"><br/>\n\
+        \t\t\t\t\t<span id=\"LoginActionForm.login.error\" style=\"display:none\" class=\"errorStyle1\"></span>\n\
+        \t\t\t\t</div>\n\
+        \t\t\t</div>\n\
+        \t\t\n\
+        \t\t\n\
+        \t\t\t<div class=\"control-group\">\n\
+        \t\t\t\t<span class=\"control-label\">\n\
+        \t\t\t\t\t<label for=\"LoginActionForm.password\" id=\"LoginActionForm.password.label\">Password</label>\n\
+        \t\t\t\t</span>\n\
+        \t\t\t\t<div class=\"controls\">\n\
+        \t\t\t\t\t<input type=\"password\" name=\"password\" value=\"\" onchange=\"return validateLoginActionForm_password(document.LoginActionForm, this, true, null);\" id=\"LoginActionForm.password\"><br/>\n\
+        \t\t\t\t\t<span id=\"LoginActionForm.password.error\" style=\"display:none\" class=\"errorStyle1\"></span>\n\
+        \t\t\t\t</div>\n\
+        \t\t\t</div>\n\
+        \t\t\n\
+        \t\t\t<div class=\"control-group\">\n\
+        \t\t\t\t<div class=\"controls\">\n\
+        \t\t\t\t\t<input type=\"submit\" value=\"Log in\" class=\"btn btn-primary\">\n\
+        \t\t\t\t</div>\n\
+        \t\t\t</div>\n\
+        \t\t\t\n\
+        \t\t\t\n\
+        \t\n\
+        \t\t\t\n\
+        \t\t\t<div class=\"control-group\">\n\
+        \t\t\t\t<div class=\"controls\">\n\
+        \t\t\n\n\
+        \t\t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\t<a href=\"passwordreset/PasswordReset.do\">\t      \t\t\t\n\
+        \t\t\t\t\t\t\t\t\t\tForgot your Password?\n\
+        \t\t\t\t\t\t\t\t\t</a>\n\n\
+        \t\t\t\t\t\n\
+        \t\t\t\t\t\t\t\t\t\t\n\
+        \t\t\t\t\t</div>\n\
+        \t\t\t\t</div>\t\n\
+        \t\t\t\n\
+        \t\t\t\n\
+        \t\n\
+        \t\t\t\t\t\t\n\
+        \t\t\t\t\n\
+        \t\t\t\t\n\
+        \t\t\t\t\t\t\n\
+        \t\t\t<div class=\"control-group\">\n\
+        \t\t\t\t<div class=\"controls\">\n\
+        \t\t\n\
+        \t\t\t\t\t<a href=\"\" onclick=\"javascript:displayPopupDialog('Supported Browsers', getBaseURL()+'modules/supported.jsp',650,450); return false;\">\t      \t\t\t\n\
+        \t      \t\t\t\tSee the list of supported browsers.\n\
+        \t\t\t\t\t</a>\n\
+        \t\t\t\t</div>\n\
+        \t\t\t</div>\n\
+        \t\t\t\n\
+        \t</form>\n\
+        <script type=\"text/javascript\" language=\"JavaScript\">\n  <!--\n  var focusControl = document.forms[\"LoginActionForm\"].elements[\"login\"];\n\n  if (focusControl != null && focusControl.type != \"hidden\" && !focusControl.disabled && focusControl.style.display != \"none\") {\n     focusControl.focus();\n  }\n  // -->\n\
+        </script>\n\n\
+        <script type=\"text/javascript\" language=\"JavaScript1.1\">\n\
+        <!-- Begin\n\n    var bCancel = false;\n\n    function validateLoginActionForm(form) {\n        if (bCancel) {\n            return true;\n        }\n        var messages = new Array();\n        validateLoginActionForm_login(form, form[\"login\"], messages.length == 0, messages);\n        validateLoginActionForm_password(form, form[\"password\"], messages.length == 0, messages);\n        if (messages.length > 0) {\n            return handleFormErrors(form, messages);\n        }\n        return true;\n    }\n\n    function validateLoginActionForm_login(form, field, setFocus, messages) {\n        if (!validateRequired(field)) {\n            return processError(form, field, -1, null, setFocus, messages, \"User login is required.\");\n        }\n        if (window.html2ProcessFormField) {\n            html2ProcessFormField(form.name, field.name, true, \"\")\n        }\n        return true;\n    }\n\n    function validateLoginActionForm_password(form, field, setFocus, messages) {\n        if (!validateRequired(field)) {\n            return processError(form, field, -1, null, setFocus, messages, \"Password is required.\");\n        }\n        if (window.html2ProcessFormField) {\n            html2ProcessFormField(form.name, field.name, true, \"\")\n        }\n        return true;\n    }\n\n   /*$RCSfile: RequiredValidator.js,v $ $Revision: 1.1 $ $Date: 2004/11/15 00:00:00 $ */\n   /**\n    * Check to see that a field does contain a value.\n    */\n    function validateRequired(field) {\n        if (field == null) {\n            return false;\n        }\n        if ((field.type == 'hidden' ||\n            field.type == 'text' ||\n            field.type == 'textarea' ||\n            field.type == 'file' ||\n            field.type == 'checkbox' ||\n            field.type == 'select-one' ||\n            field.type == 'password') &&\n            field.disabled == false) {\n\n            var value = '';\n            // get field's value\n            if (field.type == \"select-one\") {\n                var si = field.selectedIndex;\n                if (si >= 0) {\n                    value = field.options[si].value;\n                }\n            } else if (field.type == 'checkbox') {\n                if (field.checked) {\n                    value = field.value;\n                }\n            } else {\n                value = field.value;\n            }\n\n            if (value == null || trim(value).length == 0) {\n                return false;\n            }\n        } else if (field.type == \"select-multiple\") { \n            var numOptions = field.options.length;\n            lastSelected=-1;\n            for(loop=numOptions-1;loop>=0;loop--) {\n                if(field.options[loop].selected) {\n                    lastSelected = loop;\n                    value = field.options[loop].value;\n                    return true;\n                }\n            }\n            return false;\n        } else if ((field.length > 0) && (field[0].type == 'radio' || field[0].type == 'checkbox')) {\n            isChecked=-1;\n            for (loop=0;loop < field.length;loop++) {\n                if (field[loop].checked) {\n                    isChecked=loop;\n                    break; // only one needs to be checked\n                }\n            }\n            if (isChecked < 0) {\n                return false;\n            }\n        }\n        return true;\n    }\n\n\n    /**\n     * Get the value from a field.\n     */\n    function getValueFromField(field) {\n        var fieldValue = '';\n        if (field != null && field.length > 0 && field[0].type == 'radio') {\n            for (var x=0; x < field.length; x++) {\n                if (field[x].disabled == false && field[x].checked) {\n                    fieldValue = field[x].value;\n                    break;\n                }\n            }\n        } else if (field != null && field.disabled == false) {\n            if (field.type == 'hidden' || field.type == 'password' ||\n                field.type == 'text'   || field.type == 'textarea' ||\n                field.type == 'radio'  || field.type == 'file') {\n                fieldValue = field.value;\n            }\n            if (field.type == 'select-one') {\n                var si = field.selectedIndex;\n                if (si >= 0) {\n                    fieldValue = field.options[si].value;\n                }\n            }\n        }\n        return fieldValue == null ? '' : fieldValue;\n    }\n\n    /**\n     * Determine the size of an Indexed Field.\n     */\n    function findIndexedSize(form, start, indexedProp, prop) {\n        var x = start;\n        while (true) { \n            var field = form[indexedProp + \"[\" + x + \"].\" + prop];\n            if (field == null) {\n               return x;\n            }\n            x++;\n        }\n        return 0;\n    }\n\n    /**\n     * Process an Error.\n     */\n    function processError(form, field, idx, indexProp, setFocus, messages, msg) {\n\n        // Set Focus\n        if (setFocus && field != null && !(field.type == 'hidden')) {\n            field.focus();\n        }\n\n        // Replace message $[bean:property] occurances with their values\n        msg = replaceMsgProperties(msg, form, idx, indexProp);\n\n        // Set Focus\n        if (messages == null) {\n            if (window.html2ProcessFormField) {\n                html2ProcessFormField(form.name, field.name, false, msg);\n            } else {\n                handleFieldError(field, msg);\n            }\n        } else {\n            var temp = new Array();\n            temp[0] = field.name;\n            temp[1] = msg;\n            messages[messages.length] = temp;\n        }\n\n        return false;\n    }\n\n    /**\n     * Handle an Individual Field Error.\n     */\n    function handleFieldError(field, message) {\n        alert(message); return false;\n    }\n \n    /**\n     * Handle a set of Form errors.\n     */\n    function handleFormErrors(form, messages) {\n        if (!window.html2ProcessFormField) {\n            var errorMessages = new Array();\n            for (var i=0; i < messages.length; i++) {\n                errorMessages[errorMessages.length] = messages[i][1];\n            }\n            alert(errorMessages.join('\\n')); \n            return false;\n        }\n\n        // get the HTML form's elements\n        var htmlFormElements = form.elements;\n     \n        // loop through the elements of the HTML form\n        for (var i=0; i < htmlFormElements.length; i++) {\n            var htmlFieldNode = htmlFormElements.item(i);\n            var attributes = htmlFieldNode.attributes;\n            if ((attributes == null) || (attributes.length==0)) {\n                continue;\n            }\n                    \n            //var name = htmlFieldNode.attributes.getNamedItem(\"name\");\n            var htmlFieldName = htmlFieldNode.name;\n            if ((htmlFieldName == null) || (htmlFieldName.length == 0)) {\n                // skip those elements without a name\n                continue;\n            }\n\n            // look for the html field among the messages\n            var error = null; \n            for (var j=0; j < messages.length; j++) {\n                var temp = messages[j];\n                if (temp == null) {\n                    // skip null value\n                    continue;\n                }\n                \n                var tempFieldName = temp[0];\n                if (tempFieldName == htmlFieldName) {\n                    // found it\n                    error = temp;\n                    break; \n                }\n            }\n            \n            var isValid = true;\n            var errorMessage = \"\";\n            if (error != null) {\n                isValid = false;\n                errorMessage = error[1];\n            }\n\n            html2ProcessFormField(form.name, htmlFieldName, isValid, errorMessage);\n        }\n        return false;\n    }\n \n    /**\n     *  replace $[bean:property] occurances with values.\n     */\n    function replaceMsgProperties(msg, form, idx, indexProp) {\n        if (form != null && msg != null) {\n            var PREFIX = \"$[bean:\";\n            var start  = 0;\n            while (start >= 0) {\n                var start = msg.indexOf(PREFIX);\n                if (start >= 0) {\n                    var end = start + msg.substring(start, msg.length).indexOf(']');\n                    if (end < start) {\n                        msg = replaceValue(msg, PREFIX, \"$[????:\");\n                    } else {\n                        var propName = msg.substring(start + PREFIX.length, end);\n                        var othField = form[propName];\n                        if (idx >= 0) {\n                           var indexedFieldName = indexProp + \"[\" + idx + \"].\" + propName;\n                           othField = (form[indexedFieldName] == null) ? form[propName] : form[indexedFieldName];\n                        }\n                        msg = replaceValue(msg, PREFIX + propName + \"]\", (othField == null) ? \"????\" : othField.value);\n                    }\n                }\n            }\n        }\n        return msg;\n    }\n \n    /**\n     *  Replace a value.\n     */\n    function replaceValue(inputValue, fromValue, toValue) {\n        var pos = inputValue.indexOf(fromValue);\n        return (pos < 0) ? inputValue : inputValue.substring(0, pos) + toValue + \n                                        inputValue.substring(pos + fromValue.length, inputValue.length);\n    }\n    \n    /**\n     * Trim whitespace from left and right sides of s.\n     */\n    function trim(s) {return s.replace( /^\\s*/, \"\" ).replace( /\\s*$/, \"\" );}\n    \n\n\n\
+        //End -->\n\
+        </script>\n\
+        \t</div>\n\
+        </div>\t\n\
+        \t\n\
+        \t\n\
+        <script type=\"text/javascript\" language=\"JavaScript1.1\">\n\
+        <!-- Begin\n\
+        var html2LabelClassNameNormal = \"\";\n\
+        var html2LabelClassNameError = \"errorStyle1\";\n\
+        var html2ErrorDisplay = \"inline\";\n\n    /*\n    This javascript needs the following variables in order to function properly:\n        html2LabelClassNameNormal   - Style class to use for a label when its \n                                        associated property changes from being \n                                        invalid to valid. \n        html2LabelClassNameError    - Style class to use for a label when its \n                                        associated property is invalid. \n        html2ErrorDisplay           - Value to use for an <html2:error>'s \n                                        \"display\" style when the property \n                                        associated with it is invalid. \n    */\n\n    /**\n     * Show or hide error indicators for a specific field depending on\n     * the isValid flag.\n     */\n    function html2ProcessFormField(formName, fieldName, isValid, errorMessage) {\n\n        // look for a label control for the field\n        var labelElementId = formName + \".\" + fieldName + \".label\";\n        var element = document.getElementById(labelElementId);\n        if (element != null) {\n            if (isValid) {\n                element.className = html2LabelClassNameNormal;\n            } else {\n                element.className = html2LabelClassNameError;\n            }\n        //} else {\n            //debug(\"Label element not found\");\n        }\n\n        // look for an error message area for the field\n        var errorElementId = formName + \".\" + fieldName + \".error\";\n        element = document.getElementById(errorElementId);\n        if (element != null) {\n            if (isValid) {\n                element.style.display = \"none\";\n            } else {\n                element.innerHTML = errorMessage;\n                element.style.display = html2ErrorDisplay;\n            }\n        //} else {\n            //debug(\"Error element not found\");\n        }\n        //alert(\"labelElementId=\" + labelElementId  + \" \\nerrorElementId=\" + errorElementId);\n        //alert(\"form=\" + formName + \" \\nid=\" + id + \" \\nerror=\" + error + \" \\nelementId=\" + errorElementId);\n    }\n\n\
+        //End -->\n\
+        </script>\n\
+        \t\n\
+        \t<script type=\"text/javascript\">\n\
+        \t\tvar msg = \"Maple TA allows only one active session per user!\\n\\nYou see this message because you either have already Maple TA running in another\\nbrowser window or you have not terminated your previous session properly.\\n\\nTo proceed with new Maple TA session you need to either terminate existing session\\nor let Maple TA do it for you.\\n\\nClick OK button if you would like Maple TA to terminate your old session and start new one.\\nClick Cancel to return to the login screen.\";\n\
+        \t\tsetInAssignment(false);\n\
+        \t\tfunction setLockdownToken( token )\n\
+        \t\t{\n\
+        \t\t\tdocument.LoginActionForm.lockdownToken.value = token;\n\
+        \t\t}\n\
+        \t</script>\n\
+        \t\n\n\n\n\n\n\n\n\n\n\
+        \t\t\t\t\t\t</div>\t\n\
+        \t\t\t\t\t</div>\n\
+        \t\t\t\t\t\n\
+        \t\t\t\t</div>\n\
+        \t<div id=\"pageDialog\"></div>\n\
+        \t<div id=\"modal\" class=\"modal hide fade\"></div>\n\
+        \t\n\
+        \t\t\n\
+        </body>\n\
+        </html>\n"
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:01 GMT
+  recorded_at: Thu, 06 Mar 2014 19:24:50 GMT
 recorded_with: VCR 2.8.0

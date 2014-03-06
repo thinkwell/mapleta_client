@@ -1,50 +1,43 @@
----
-http_interactions:
-- request:
+--- 
+http_interactions: 
+- request: 
     method: post
     uri: http://mapletadev.thinkwell.com/mapleta/ws/assignment
-    body:
-      encoding: UTF-8
+    body: 
+      encoding: US-ASCII
       string: |
         <?xml version="1.0" encoding="UTF-8"?>
         <Request>
-          <timestamp>1394041424000</timestamp>
-          <signature>d8DD2wXQCRG2vO8VQpkyiw==</signature>
+          <timestamp>1394133893000</timestamp>
+          <signature>aS06EONsFVOsxyg5V6lSVA==</signature>
           <classId>330</classId>
           <assignmentId>29928</assignmentId>
         </Request>
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - '*/*'
-      User-Agent:
+
+    headers: 
+      Accept: 
+      - "*/*"
+      User-Agent: 
       - Ruby
-      Cookie:
-      - JSESSIONID=CD65F1443EE65FDF2A39C18530D67E33
-      Content-Type:
+      Cookie: 
+      - JSESSIONID=6008BB03F2A877A9214908A902662FB1
+      Content-Type: 
       - text/xml
-  response:
-    status:
+  response: 
+    status: 
       code: 200
       message: OK
-    headers:
-      Server:
+    headers: 
+      Server: 
       - Apache-Coyote/1.1
-      Content-Type:
+      Content-Type: 
       - text/xml;charset=UTF-8
-      Date:
-      - Wed, 05 Mar 2014 17:43:44 GMT
-      X-Cache:
-      - MISS from dawcons.site
-      X-Cache-Lookup:
-      - MISS from dawcons.site:3128
-      Via:
-      - 1.0 dawcons.site:3128 (squid/2.6.STABLE14)
-      Connection:
-      - close
-    body:
-      encoding: UTF-8
+      Transfer-Encoding: 
+      - chunked
+      Date: 
+      - Thu, 06 Mar 2014 19:24:53 GMT
+    body: 
+      encoding: US-ASCII
       string: |-
         <Response>
           <status>
@@ -68,5 +61,5 @@ http_interactions:
           </list>
         </Response>
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:43:44 GMT
+  recorded_at: Thu, 06 Mar 2014 19:24:53 GMT
 recorded_with: VCR 2.8.0

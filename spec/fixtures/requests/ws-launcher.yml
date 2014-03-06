@@ -1,132 +1,179 @@
----
-http_interactions:
-- request:
+--- 
+http_interactions: 
+- request: 
     method: post
     uri: http://mapletadev.thinkwell.com/mapleta/ws/launcher
-    body:
-      encoding: UTF-8
-      string: testId=29928&wsStudentId=admin&timestamp=1394040662000&wsUserRole=ADMINISTRATOR&wsActionID=assignment&wsClassId=330&wsMiddleName=&wsCourseId=1&wsUserLogin=admin&wsExternalData=5&signature=CioB9UMTYIfvLaHFyAdtsw%3D%3D&className=&wsLastName=Administrator&testName=Easy+Test&wsFirstName=Maple+T.A.&wsUserEmail=mapleta%40thinkwell.com
-    headers:
-      Accept-Encoding:
-      - gzip,identity
-      Accept:
-      - '*/*'
-      User-Agent:
+    body: 
+      encoding: US-ASCII
+      string: testId=29928&wsStudentId=admin&timestamp=1394133889000&wsUserRole=ADMINISTRATOR&wsActionID=assignment&wsClassId=330&wsMiddleName=&wsCourseId=1&wsUserLogin=admin&wsExternalData=5&signature=nvxxycUvexOAFalDaOqw5A%3D%3D&className=&wsLastName=Administrator&testName=Easy+Test&wsFirstName=Maple+T.A.&wsUserEmail=mapleta%40thinkwell.com
+    headers: 
+      Accept: 
+      - "*/*"
+      User-Agent: 
       - WWW-Mechanize/1.0.0 (http://rubyforge.org/projects/mechanize/)
-      Connection:
+      Connection: 
       - keep-alive
-      Keep-Alive:
-      - '300'
-      Accept-Language:
+      Keep-Alive: 
+      - "300"
+      Accept-Encoding: 
+      - gzip,identity
+      Accept-Language: 
       - en-us,en;q=0.5
-      Host:
+      Host: 
       - mapletadev.thinkwell.com
-      Accept-Charset:
+      Accept-Charset: 
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
-      Content-Type:
+      Content-Type: 
       - application/x-www-form-urlencoded
-      Content-Length:
-      - '330'
-  response:
-    status:
+      Content-Length: 
+      - "330"
+  response: 
+    status: 
       code: 200
       message: OK
-    headers:
-      Server:
+    headers: 
+      Server: 
       - Apache-Coyote/1.1
-      Set-Cookie:
-      - JSESSIONID=9277CB341640652EB3CF5E7C94CB2F72; Path=/mapleta/; HttpOnly
-      Content-Type:
+      Set-Cookie: 
+      - JSESSIONID=F630AB2B6B1F1063AC8F0C939EE85677; Path=/mapleta/; HttpOnly
+      Content-Type: 
       - text/html;charset=UTF-8
-      Content-Length:
-      - '6397'
-      Date:
-      - Wed, 05 Mar 2014 17:31:01 GMT
-      X-Cache:
-      - MISS from dawcons.site
-      X-Cache-Lookup:
-      - MISS from dawcons.site:3128
-      Via:
-      - 1.0 dawcons.site:3128 (squid/2.6.STABLE14)
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: "\n\n\n\n\n\n\n\n\n\n\n<!DOCTYPE html>\n<html lang=\"en-US\">\n  <head>\n
-        \ \t<!--  skinSimpleFrame.jsp -->\n\t<base href=\"http://mapletadev.thinkwell.com:80/mapleta/\">\n
-        \   \n\t <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">\n\t<meta
-        http-equiv=\"Pragma\" content=\"no-cache\">\n\t<meta http-equiv=\"Cache-Control\"
-        content=\"no-cache\">\n\t<meta http-equiv=\"Expires\" content=\"0\">\n    \n\t<link
-        rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/main.css\">\n\t<link
-        rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/print.css\"
-        media=\"print\">  \n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/questions.css\">\n\n\t<script
-        language=\"JavaScript\">\n\t// strings for main.js\n\tvar msgMainScriptImminentSessionTimeoutWarningPart1
-        = \"DISCONNECTION WARNING\\n\\nYou may be in danger of losing your work on
-        this page. The internet server\\nthat sent this question to you needs a reply.
-        To save your work and continue\\nworking, do the following within the next
-        \";\n\tvar msgMainScriptImminentSessionTimeoutWarningPart2 = \"minutes:\\n\\n1)
-        Click the Next or Back button above.\\n\\n2) When the new question appears,
-        click the Back or Next button to return to this\\nquestion.  Your work will
-        be saved and you can then continue to enter responses\\non this page.\\n\\n(If
-        the Next or Back buttons are greyed out, click the Save & Quit button.  You\\nwill
-        have to log-in again to return to this question, but your work will be preserved.)\\n\\nMessage
-        time: \";\n\tvar msgMainScriptTimedAssignmentWarning = \"This is a timed assignment.
-        \ Once it has been started the timer cannot\\nbe stopped until it runs out
-        or the assignment is graded.\";\n\tvar msgMainScriptFinishOtherAssignmentFirst
-        = \"You are currently either taking an assignment, or you\\r\\nhave another
-        browser window open to the class homepage.\\r\\n\\r\\nPlease finish the assignment
-        and/or close the other browser before\\r\\nattempting another assignment.\";\n\t</script>\n\n\t\n\n\n\n\n\n\n\n<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery.min.js\"></script>\n\t\n\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/mathjax/MathJax.js?config=TeX-MML-AM_HTMLorMML\"></script>\n\t\t
-        \   \n\t<script type=\"text/javascript\">\n\t\n\t\tMathJax.Hub.Config({    \n\t\t
-        \   menuSettings: {\n\t\t    \t    zoom: \"Click\"\n\t\t   \t}\n\t\t});  \n\t\t\n\t\tMathJax.Hub.Register.StartupHook(\"mml
-        Jax Ready\", function (){ \t\n\t\t\t // Set the amount that math's font size
-        is multiplied by in fractions\n\t\t\t // Defaulting to 1 to look like Maple
-        T.A. 8's images., the MathML default is 0.72\n\t\t\tMathJax.ElementJax.mml.math.prototype.defaults.scriptsizemultiplier
-        = 1;\t\t\t   \n\t\t}); \n\t</script>\n\n\n<script type=\"text/javascript\">\n\tvar
-        wsQuestionEngine = false;\n\tvar wsExpanded = false;\n</script>\n\n\n   \n\n
-        \ <script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery-ui.min.js\"></script>\n\n\n\n\n\n\n\n\t\n\n\n\n\n\n\n\n\n<script
-        type=\"text/javascript\">\n\n\tvar theLocale = \"en_US\";\n\n\tif (theLocale.substr(0,2)
-        == \"en\") {\n\t\ttheLocale = \"en_US\";\n\t}\n\t\n\t/*\n\t * Return the root
-        URL for the server.\n\t */\n\tfunction getBaseURL() {\n\t\treturn \"http://mapletadev.thinkwell.com:80/mapleta/\";\n\t}\n\n</script>\n\n\t\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery.min.js\"></script>\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery-ui.min.js\"></script>\n\t\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/mathjax/?config=default\"></script>\n\t\t\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/buttons.js\"></script>\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/scripts/buttons.js\"></script>\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/main.js\"></script>\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/helpURLs.js\"></script>\n\t<title>Maple
-        T.A. - \n\t\t\n\t\t\t???Print Assignment???\n\t\t\n\t</title>\n\n\t<link rel=\"shortcut
-        icon\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/images/titlebar/favicon.ico\"
-        />\n\n  </head>\n  \n  \n  \n  <body onLoad=\"onLoad()\" onResize=\"onResize()\"
-        onUnload=\"onUnload()\" class=\"popupWindow\">\n  \n  \n\t<div class=\"content\">\n\t
-        \ \t<div id=\"pageContainer\">\n\t\t\t\n\n\n<script language=\"Javascript\">\n\tstoreButton(\"cancel\",\"Cancel\",\"closeWindow();\",\"Return
-        to the class home page\");\n\n\tvar baseURL = \"http://mapletadev.thinkwell.com:80/mapleta/\";\n</script>\n\n<style>\n
-        \     @import URL(\"modules/skin/css/panel.css\");\n\n</style>\n\n\n<form
-        name=\"edu_form\" action=\"modules/unproctoredTest.Print\" \n\tmethod=\"post\"
-        \n\tenctype=\"application/x-www-form-urlencoded\" \n\ttarget=\"_self\" \n\tonsubmit=\"return
-        onSubmit()\" >\n\t\n\t<input type=\"hidden\" name=\"testName\" value=\"Rational
-        Expressions (Book exercises)\"><input type=\"hidden\" name=\"testId\" value=\"29928\"><input
-        type=\"hidden\" name=\"inAssignment\" value=\"true\"><input type=\"hidden\"
-        name=\"assignment_mode\" value=\"Proctored\"><input type=\"hidden\" name=\"actionID\"
-        value=\"\"><input type=\"hidden\" name=\"className\" value=\"Post University
-        - College Algebra (MAT120.34 - MOD 4) (hg3hnc)\">\n\n\t\n<style>\n      @import
-        URL(\"modules/skin/css/panel.css\");\n\n</style>\n\n\n<table width=\"100%\">\n\t<tr>\n\t\t<td
-        width=\"50\"></td>\n\t\t<td nowrap>\n\t\t\t<script language=\"Javascript\">\n\t\t\t
-        \ drawStoredButtons();\n\t\t\t</script>\n\t\t</td>\n\t</tr>\n\t<tr>\n\t\t<td>\n\t\t\t&nbsp;\n\t\t</td>\n\t\t<td
-        valign=\"top\" height=\"30\">\n\t\t\t<div style=\"position: relative\">\n\t\t\t\t<script
-        language=\"Javascript\">\n\t\t\t\t    drawStoredButtonPopups();\n\t \t\t\t</script>\n\t\t\t</div>\n\t\t</td>\n\t</tr>\n</table>\n\nThis
-        assignment gives you two options:\n<ol>\n  <li>\n    print it first, work
-        through it off-line, and then copy your answers into the online assignment
-        later, or\n  </li>\n  <li>\n    work online right now.\n  </li>\n</ol>\n<p>\nIf
-        you choose to print the assignment, you will still need to submit your answers
-        using the system.  When you are ready to submit your work, you will:\n<p>\n<ol>\n
-        \ <li>\n    select this assignment from the Class Homepage and log in,\n  </li>\n
-        \ <li>\n    enter your answers and select \"Grade\"\n  </li>\n</ol>\n<p>\nMake
-        your selection now:\n<p>\n<center>\n  <a href=\"javascript: doAction('print
-        assignment');\">Print assignment for off-line work</a> |\n  <a href=\"javascript:
-        doAction('work assignment now');\">Work assignment on-line right now</a>\n</center>\n\n</form>\n\n\t\t</div>\n\t</div>\n\t\n
-        \ </body>\n  \n</html>\n"
+      Content-Length: 
+      - "6397"
+      Date: 
+      - Thu, 06 Mar 2014 19:24:50 GMT
+    body: 
+      encoding: US-ASCII
+      string: "\n\n\n\n\n\n\n\n\n\n\n\
+        <!DOCTYPE html>\n\
+        <html lang=\"en-US\">\n  <head>\n  \t<!--  skinSimpleFrame.jsp -->\n\
+        \t<base href=\"http://mapletadev.thinkwell.com:80/mapleta/\">\n    \n\
+        \t <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">\n\
+        \t<meta http-equiv=\"Pragma\" content=\"no-cache\">\n\
+        \t<meta http-equiv=\"Cache-Control\" content=\"no-cache\">\n\
+        \t<meta http-equiv=\"Expires\" content=\"0\">\n    \n\
+        \t<link rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/main.css\">\n\
+        \t<link rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/print.css\" media=\"print\">  \n\
+        \t<link rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/questions.css\">\n\n\
+        \t<script language=\"JavaScript\">\n\
+        \t// strings for main.js\n\
+        \tvar msgMainScriptImminentSessionTimeoutWarningPart1 = \"DISCONNECTION WARNING\\n\\nYou may be in danger of losing your work on this page. The internet server\\nthat sent this question to you needs a reply. To save your work and continue\\nworking, do the following within the next \";\n\
+        \tvar msgMainScriptImminentSessionTimeoutWarningPart2 = \"minutes:\\n\\n1) Click the Next or Back button above.\\n\\n2) When the new question appears, click the Back or Next button to return to this\\nquestion.  Your work will be saved and you can then continue to enter responses\\non this page.\\n\\n(If the Next or Back buttons are greyed out, click the Save & Quit button.  You\\nwill have to log-in again to return to this question, but your work will be preserved.)\\n\\nMessage time: \";\n\
+        \tvar msgMainScriptTimedAssignmentWarning = \"This is a timed assignment.  Once it has been started the timer cannot\\nbe stopped until it runs out or the assignment is graded.\";\n\
+        \tvar msgMainScriptFinishOtherAssignmentFirst = \"You are currently either taking an assignment, or you\\r\\nhave another browser window open to the class homepage.\\r\\n\\r\\nPlease finish the assignment and/or close the other browser before\\r\\nattempting another assignment.\";\n\
+        \t</script>\n\n\
+        \t\n\n\n\n\n\n\n\n\
+        <script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery.min.js\"></script>\n\
+        \t\n\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/mathjax/MathJax.js?config=TeX-MML-AM_HTMLorMML\"></script>\n\
+        \t\t    \n\
+        \t<script type=\"text/javascript\">\n\
+        \t\n\
+        \t\tMathJax.Hub.Config({    \n\
+        \t\t    menuSettings: {\n\
+        \t\t    \t    zoom: \"Click\"\n\
+        \t\t   \t}\n\
+        \t\t});  \n\
+        \t\t\n\
+        \t\tMathJax.Hub.Register.StartupHook(\"mml Jax Ready\", function (){ \t\n\
+        \t\t\t // Set the amount that math's font size is multiplied by in fractions\n\
+        \t\t\t // Defaulting to 1 to look like Maple T.A. 8's images., the MathML default is 0.72\n\
+        \t\t\tMathJax.ElementJax.mml.math.prototype.defaults.scriptsizemultiplier = 1;\t\t\t   \n\
+        \t\t}); \n\
+        \t</script>\n\n\n\
+        <script type=\"text/javascript\">\n\
+        \tvar wsQuestionEngine = false;\n\
+        \tvar wsExpanded = false;\n\
+        </script>\n\n\n   \n\n  <script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery-ui.min.js\"></script>\n\n\n\n\n\n\n\n\
+        \t\n\n\n\n\n\n\n\n\n\
+        <script type=\"text/javascript\">\n\n\
+        \tvar theLocale = \"en_US\";\n\n\
+        \tif (theLocale.substr(0,2) == \"en\") {\n\
+        \t\ttheLocale = \"en_US\";\n\
+        \t}\n\
+        \t\n\
+        \t/*\n\
+        \t * Return the root URL for the server.\n\
+        \t */\n\
+        \tfunction getBaseURL() {\n\
+        \t\treturn \"http://mapletadev.thinkwell.com:80/mapleta/\";\n\
+        \t}\n\n\
+        </script>\n\n\
+        \t\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery.min.js\"></script>\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery-ui.min.js\"></script>\n\
+        \t\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/mathjax/?config=default\"></script>\n\
+        \t\t\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/buttons.js\"></script>\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/scripts/buttons.js\"></script>\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/main.js\"></script>\n\
+        \t<script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/helpURLs.js\"></script>\n\
+        \t<title>Maple T.A. - \n\
+        \t\t\n\
+        \t\t\t???Print Assignment???\n\
+        \t\t\n\
+        \t</title>\n\n\
+        \t<link rel=\"shortcut icon\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/images/titlebar/favicon.ico\" />\n\n  </head>\n  \n  \n  \n  <body onLoad=\"onLoad()\" onResize=\"onResize()\" onUnload=\"onUnload()\" class=\"popupWindow\">\n  \n  \n\
+        \t<div class=\"content\">\n\
+        \t  \t<div id=\"pageContainer\">\n\
+        \t\t\t\n\n\n\
+        <script language=\"Javascript\">\n\
+        \tstoreButton(\"cancel\",\"Cancel\",\"closeWindow();\",\"Return to the class home page\");\n\n\
+        \tvar baseURL = \"http://mapletadev.thinkwell.com:80/mapleta/\";\n\
+        </script>\n\n\
+        <style>\n      @import URL(\"modules/skin/css/panel.css\");\n\n\
+        </style>\n\n\n\
+        <form name=\"edu_form\" action=\"modules/unproctoredTest.Print\" \n\
+        \tmethod=\"post\" \n\
+        \tenctype=\"application/x-www-form-urlencoded\" \n\
+        \ttarget=\"_self\" \n\
+        \tonsubmit=\"return onSubmit()\" >\n\
+        \t\n\
+        \t<input type=\"hidden\" name=\"testName\" value=\"Rational Expressions (Book exercises)\"><input type=\"hidden\" name=\"testId\" value=\"29928\"><input type=\"hidden\" name=\"inAssignment\" value=\"true\"><input type=\"hidden\" name=\"assignment_mode\" value=\"Proctored\"><input type=\"hidden\" name=\"actionID\" value=\"\"><input type=\"hidden\" name=\"className\" value=\"Post University - College Algebra (MAT120.34 - MOD 4) (hg3hnc)\">\n\n\
+        \t\n\
+        <style>\n      @import URL(\"modules/skin/css/panel.css\");\n\n\
+        </style>\n\n\n\
+        <table width=\"100%\">\n\
+        \t<tr>\n\
+        \t\t<td width=\"50\"></td>\n\
+        \t\t<td nowrap>\n\
+        \t\t\t<script language=\"Javascript\">\n\
+        \t\t\t  drawStoredButtons();\n\
+        \t\t\t</script>\n\
+        \t\t</td>\n\
+        \t</tr>\n\
+        \t<tr>\n\
+        \t\t<td>\n\
+        \t\t\t&nbsp;\n\
+        \t\t</td>\n\
+        \t\t<td valign=\"top\" height=\"30\">\n\
+        \t\t\t<div style=\"position: relative\">\n\
+        \t\t\t\t<script language=\"Javascript\">\n\
+        \t\t\t\t    drawStoredButtonPopups();\n\
+        \t \t\t\t</script>\n\
+        \t\t\t</div>\n\
+        \t\t</td>\n\
+        \t</tr>\n\
+        </table>\n\n\
+        This assignment gives you two options:\n\
+        <ol>\n  <li>\n    print it first, work through it off-line, and then copy your answers into the online assignment later, or\n  </li>\n  <li>\n    work online right now.\n  </li>\n\
+        </ol>\n\
+        <p>\n\
+        If you choose to print the assignment, you will still need to submit your answers using the system.  When you are ready to submit your work, you will:\n\
+        <p>\n\
+        <ol>\n  <li>\n    select this assignment from the Class Homepage and log in,\n  </li>\n  <li>\n    enter your answers and select \"Grade\"\n  </li>\n\
+        </ol>\n\
+        <p>\n\
+        Make your selection now:\n\
+        <p>\n\
+        <center>\n  <a href=\"javascript: doAction('print assignment');\">Print assignment for off-line work</a> |\n  <a href=\"javascript: doAction('work assignment now');\">Work assignment on-line right now</a>\n\
+        </center>\n\n\
+        </form>\n\n\
+        \t\t</div>\n\
+        \t</div>\n\
+        \t\n  </body>\n  \n\
+        </html>\n"
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:02 GMT
+  recorded_at: Thu, 06 Mar 2014 19:24:50 GMT
 recorded_with: VCR 2.8.0

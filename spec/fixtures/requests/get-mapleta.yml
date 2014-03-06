@@ -1,42 +1,34 @@
----
-http_interactions:
-- request:
+--- 
+http_interactions: 
+- request: 
     method: get
     uri: http://mapletadev.thinkwell.com/mapleta
-    body:
+    body: 
       encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - '*/*'
-      User-Agent:
+      string: ""
+    headers: 
+      Accept: 
+      - "*/*"
+      User-Agent: 
       - Ruby
-      Cookie:
-      - ''
-  response:
-    status:
+      Cookie: 
+      - ""
+  response: 
+    status: 
       code: 302
-      message: Moved Temporarily
-    headers:
-      Server:
+      message: Found
+    headers: 
+      Server: 
       - Apache-Coyote/1.1
-      Location:
+      Location: 
       - http://mapletadev.thinkwell.com/mapleta/
-      Date:
-      - Wed, 05 Mar 2014 17:31:01 GMT
-      X-Cache:
-      - MISS from dawcons.site
-      X-Cache-Lookup:
-      - MISS from dawcons.site:3128
-      Via:
-      - 1.0 dawcons.site:3128 (squid/2.6.STABLE14)
-      Connection:
-      - close
-    body:
-      encoding: UTF-8
-      string: ''
+      Transfer-Encoding: 
+      - chunked
+      Date: 
+      - Thu, 06 Mar 2014 19:24:50 GMT
+    body: 
+      encoding: US-ASCII
+      string: ""
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:01 GMT
+  recorded_at: Thu, 06 Mar 2014 19:24:51 GMT
 recorded_with: VCR 2.8.0
