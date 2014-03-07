@@ -33,7 +33,7 @@ http_interactions:
       Location:
       - http://mapletadev.thinkwell.com/mapleta/
       Date:
-      - Wed, 05 Mar 2014 17:31:00 GMT
+      - Fri, 07 Mar 2014 15:31:29 GMT
       X-Cache:
       - MISS from dawcons.site
       X-Cache-Lookup:
@@ -46,7 +46,7 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:01 GMT
+  recorded_at: Fri, 07 Mar 2014 15:31:30 GMT
 - request:
     method: get
     uri: http://mapletadev.thinkwell.com/mapleta/
@@ -80,7 +80,7 @@ http_interactions:
       Server:
       - Apache-Coyote/1.1
       Set-Cookie:
-      - JSESSIONID=8E2BCC4F6952991C87D59B75AB8A1DCF; Path=/mapleta/; HttpOnly
+      - JSESSIONID=564C9D847B95948A337F98575DE90B0C; Path=/mapleta/; HttpOnly
       Content-Type:
       - text/html;charset=UTF-8
       Content-Language:
@@ -88,7 +88,7 @@ http_interactions:
       Content-Length:
       - '1414'
       Date:
-      - Wed, 05 Mar 2014 17:31:00 GMT
+      - Fri, 07 Mar 2014 15:31:29 GMT
       X-Cache:
       - MISS from dawcons.site
       X-Cache-Lookup:
@@ -117,7 +117,7 @@ http_interactions:
         throwAlert(msg) {\n\t\t\tif (msg.length > 0) {\n\t\t\t\talert(msg);\n\t\t\t}\n\t\t}\n\t</script>\n</head>\n\n<body
         onload=\"doSubmit();\">\n\t<form action=\"/mapleta/login/login.do\"\n\t\ttarget=\"_top\"\n\t\tmethod=\"post\">\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t</form>\n</body>\n</html>\n"
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:01 GMT
+  recorded_at: Fri, 07 Mar 2014 15:31:30 GMT
 - request:
     method: post
     uri: http://mapletadev.thinkwell.com/mapleta/login/login.do
@@ -142,7 +142,7 @@ http_interactions:
       Accept-Charset:
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
       Cookie:
-      - JSESSIONID=8E2BCC4F6952991C87D59B75AB8A1DCF
+      - JSESSIONID=564C9D847B95948A337F98575DE90B0C
       Referer:
       - http://mapletadev.thinkwell.com/mapleta/
       Content-Type:
@@ -157,13 +157,13 @@ http_interactions:
       Server:
       - Apache-Coyote/1.1
       Set-Cookie:
-      - JSESSIONID=EAECDABD1B960CE46AABA7E14163F6C2; Path=/mapleta/; HttpOnly
+      - JSESSIONID=A3B0F3A03DD1BF7E7AEAF16199E2C697; Path=/mapleta/; HttpOnly
       Content-Type:
       - text/html;charset=UTF-8
       Content-Language:
       - en-US
       Date:
-      - Wed, 05 Mar 2014 17:31:00 GMT
+      - Fri, 07 Mar 2014 15:31:30 GMT
       X-Cache:
       - MISS from dawcons.site
       X-Cache-Lookup:
@@ -427,5 +427,5 @@ http_interactions:
         )\n\t\t{\n\t\t\tdocument.LoginActionForm.lockdownToken.value = token;\n\t\t}\n\t</script>\n\t\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t</div>\t\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t</div>\n\t<div
         id=\"pageDialog\"></div>\n\t<div id=\"modal\" class=\"modal hide fade\"></div>\n\t\n\t\t\n</body>\n</html>\n"
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:01 GMT
+  recorded_at: Fri, 07 Mar 2014 15:31:30 GMT
 recorded_with: VCR 2.8.0

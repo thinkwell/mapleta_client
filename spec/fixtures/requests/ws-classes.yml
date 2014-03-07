@@ -8,8 +8,8 @@ http_interactions:
       string: |
         <?xml version="1.0" encoding="UTF-8"?>
         <Request>
-          <timestamp>1394040663000</timestamp>
-          <signature>UzoYW3FW8k2DCTsbHZ+vMw==</signature>
+          <timestamp>1394206292000</timestamp>
+          <signature>wRJEy3vLzEz5MdZlK6vDEg==</signature>
           <classId>0</classId>
           <featured>false</featured>
           <openForRegistration>false</openForRegistration>
@@ -22,7 +22,7 @@ http_interactions:
       User-Agent:
       - Ruby
       Cookie:
-      - JSESSIONID=CD65F1443EE65FDF2A39C18530D67E33
+      - JSESSIONID=F27E4904A2611AB7A26B87E5635413F8
       Content-Type:
       - text/xml
   response:
@@ -35,7 +35,7 @@ http_interactions:
       Content-Type:
       - text/xml;charset=UTF-8
       Date:
-      - Wed, 05 Mar 2014 17:31:04 GMT
+      - Fri, 07 Mar 2014 15:31:31 GMT
       X-Cache:
       - MISS from dawcons.site
       X-Cache-Lookup:
@@ -1045,11 +1045,6 @@ http_interactions:
               <instructor>Maple T.A. Administrator</instructor>
             </element>
             <element>
-              <id>34</id>
-              <name>Palo TEST 01 - Algebra Review (CR036) (x39mie)</name>
-              <instructor>Maple T.A. Administrator</instructor>
-            </element>
-            <element>
               <id>33</id>
               <name>Palo TEST 01 - College Algebra (YOLK TEST 01) (1wdo77m)</name>
               <instructor>Maple T.A. Administrator</instructor>
@@ -1937,6 +1932,11 @@ http_interactions:
             <element>
               <id>158</id>
               <name>Tarrant County College - College Algebra (Demo 2) (h5zerh)</name>
+              <instructor>Maple T.A. Administrator</instructor>
+            </element>
+            <element>
+              <id>34</id>
+              <name>Test Class</name>
               <instructor>Maple T.A. Administrator</instructor>
             </element>
             <element>
@@ -4632,5 +4632,5 @@ http_interactions:
           </list>
         </Response>
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:05 GMT
+  recorded_at: Fri, 07 Mar 2014 15:31:33 GMT
 recorded_with: VCR 2.8.0

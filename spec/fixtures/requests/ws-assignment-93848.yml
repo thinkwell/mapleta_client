@@ -8,10 +8,10 @@ http_interactions:
       string: |
         <?xml version="1.0" encoding="UTF-8"?>
         <Request>
-          <timestamp>1394041424000</timestamp>
-          <signature>d8DD2wXQCRG2vO8VQpkyiw==</signature>
-          <classId>330</classId>
-          <assignmentId>29928</assignmentId>
+          <timestamp>1394206293000</timestamp>
+          <signature>U+ALUxTZUptRuRa9AWa49g==</signature>
+          <classId>34</classId>
+          <assignmentId>93848</assignmentId>
         </Request>
     headers:
       Accept-Encoding:
@@ -21,7 +21,7 @@ http_interactions:
       User-Agent:
       - Ruby
       Cookie:
-      - JSESSIONID=CD65F1443EE65FDF2A39C18530D67E33
+      - JSESSIONID=F27E4904A2611AB7A26B87E5635413F8
       Content-Type:
       - text/xml
   response:
@@ -34,7 +34,7 @@ http_interactions:
       Content-Type:
       - text/xml;charset=UTF-8
       Date:
-      - Wed, 05 Mar 2014 17:43:44 GMT
+      - Fri, 07 Mar 2014 15:31:33 GMT
       X-Cache:
       - MISS from dawcons.site
       X-Cache-Lookup:
@@ -54,13 +54,13 @@ http_interactions:
           </status>
           <list>
             <element>
-              <classId>330</classId>
-              <id>29928</id>
-              <name>Rational Expressions (Book exercises)</name>
+              <classId>34</classId>
+              <id>93848</id>
+              <name>Test Assignment</name>
               <mode>1</mode>
               <modeDescription>Homework or Quiz</modeDescription>
               <passingScore>-1</passingScore>
-              <totalPoints>11.0</totalPoints>
+              <totalPoints>16.0</totalPoints>
               <weight>0.0</weight>
               <timeLimit>-1</timeLimit>
               <policy></policy>
@@ -68,5 +68,5 @@ http_interactions:
           </list>
         </Response>
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:43:44 GMT
+  recorded_at: Fri, 07 Mar 2014 15:31:33 GMT
 recorded_with: VCR 2.8.0

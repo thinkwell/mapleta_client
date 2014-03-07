@@ -5,7 +5,7 @@ http_interactions:
     uri: http://mapletadev.thinkwell.com/mapleta/ws/launcher
     body:
       encoding: UTF-8
-      string: testId=29928&wsStudentId=admin&timestamp=1394040662000&wsUserRole=ADMINISTRATOR&wsActionID=assignment&wsClassId=330&wsMiddleName=&wsCourseId=1&wsUserLogin=admin&wsExternalData=5&signature=CioB9UMTYIfvLaHFyAdtsw%3D%3D&className=&wsLastName=Administrator&testName=Easy+Test&wsFirstName=Maple+T.A.&wsUserEmail=mapleta%40thinkwell.com
+      string: testId=93848&wsStudentId=admin&timestamp=1394206284000&wsUserRole=ADMINISTRATOR&wsActionID=assignment&wsClassId=34&wsMiddleName=&wsCourseId=1&wsUserLogin=admin&wsExternalData=5&signature=ldwS8GdwWoeNO1Bfz%2FVDHA%3D%3D&className=&wsLastName=Administrator&testName=Test+Assignment&wsFirstName=Maple+T.A.&wsUserEmail=mapleta%40thinkwell.com
     headers:
       Accept-Encoding:
       - gzip,identity
@@ -26,7 +26,7 @@ http_interactions:
       Content-Type:
       - application/x-www-form-urlencoded
       Content-Length:
-      - '330'
+      - '337'
   response:
     status:
       code: 200
@@ -35,13 +35,15 @@ http_interactions:
       Server:
       - Apache-Coyote/1.1
       Set-Cookie:
-      - JSESSIONID=9277CB341640652EB3CF5E7C94CB2F72; Path=/mapleta/; HttpOnly
+      - JSESSIONID=941BED045D3EE3F509C6429C65B31AC6; Path=/mapleta/; HttpOnly
       Content-Type:
       - text/html;charset=UTF-8
+      Content-Language:
+      - en-US
       Content-Length:
-      - '6397'
+      - '4815'
       Date:
-      - Wed, 05 Mar 2014 17:31:01 GMT
+      - Fri, 07 Mar 2014 15:31:29 GMT
       X-Cache:
       - MISS from dawcons.site
       X-Cache-Lookup:
@@ -52,30 +54,153 @@ http_interactions:
       - keep-alive
     body:
       encoding: UTF-8
-      string: "\n\n\n\n\n\n\n\n\n\n\n<!DOCTYPE html>\n<html lang=\"en-US\">\n  <head>\n
-        \ \t<!--  skinSimpleFrame.jsp -->\n\t<base href=\"http://mapletadev.thinkwell.com:80/mapleta/\">\n
-        \   \n\t <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">\n\t<meta
-        http-equiv=\"Pragma\" content=\"no-cache\">\n\t<meta http-equiv=\"Cache-Control\"
-        content=\"no-cache\">\n\t<meta http-equiv=\"Expires\" content=\"0\">\n    \n\t<link
-        rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/main.css\">\n\t<link
+      string: "\n\n\n\n\n\n\n\n\n\n\n\n<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01
+        Transitional//EN\">\n<html lang=\"en-US\">\n<head>\n\t<base href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/ForwardHandlerAction.do\">\n\n\t<title>Redirector</title>\n\n\t<meta
+        http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">\n\t<meta
+        http-equiv=\"pragma\" content=\"no-cache\">\n\t<meta http-equiv=\"cache-control\"
+        content=\"no-cache\">\n\t<meta http-equiv=\"expires\" content=\"0\">\n\t<meta
+        http-equiv=\"description\"\n\t\tcontent=\"Execute a redirection to another
+        frame\">\n\n\t<script type=\"text/javascript\">\n\t\tfunction doSubmit() {\n\t\t\tvar
+        dosubmit = true;\n\t\t\tvar confirm = document.forms[0].confirmation;\n\t\t\tif
+        (confirm) {\n\t\t\t\tvar msg = document.forms[0].confirmation.value;\n\t\t\t\tif
+        (msg.length > 0) {\n\t\t\t\t\tvar doAlternateLocation = window.confirm(msg);\n\t\t\t\t\tif
+        (!doAlternateLocation) {\n\t\t\t\t\t\t//purge the current actionID\n\t\t\t\t\t\tobjActionID
+        = document.forms[0].actionID;\n\t\t\t\t\t\tobjCancelActionID = document.forms[0].cancelActionID;\n\t\t\t\t\t\tif
+        (objActionID && objCancelActionID) {\n\t\t\t\t\t\t\t\tobjActionID.value =
+        objCancelActionID.value;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tdocument.forms[0].action
+        = \"\";\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tdocument.forms[0].submit();\n\t\t}\n\t\t\n\t\tfunction
+        throwAlert(msg) {\n\t\t\tif (msg.length > 0) {\n\t\t\t\talert(msg);\n\t\t\t}\n\t\t}\n\t</script>\n</head>\n\n<body
+        onload=\"doSubmit();\">\n\t<form action=\"unproctoredTest.QuestionSheet\"\n\t\ttarget=\"_self\"\n\t\tmethod=\"post\">\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"javax.servlet.forward.request_uri\" value=\"/mapleta/ws/launcher\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"hideMyProfile\" value=\"true\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"testName\" value=\"Test Assignment\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"noLoad\" value=\"\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"javax.servlet.forward.context_path\" value=\"/mapleta\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"form action\" value=\"unproctoredTest.Login\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"wsLastName\" value=\"Administrator\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"lockdownCalculator\" value=\"0\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"timestamp\" value=\"1394206284000\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"newTest\" value=\"false\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"scripts\" value=\"&lt;SCRIPT SRC=&#034;modules/scripts/questionframe.js&#034;&gt;&lt;/SCRIPT&gt;\n&lt;SCRIPT
+        SRC=&#034;modules/scripts/assignmentcontrolbar.js&#034;&gt;&lt;/SCRIPT&gt;\n\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"javax.servlet.forward.servlet_path\"
+        value=\"/ws/launcher\" />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"currPage\"
+        value=\"0\" />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"wsFirstName\" value=\"Maple
+        T.A.\" />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"wsCourseId\" value=\"1\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"system title\" value=\"Maple
+        T.A. 9.5\" />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"LauncherForm\" value=\"com.maplesoft.mapleta.ws.struts.actionform.LauncherActionForm@4557eb3b\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"MTA_LOCALE\" value=\"en_US\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"wsExternalData\" value=\"5\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"actionID\" value=\"\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"className\" value=\"Test Class\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"TA.resource\" value=\"unproctoredTest.Login\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"signature\" value=\"ldwS8GdwWoeNO1Bfz/VDHA==\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"ALLOW_NEW_TEST\" value=\"true\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"org.apache.struts.action.MODULE\" value=\"org.apache.struts.config.impl.ModuleConfigImpl@55d54cef\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"testId\" value=\"93848\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"form method\" value=\"post\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"form target\" value=\"_self\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"wsUserLogin\" value=\"admin\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"styles\" value=\"@import URL(&#034;modules/skin/css/questionframe.css&#034;);\n\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"modeRequested\" value=\"ALLOW_RE_ENTRY\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"buttons\" value=\"\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"wsUserEmail\" value=\"mapleta@thinkwell.com\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"wsMiddleName\" value=\"\" />\n\t\t\n\t\t\t<input type=\"hidden\"
+        name=\"wsStudentId\" value=\"admin\" />\n\t\t\n\t\t\t<input type=\"hidden\"
+        name=\"wsActionID\" value=\"assignment\" />\n\t\t\n\t\t\t<input type=\"hidden\"
+        name=\"wsUserRole\" value=\"ADMINISTRATOR\" />\n\t\t\n\t\t\t<input type=\"hidden\"
+        name=\"form enctype\" value=\"application/x-www-form-urlencoded\" />\n\t\t\n\t\t\t<input
+        type=\"hidden\" name=\"UTF8\" value=\"SET\" />\n\t\t\n\t\t\t<input type=\"hidden\"
+        name=\"wsClassId\" value=\"34\" />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"org.apache.struts.action.mapping.instance\"
+        value=\"ActionConfig[cancellable=false,path=/ForwardHandlerAction,validate=true,scope=request,type=com.maplesoft.mapleta.gateway.struts.action.ForwardHandlerAction\"
+        />\n\t\t\n\t\t\t<input type=\"hidden\" name=\"org.apache.struts.globals.ORIGINAL_URI_KEY\"
+        value=\"/ws/launcher.do\" />\n\t\t\n\t\t\n\t</form>\n</body>\n</html>\n"
+    http_version: 
+  recorded_at: Fri, 07 Mar 2014 15:31:29 GMT
+- request:
+    method: post
+    uri: http://mapletadev.thinkwell.com/mapleta/modules/unproctoredTest.QuestionSheet
+    body:
+      encoding: UTF-8
+      string: javax.servlet.forward.request_uri=%2Fmapleta%2Fws%2Flauncher&hideMyProfile=true&testName=Test+Assignment&noLoad=&javax.servlet.forward.context_path=%2Fmapleta&form+action=unproctoredTest.Login&wsLastName=Administrator&lockdownCalculator=0&timestamp=1394206284000&newTest=false&scripts=%3CSCRIPT+SRC%3D%22modules%2Fscripts%2Fquestionframe.js%22%3E%3C%2FSCRIPT%3E%0A%3CSCRIPT+SRC%3D%22modules%2Fscripts%2Fassignmentcontrolbar.js%22%3E%3C%2FSCRIPT%3E%0A&javax.servlet.forward.servlet_path=%2Fws%2Flauncher&currPage=0&wsFirstName=Maple+T.A.&wsCourseId=1&system+title=Maple+T.A.+9.5&LauncherForm=com.maplesoft.mapleta.ws.struts.actionform.LauncherActionForm%404557eb3b&MTA_LOCALE=en_US&wsExternalData=5&actionID=&className=Test+Class&TA.resource=unproctoredTest.Login&signature=ldwS8GdwWoeNO1Bfz%2FVDHA%3D%3D&ALLOW_NEW_TEST=true&org.apache.struts.action.MODULE=org.apache.struts.config.impl.ModuleConfigImpl%4055d54cef&testId=93848&form+method=post&form+target=_self&wsUserLogin=admin&styles=%40import+URL%28%22modules%2Fskin%2Fcss%2Fquestionframe.css%22%29%3B%0A&modeRequested=ALLOW_RE_ENTRY&buttons=&wsUserEmail=mapleta%40thinkwell.com&wsMiddleName=&wsStudentId=admin&wsActionID=assignment&wsUserRole=ADMINISTRATOR&form+enctype=application%2Fx-www-form-urlencoded&UTF8=SET&wsClassId=34&org.apache.struts.action.mapping.instance=ActionConfig%5Bcancellable%3Dfalse%2Cpath%3D%2FForwardHandlerAction%2Cvalidate%3Dtrue%2Cscope%3Drequest%2Ctype%3Dcom.maplesoft.mapleta.gateway.struts.action.ForwardHandlerAction&org.apache.struts.globals.ORIGINAL_URI_KEY=%2Fws%2Flauncher.do
+    headers:
+      Accept-Encoding:
+      - gzip,identity
+      Accept:
+      - '*/*'
+      User-Agent:
+      - WWW-Mechanize/1.0.0 (http://rubyforge.org/projects/mechanize/)
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '300'
+      Accept-Language:
+      - en-us,en;q=0.5
+      Host:
+      - mapletadev.thinkwell.com
+      Accept-Charset:
+      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
+      Cookie:
+      - JSESSIONID=941BED045D3EE3F509C6429C65B31AC6
+      Referer:
+      - http://mapletadev.thinkwell.com/mapleta/ws/launcher
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Content-Length:
+      - '1565'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Fri, 07 Mar 2014 15:31:29 GMT
+      X-Cache:
+      - MISS from dawcons.site
+      X-Cache-Lookup:
+      - MISS from dawcons.site:3128
+      Via:
+      - 1.0 dawcons.site:3128 (squid/2.6.STABLE14)
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: "\n\n\n\n\n\n\n\n\n\n<!DOCTYPE html>\n<html lang=\"en-US\">\n<head>\n\t<!--
+        skinFrame.jsp -->\n\t<base href=\"http://mapletadev.thinkwell.com:80/mapleta/\">\n\n\t<title>Maple
+        T.A. - Test Assignment\n\t</title>\n\n\t<meta http-equiv=\"Content-Type\"
+        content=\"text/html;charset=UTF-8\">\n\t<meta http-equiv=\"Pragma\" content=\"no-cache\">\n\t<meta
+        http-equiv=\"Cache-Control\" content=\"no-cache\">\n\t<meta http-equiv=\"Expires\"
+        content=\"0\">\n\n\t<link rel=\"stylesheet\" type=\"text/css\"\n\t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/main.css\">\n\t<link
         rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/print.css\"
-        media=\"print\">  \n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/questions.css\">\n\n\t<script
-        language=\"JavaScript\">\n\t// strings for main.js\n\tvar msgMainScriptImminentSessionTimeoutWarningPart1
+        media=\"print\">  \n\t<link rel=\"stylesheet\" type=\"text/css\"\n\t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/menubar.css\">\n\t<link
+        rel=\"stylesheet\" type=\"text/css\"\n\t\thref=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/questions.css\">\n\n\t<script
+        language=\"JavaScript\">\n\t\t// strings for main.js\n\t\tvar msgMainScriptImminentSessionTimeoutWarningPart1
         = \"DISCONNECTION WARNING\\n\\nYou may be in danger of losing your work on
         this page. The internet server\\nthat sent this question to you needs a reply.
         To save your work and continue\\nworking, do the following within the next
-        \";\n\tvar msgMainScriptImminentSessionTimeoutWarningPart2 = \"minutes:\\n\\n1)
+        \";\n\t\tvar msgMainScriptImminentSessionTimeoutWarningPart2 = \"minutes:\\n\\n1)
         Click the Next or Back button above.\\n\\n2) When the new question appears,
         click the Back or Next button to return to this\\nquestion.  Your work will
         be saved and you can then continue to enter responses\\non this page.\\n\\n(If
         the Next or Back buttons are greyed out, click the Save & Quit button.  You\\nwill
         have to log-in again to return to this question, but your work will be preserved.)\\n\\nMessage
-        time: \";\n\tvar msgMainScriptTimedAssignmentWarning = \"This is a timed assignment.
-        \ Once it has been started the timer cannot\\nbe stopped until it runs out
-        or the assignment is graded.\";\n\tvar msgMainScriptFinishOtherAssignmentFirst
+        time: \";\n\t\tvar msgMainScriptTimedAssignmentWarning = \"This is a timed
+        assignment.  Once it has been started the timer cannot\\nbe stopped until
+        it runs out or the assignment is graded.\";\n\t\tvar msgMainScriptFinishOtherAssignmentFirst
         = \"You are currently either taking an assignment, or you\\r\\nhave another
         browser window open to the class homepage.\\r\\n\\r\\nPlease finish the assignment
-        and/or close the other browser before\\r\\nattempting another assignment.\";\n\t</script>\n\n\t\n\n\n\n\n\n\n\n<script
+        and/or close the other browser before\\r\\nattempting another assignment.\";\n\t\n\t\tvar
+        newPage = true;\n\t\t// Blocking Backspace\n\t\tif (history.pushState) {\n\t\t\thistory.pushState(null,
+        \"Current Page\");\n\t\t\t\n\t\t\twindow.onpopstate = function(event) {\n\t\t\t\tvar
+        name = navigator.userAgent.match(/(opera|chrome|safari|firefox|msie)\\/?\\s*(\\.?\\d+(\\.\\d+)*)/i)[1].toLowerCase();\n\t\t\t\tvar
+        doBack = ((!newPage || (name != 'chrome' && name != 'safari')) && document.getElementById('MenuItem.actions.assignment.back')
+        != null);\n\n\t\t\t\tif (doBack) {\n\t\t\t\t\tdisableme('MenuItem.actions.assignment.back');\n\t\t\t\t\tdoAction('back');\n\t\t\t\t}
+        else {\n\t\t\t\t\thistory.pushState(null, \"Current Page\");\n\t\t\t\t\tnewPage
+        = false;\n\t\t\t\t}\n\t\t\t};\n\t\t}\n\n\t</script>\n\n\t\n\n\n\n\n\n\n\n<script
         src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery.min.js\"></script>\n\t\n\n\t<script
         src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/mathjax/MathJax.js?config=TeX-MML-AM_HTMLorMML\"></script>\n\t\t
         \   \n\t<script type=\"text/javascript\">\n\t\n\t\tMathJax.Hub.Config({    \n\t\t
@@ -88,45 +213,157 @@ http_interactions:
         \ <script src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery-ui.min.js\"></script>\n\n\n\n\n\n\n\n\t\n\n\n\n\n\n\n\n\n<script
         type=\"text/javascript\">\n\n\tvar theLocale = \"en_US\";\n\n\tif (theLocale.substr(0,2)
         == \"en\") {\n\t\ttheLocale = \"en_US\";\n\t}\n\t\n\t/*\n\t * Return the root
-        URL for the server.\n\t */\n\tfunction getBaseURL() {\n\t\treturn \"http://mapletadev.thinkwell.com:80/mapleta/\";\n\t}\n\n</script>\n\n\t\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery.min.js\"></script>\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/jquery/jquery-ui.min.js\"></script>\n\t\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/mathjax/?config=default\"></script>\n\t\t\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/buttons.js\"></script>\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/scripts/buttons.js\"></script>\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/main.js\"></script>\n\t<script
-        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/helpURLs.js\"></script>\n\t<title>Maple
-        T.A. - \n\t\t\n\t\t\t???Print Assignment???\n\t\t\n\t</title>\n\n\t<link rel=\"shortcut
-        icon\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/images/titlebar/favicon.ico\"
-        />\n\n  </head>\n  \n  \n  \n  <body onLoad=\"onLoad()\" onResize=\"onResize()\"
-        onUnload=\"onUnload()\" class=\"popupWindow\">\n  \n  \n\t<div class=\"content\">\n\t
-        \ \t<div id=\"pageContainer\">\n\t\t\t\n\n\n<script language=\"Javascript\">\n\tstoreButton(\"cancel\",\"Cancel\",\"closeWindow();\",\"Return
-        to the class home page\");\n\n\tvar baseURL = \"http://mapletadev.thinkwell.com:80/mapleta/\";\n</script>\n\n<style>\n
-        \     @import URL(\"modules/skin/css/panel.css\");\n\n</style>\n\n\n<form
-        name=\"edu_form\" action=\"modules/unproctoredTest.Print\" \n\tmethod=\"post\"
+        URL for the server.\n\t */\n\tfunction getBaseURL() {\n\t\treturn \"http://mapletadev.thinkwell.com:80/mapleta/\";\n\t}\n\n</script>\n\n\n\t<link
+        rel=\"stylesheet\" type=\"text/css\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/css/jquery.ui.css\"/>\n\t<script\n\t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/buttons.js\"></script>\n\t<script\n\t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/scripts/buttons.js\"></script>\n\t<script
+        src=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/main.js\"></script>\n\t<script\n\t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/scripts/menubar.js\"></script>\n\t<script\n\t\tsrc=\"http://mapletadev.thinkwell.com:80/mapleta/modules/scripts/helpURLs.js\"></script>\n\n\t<link
+        rel=\"shortcut icon\" href=\"http://mapletadev.thinkwell.com:80/mapleta/modules/skin/images/titlebar/favicon.ico\"
+        />\n\n</head>\n\n\n\n<body onLoad=\"onLoad()\" onResize=\"onResize()\" onUnload=\"onUnload()\">\n\n\t\t<div
+        id=\"top\">\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"pageHeader\">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\n\t\n\n\t\t<img\n\t\t\tsrc=\"/mapleta/modules/skin/images/titlebar/logo.gif\"\n\t\t\twidth=163
+        height=60 border=\"0\" id=\"logo\" />\n\n\t\t\n\t\t\n\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t\t\n\t\t\n\t\t<div
+        id=\"title\"><h1>Test Class</h1><h2>\n\t\t\t\t\t\t\t\t\t\tTest Assignment\n\t\t\t\t\t\t\t\t\t</h2></div>\n\t\t\n\t\t\n\n\t\t<div
+        id=\"welcome\">\n\t\t\n\t\t\t<p id=\"ids\">Maple T.A. Administrator<br />\n\n\t\t\tadmin</p>\n\t\t\t\n\t\t</div>\n\n\t\n\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div
+        class=\"crumbTrail\">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<div
+        style=\"float:left;\">\n\n</div>\n\n\n\n\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\n\t\t\t\t\t\n\t\t\t\t\t\t<div
+        class=\"menu\">\n\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\n\n<script type=\"text/javascript\">\n\n\tvar
+        theLocale = \"en_US\";\n\n\tif (theLocale.substr(0,2) == \"en\") {\n\t\ttheLocale
+        = \"en_US\";\n\t}\n\t\n\t/*\n\t * Return the root URL for the server.\n\t
+        */\n\tfunction getBaseURL() {\n\t\treturn \"http://mapletadev.thinkwell.com:80/mapleta/\";\n\t}\n\n</script>\n\n\t\n<script
+        src=\"modules/scripts/helpURLs.js\"></script>\n\n\n<form method=\"post\" action=\"modules/configureTest.Login\"\n\tname=\"menu_form\"
+        style=\"display:none;\">\n\t<input type=\"hidden\" name=\"actionID\" value=\"\">\n</form>\n\n<table
+        width=\"100%\">\n\t<tr>\n\t\t<td align=\"left\" width=\"50%\">\n\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t
+        \ \n\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\t<table class=\"menubar\" id=\"menu_lhs\">\n\t\t<tr>\n\t\t\t\n\t\t\t\t<td
+        class=\"menuitem\" name=\"MenuItem.actions.assignment.back\" nowrap=\"nowrap\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        name=\"disabled\" class=\"disabled\"\n\t\t\t\t\t\t >\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<span
+        class=\"disabled\">\n\t\t\t\t\t\t\t\tBack\n\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</div></td>\n\t\t\t\t<td
+        width=\"10px\">&nbsp;</td>\n\t\t\t\n\t\t\t\t<td class=\"menuitem\" name=\"MenuItem.actions.assignment.next\"
+        nowrap=\"nowrap\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        name=\"enabled\" class=\"enabled\"\n\t\t\t\t\t\t >\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<a
+        style=\"text-decoration: none;\" href=\"javascript:disableme('MenuItem.actions.assignment.next');doAction('next');\"
+        id=\"MenuItem.actions.assignment.next\"\n\t\t\t\t\t\t\t\t\tclass=\"disabled\"
+        onclick=\"return false;\"  >\n\t\t\t\t\t\t\t\t\tNext </a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</div></td>\n\t\t\t\t<td
+        width=\"10px\">&nbsp;</td>\n\t\t\t\n\t\t\t\t<td class=\"menuitem\" name=\"MenuItem.actions.assignment.goto\"
+        nowrap=\"nowrap\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        name=\"enabled\" class=\"enabled\"\n\t\t\t\t\t\t >\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<span
+        class=\"disabled\">\n\t\t\t\t\t\t\t\tQuestion Menu\n\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"subMenu1\">\n\t\t\t\t\t\t\t\t<div class=\"subMenu2\">\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\t\n\t\t\n\t\t\n\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<span
+        class=\"disabled\"><span id=\"jump\"></span></span>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t\n\t\n\n\n\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t</div></td>\n\t\t\t\t<td
+        width=\"10px\">&nbsp;</td>\n\t\t\t\n\t\t\t\t<td class=\"menuitem\" name=\"MenuItem.spacer\"
+        nowrap=\"nowrap\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        name=\"disabled\" class=\"disabled\"\n\t\t\t\t\t\t >\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<span
+        class=\"disabled\">\n\t\t\t\t\t\t\t\t&nbsp;\n\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</div></td>\n\t\t\t\t<td
+        width=\"10px\">&nbsp;</td>\n\t\t\t\n\t\t\t\t<td class=\"menuitem\" name=\"MenuItem.actions.assignment.grade\"
+        nowrap=\"nowrap\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        name=\"enabled\" class=\"enabled\"\n\t\t\t\t\t\t >\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<a
+        style=\"text-decoration: none;\" href=\"javascript:disableme('MenuItem.actions.assignment.grade');doAction('grade');\"
+        id=\"MenuItem.actions.assignment.grade\"\n\t\t\t\t\t\t\t\t\tclass=\"disabled\"
+        onclick=\"return false;\"  >\n\t\t\t\t\t\t\t\t\tGrade </a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</div></td>\n\t\t\t\t<td
+        width=\"10px\">&nbsp;</td>\n\t\t\t\n\t\t</tr>\n\t</table>\n\n\n\n\t\t</td>\n\t\t<td
+        width=\"10px\">&nbsp;</td>\n\t\t<td align=\"center\">\n\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t
+        \n\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\t<table class=\"menubar\" id=\"menu_chs\">\n\t\t<tr>\n\t\t\t\n\t\t\t\t<td
+        class=\"menuitem\" name=\"MenuItem.help.label\" nowrap=\"nowrap\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        name=\"enabled\" class=\"enabled\"\n\t\t\t\t\t\t >\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<span
+        class=\"disabled\">\n\t\t\t\t\t\t\t\tHelp\n\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"subMenu1\">\n\t\t\t\t\t\t\t\t<div class=\"subMenu2\">\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\n\n\n\n\n\n\n\n\n\t\n\t\t\n\t\t\n\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t<a
+        href=\"javascript:getHelp('student','http://mapletadev.thinkwell.com:80/mapleta/');\">Student</a>\n\t\t\t\t\n\t\t\t\n\t\t\n\t\n\n\t\n\t\t\n\t\t\n\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t<a
+        href=\"javascript:aboutPopup('http://mapletadev.thinkwell.com:80/mapleta/');\">About</a>\n\t\t\t\t\n\t\t\t\n\t\t\n\t\n\n\n\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t</div></td>\n\t\t\t\t<td
+        width=\"10px\">&nbsp;</td>\n\t\t\t\n\t\t</tr>\n\t</table>\n\n\n\n\t\t</td>\n\t\t<td
+        width=\"10px\">&nbsp;</td>\n\t\t<td align=\"right\">\n\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\n\n\n\n\n\n\n\n\n\n\n\n\t<table
+        class=\"menubar\" id=\"menu_rhs\">\n\t\t<tr>\n\t\t\t\n\t\t\t\t<td class=\"menuitem\"
+        name=\"MenuItem.actions.assignment.quit_save\" nowrap=\"nowrap\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        name=\"enabled\" class=\"enabled\"\n\t\t\t\t\t\t >\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<a
+        style=\"text-decoration: none;\" href=\"javascript:disableme('MenuItem.actions.assignment.quit_save');doAction('quit_save');\"
+        id=\"MenuItem.actions.assignment.quit_save\"\n\t\t\t\t\t\t\t\t\tclass=\"disabled\"
+        onclick=\"return false;\"  >\n\t\t\t\t\t\t\t\t\tQuit & Save </a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</div></td>\n\t\t\t\t<td
+        width=\"10px\">&nbsp;</td>\n\t\t\t\n\t\t</tr>\n\t</table>\n\n\n\n\t\t</td>\n\t</tr>\n</table>\n\n<!--
+        \n<script>hover(\"menu_lhs\");</script>\n<script>hover(\"menu_rhs\");</script>\n
+        -->\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t</div>\n\t\t\n\t\t\t\t\t<div
+        id=\"holder\">\n\t\t\t\t\t<div class=\"content\">\n\t\t\t\t\t\t<div id=\"pageContainer\">\n\t\t\t\t\t\t\t\n<SCRIPT
+        SRC=\"modules/scripts/questionframe.js\"></SCRIPT>\n<SCRIPT SRC=\"modules/scripts/assignmentcontrolbar.js\"></SCRIPT>\n\n\n<script
+        language=\"Javascript\">\n\t\n\tvar baseURL = \"http://mapletadev.thinkwell.com:80/mapleta/\";\n</script>\n\n<style>\n
+        \     @import URL(\"modules/skin/css/questionframe.css\");\n\n\n\n</style>\n\n\n<form
+        name=\"edu_form\" action=\"modules/unproctoredTest.QuestionSheet\" \n\tmethod=\"post\"
         \n\tenctype=\"application/x-www-form-urlencoded\" \n\ttarget=\"_self\" \n\tonsubmit=\"return
-        onSubmit()\" >\n\t\n\t<input type=\"hidden\" name=\"testName\" value=\"Rational
-        Expressions (Book exercises)\"><input type=\"hidden\" name=\"testId\" value=\"29928\"><input
-        type=\"hidden\" name=\"inAssignment\" value=\"true\"><input type=\"hidden\"
-        name=\"assignment_mode\" value=\"Proctored\"><input type=\"hidden\" name=\"actionID\"
-        value=\"\"><input type=\"hidden\" name=\"className\" value=\"Post University
-        - College Algebra (MAT120.34 - MOD 4) (hg3hnc)\">\n\n\t\n<style>\n      @import
-        URL(\"modules/skin/css/panel.css\");\n\n</style>\n\n\n<table width=\"100%\">\n\t<tr>\n\t\t<td
-        width=\"50\"></td>\n\t\t<td nowrap>\n\t\t\t<script language=\"Javascript\">\n\t\t\t
-        \ drawStoredButtons();\n\t\t\t</script>\n\t\t</td>\n\t</tr>\n\t<tr>\n\t\t<td>\n\t\t\t&nbsp;\n\t\t</td>\n\t\t<td
-        valign=\"top\" height=\"30\">\n\t\t\t<div style=\"position: relative\">\n\t\t\t\t<script
-        language=\"Javascript\">\n\t\t\t\t    drawStoredButtonPopups();\n\t \t\t\t</script>\n\t\t\t</div>\n\t\t</td>\n\t</tr>\n</table>\n\nThis
-        assignment gives you two options:\n<ol>\n  <li>\n    print it first, work
-        through it off-line, and then copy your answers into the online assignment
-        later, or\n  </li>\n  <li>\n    work online right now.\n  </li>\n</ol>\n<p>\nIf
-        you choose to print the assignment, you will still need to submit your answers
-        using the system.  When you are ready to submit your work, you will:\n<p>\n<ol>\n
-        \ <li>\n    select this assignment from the Class Homepage and log in,\n  </li>\n
-        \ <li>\n    enter your answers and select \"Grade\"\n  </li>\n</ol>\n<p>\nMake
-        your selection now:\n<p>\n<center>\n  <a href=\"javascript: doAction('print
-        assignment');\">Print assignment for off-line work</a> |\n  <a href=\"javascript:
-        doAction('work assignment now');\">Work assignment on-line right now</a>\n</center>\n\n</form>\n\n\t\t</div>\n\t</div>\n\t\n
-        \ </body>\n  \n</html>\n"
+        onSubmit()\" >\n\t\n\t<input type=\"hidden\" name=\"currPage\" value=\"0\"><input
+        type=\"hidden\" name=\"testName\" value=\"Test Assignment\"><input type=\"hidden\"
+        name=\"testId\" value=\"93848\"><input type=\"hidden\" name=\"inAssignment\"
+        value=\"true\"><input type=\"hidden\" name=\"assignment_mode\" value=\"Proctored\"><input
+        type=\"hidden\" name=\"actionID\" value=\"\"><input type=\"hidden\" name=\"goto\"
+        value=\"0\"><input type=\"hidden\" name=\"className\" value=\"Test Class\">\n\n\t<script
+        language=\"Javascript\">\n\n\t function initControlbar() {\n\t\t/*\n\t\t *
+        Draw the object that controls the \"Jump to question\" function in the control
+        bar.\n\t\t * This is used in practice, unproctored and proctored modes.\n\t\t
+        */\n\t\tvar pd = new Array(\"Question 1\", \"Question 2\", \"Question 3\",
+        \"Question 4\", \"Question 5\", \"Question 6\", \"Question 7\", \"Question
+        8\", \"Question 9\", \"Question 10\", \"Question 11\", \"Question 12\", \"Question
+        13\", \"Question 14\", \"Question 15\", \"Question 16\");\n\t    if (pd.length
+        > 0) {\n\t    \t\n\t    \tif( questionMenu != null)\n\t    \t{\n\t    \t\tquestionMenu.show();\n\t
+        \   \t}\n\t    \t\n\t\t\tvar elJump = document.getElementById(\"jump\");\n\t\t\tif
+        (elJump) {\n\t\t    \tvar curr_question = parseInt(document.edu_form.currPage.value);\n\t\t
+        \   \t\n\t\t    \t\n\t\t\t\tvar jump_ctrl = \"<select size=\\\"10\\\" width=\\\"100\\\"
+        id=\\\"jump_ctrl\\\" onChange=\\\"gotoJump()\\\" style=\\\"font-size:.8em;font-weight:normal\\\">\";\n\t\t\t\tfor
+        (var i = 0; i < pd.length; i++) {\n\t\t\t\t\tjump_ctrl += \"<option>\" + pd[i]
+        + \"</option>\";\n\t\t\t\t}\n\t\t\t\tjump_ctrl += \"</select>\";\n\n\t\t\t\telJump.innerHTML
+        = jump_ctrl;\n\t\t\t\t\n\t\t\t\tdocument.getElementById(\"jump_ctrl\").selectedIndex
+        = curr_question;\n\t\t\t}\n\t\t\t\n\t\t} \n\t \n\t\tinitControlbarHook();\n\t
+        }\n\n  function initControlbarHook() {\n    // Override to provide functionality\n
+        \ }\n\n</script>\n\n\t\t\t<script language=\"Javascript\">\n\t\t\t  drawStoredButtons();\n\n\t\t\t\t
+        \   drawStoredButtonPopups();\n\t\t\t    </script>\n\t\t\t\n<div>\n\t\n\n<script
+        type=\"text/javascript\">\n//CALC0\n//REQ\n\n</script>\n\t\t\n<div id=\"pageMessage\">\n\t\n\t<div
+        id=\"progress\">\n      Question 1 of 16\n      <br>\n      \n        Remaining
+        time: Unlimited\n      \n      \n   </div>\n</div>\n\n\n\n\n<br><hr><br>\n\n<font
+        size=\"+1\"><b>Question 1: (1 points)</b></font><br>\n<table><tr><td width=20></td><td><DIV
+        CLASS=\"questionstyle\"><p class=\"noindent\">\n\tExpress the interval _ on
+        a number line.</p>\n<br>\n<input type=hidden name=\"ans.0.type\" value=\"string\">\n\n\n<table
+        cellspacing=5>\n<tr><td width=10></td><td><input type=radio name=\"ans.0.value\"
+        \ value=\"0\" ></td><td width=5></td><td>          <p class=\"noindent\">
+        \           <math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">
+        \      <mn>&minus;6</mn>       <mo>&lt;</mo>       <mi>x</mi>       <mo>&lt;</mo>
+        \      <mn>0</mn>      <mspace width=\"3pt\"/></math>     </p>    </td></tr>\n<tr><td
+        width=10></td><td><input type=radio name=\"ans.0.value\"  value=\"1\" ></td><td
+        width=5></td><td>          <p class=\"noindent\">          <math xmlns=\"http://www.w3.org/1998/Math/MathML\"
+        display=\"inline\">      <mrow>       <mo stretchy=\"false\">(</mo>       <mrow>
+        \       <mo>&minus;</mo>        <mi>&#8734;</mi>        <mo>,</mo>        <mn>&minus;6</mn>
+        \      </mrow>       <mo stretchy=\"false\">]</mo>      </mrow>     <mspace
+        width=\"3pt\"/></math>and           <math xmlns=\"http://www.w3.org/1998/Math/MathML\"
+        display=\"inline\">      <mrow>       <mo stretchy=\"false\">(</mo>       <mrow>
+        \       <mn>0</mn>        <mo>,</mo>        <mi>&#8734;</mi>       </mrow>
+        \      <mo stretchy=\"false\">)</mo>      </mrow>     <mspace width=\"3pt\"/></math></p>
+        \   </td></tr>\n<tr><td width=10></td><td><input type=radio name=\"ans.0.value\"
+        \ value=\"2\" ></td><td width=5></td><td>          <p class=\"noindent\">
+        \           <math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">
+        \      <mrow>        <mo stretchy=\"false\">(</mo>        <mrow>         <mn>&minus;6</mn>
+        \        <mo>,</mo>         <mn>0</mn>        </mrow>        <mo stretchy=\"false\">]</mo>
+        \      </mrow>      <mspace width=\"3pt\"/></math>     </p>    </td></tr>\n<tr><td
+        width=10></td><td><input type=radio name=\"ans.0.value\"  value=\"3\" ></td><td
+        width=5></td><td>          <p class=\"noindent\">          <math xmlns=\"http://www.w3.org/1998/Math/MathML\"
+        display=\"inline\">      <mrow>       <mo stretchy=\"false\">(</mo>       <mrow>
+        \       <mo>&minus;</mo>        <mi>&#8734;</mi>        <mo>,</mo>        <mn>&minus;6</mn>
+        \      </mrow>       <mo stretchy=\"false\">)</mo>      </mrow>     <mspace
+        width=\"3pt\"/></math>or           <math xmlns=\"http://www.w3.org/1998/Math/MathML\"
+        display=\"inline\">      <mrow>       <mo stretchy=\"false\">[</mo>       <mrow>
+        \       <mn>0</mn>        <mo>,</mo>        <mi>&#8734;</mi>       </mrow>
+        \      <mo stretchy=\"false\">)</mo>      </mrow>     <mspace width=\"3pt\"/></math></p>
+        \   </td></tr>\n<tr><td width=10></td><td><input type=radio name=\"ans.0.value\"
+        \ value=\"4\" ></td><td width=5></td><td>          <p class=\"noindent\">
+        \         <math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">
+        \     <mrow>       <mo stretchy=\"false\">(</mo>       <mrow>        <mo>&minus;</mo>
+        \       <mi>&#8734;</mi>        <mo>,</mo>        <mn>&minus;6</mn>       </mrow>
+        \      <mo stretchy=\"false\">]</mo>      </mrow>     <mspace width=\"3pt\"/></math>or
+        \          <math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">
+        \     <mrow>       <mo stretchy=\"false\">(</mo>       <mrow>        <mn>0</mn>
+        \       <mo>,</mo>        <mi>&#8734;</mi>       </mrow>       <mo stretchy=\"false\">)</mo>
+        \     </mrow>     <mspace width=\"3pt\"/></math></p>    </td></tr>\n<tr><td
+        width=10></td><td><input type=radio name=\"ans.0.value\"  value=\"5\" ></td><td
+        width=5></td><td>          <p class=\"noindent\">          <math xmlns=\"http://www.w3.org/1998/Math/MathML\"
+        display=\"inline\">      <mrow>       <mo stretchy=\"false\">(</mo>       <mrow>
+        \       <mo>&minus;</mo>        <mi>&#8734;</mi>        <mo>,</mo>        <mn>&minus;6</mn>
+        \      </mrow>       <mo stretchy=\"false\">)</mo>      </mrow>     <mspace
+        width=\"3pt\"/></math>or           <math xmlns=\"http://www.w3.org/1998/Math/MathML\"
+        display=\"inline\">      <mrow>       <mo stretchy=\"false\">(</mo>       <mrow>
+        \       <mn>0</mn>        <mo>,</mo>        <mi>&#8734;</mi>       </mrow>
+        \      <mo stretchy=\"false\">)</mo>      </mrow>     <mspace width=\"3pt\"/></math></p>
+        \   </td></tr>\n</table></DIV></td></tr></table><p><hr><p>\n\n\n\n\n\n</div>\n\n</form>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t<div
+        class=\"foot\">\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\t<div id=\"pageDialog\"></div>\n\t\t\n</body>\n</html>\n"
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:02 GMT
+  recorded_at: Fri, 07 Mar 2014 15:31:30 GMT
 recorded_with: VCR 2.8.0

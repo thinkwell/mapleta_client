@@ -8,16 +8,16 @@ http_interactions:
       string: |
         <?xml version="1.0" encoding="UTF-8"?>
         <Request>
-          <timestamp>1394040662000</timestamp>
-          <signature>CioB9UMTYIfvLaHFyAdtsw==</signature>
+          <timestamp>1394206291000</timestamp>
+          <signature>FOjnwj6tHgeW1O3hVI+29g==</signature>
           <firstName>Maple T.A.</firstName>
-          <middleName nil="true"/>
+          <middleName nil="true"></middleName>
           <lastName>Administrator</lastName>
           <userLogin>admin</userLogin>
           <userEmail>mapleta@thinkwell.com</userEmail>
           <studentId>admin</studentId>
           <userRole>ADMINISTRATOR</userRole>
-          <classId>330</classId>
+          <classId>34</classId>
           <courseId>1</courseId>
         </Request>
     headers:
@@ -39,11 +39,11 @@ http_interactions:
       Server:
       - Apache-Coyote/1.1
       Set-Cookie:
-      - JSESSIONID=CD65F1443EE65FDF2A39C18530D67E33; Path=/mapleta/; HttpOnly
+      - JSESSIONID=F27E4904A2611AB7A26B87E5635413F8; Path=/mapleta/; HttpOnly
       Content-Type:
       - text/xml;charset=UTF-8
       Date:
-      - Wed, 05 Mar 2014 17:31:01 GMT
+      - Fri, 07 Mar 2014 15:31:30 GMT
       X-Cache:
       - MISS from dawcons.site
       X-Cache-Lookup:
@@ -57,11 +57,11 @@ http_interactions:
       string: |-
         <Response>
           <status>
-            <session>CD65F1443EE65FDF2A39C18530D67E33</session>
+            <session>F27E4904A2611AB7A26B87E5635413F8</session>
             <code>0</code>
             <message>OK</message>
           </status>
         </Response>
     http_version: 
-  recorded_at: Wed, 05 Mar 2014 17:31:02 GMT
+  recorded_at: Fri, 07 Mar 2014 15:31:31 GMT
 recorded_with: VCR 2.8.0
