@@ -473,6 +473,8 @@ module Maple::MapleTA
 
       def set_assignment_max_attempts(assignment_class_id, max_attempts)
         raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
+        puts exec("SELECT assignmentid, name FROM assignment_class WHERE id=$1", [assignment_class_id]).inspect
+
         assignment_class = exec("SELECT assignmentid, name FROM assignment_class WHERE id=$1", [assignment_class_id]).first
         raise Errors::DatabaseError.new("Cannot find assignment_class with id=#{assignment_class_id}") unless assignment_class && assignment_class['assignmentid']
 
