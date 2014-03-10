@@ -19,15 +19,7 @@ module Maple::MapleTA
       def exec(sql, *values)
         dataset.fetch( sql, *values.flatten ).map do |row|
           row.keys.each { |key| row[key.to_s] = row.delete(key) }
-
-          hash = Hash.new { |hash, key| 
-            if Symbol === key 
-              raise 'HELL'
-              # warn "Accessing results using symbol keys is deprecated"
-              hash[key.to_s] 
-            end
-          }
-
+          hash = Hash.new { |hash, key| hash[key.to_s] if Symbol === key }
           hash.merge! row
           hash
         end

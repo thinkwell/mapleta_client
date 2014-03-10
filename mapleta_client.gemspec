@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "webmock", "~> 1.16"
   s.add_development_dependency "vcr", "~> 2.8"
   s.add_development_dependency "builder", "~> 3.2"
+  s.add_development_dependency "factory_girl"
   s.add_development_dependency "tzinfo"
   s.add_development_dependency "iconv"
   # s.add_development_dependency "rcov", ">= 0"

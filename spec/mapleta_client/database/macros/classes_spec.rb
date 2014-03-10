@@ -3,20 +3,11 @@ require 'spec_helper'
 module Maple::MapleTA
   module Database::Macros
     describe Classes do
-      let(:connection) { Maple::MapleTA::Connection.new RSpec.configuration.maple_settings }
-      let(:database)   { RSpec.configuration.database_connection }
-      let(:mapleta_class) {
-        cid = database.dataset[:classes].insert(name: 'Example class', dirname: 'dirname?')
-        double 'Class', id: cid, save: true
-      }
-
-      let(:user_class) {
-        id = database.dataset[:user_classes].insert(
-          classid: mapleta_class.id,
-          roleid: database.dataset[:roles].insert(id: 1, role: 'student')
-        )
-        double 'UserClass', id: id,  save: true
-      }
+      let(:connection)    { Maple::MapleTA::Connection.new RSpec.configuration.maple_settings }
+      let(:database)      { RSpec.configuration.database_connection }
+      let(:role_id)       { database.dataset[:roles].insert(id: 1, role: 'student') }
+      let(:mapleta_class) { create :class }
+      let(:user_class)    { create :user_class, classid: mapleta_class.id, roleid: role_id }
 
       before do
         mapleta_class.save

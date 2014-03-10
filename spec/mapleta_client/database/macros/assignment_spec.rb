@@ -3,59 +3,11 @@ require 'spec_helper'
 module Maple::MapleTA
   module Database::Macros
     describe Assignment do
-      let(:settings)      { RSpec.configuration.maple_settings }
-      let(:database)      { RSpec.configuration.database_connection }
-      let(:questions)     {
-        id = database.dataset[:question].insert(
-          name: 'Example question',
-          mode: '?',
-          questiontext: '?',
-          questionfields: '?',
-          created: 'now()',
-          algorithm: '?',
-          description: '?',
-          hint: '?',
-          comment: '?',
-          info: '?',
-          solution: '?',
-          lastmodified: 'now()',
-          annotation: '?',
-          modedescription: '?',
-          tags: '?',
-          author: mapleta_class.id
-        )
-
-        [ {'name' => 'Example question', 'id' => id} ]
-      }
-
-      let(:other_questions)     {
-        id = database.dataset[:question].insert(
-          name: 'Example question 2',
-          mode: '?',
-          questiontext: '?',
-          questionfields: '?',
-          created: 'now()',
-          algorithm: '?',
-          description: '?',
-          hint: '?',
-          comment: '?',
-          info: '?',
-          solution: '?',
-          lastmodified: 'now()',
-          annotation: '?',
-          modedescription: '?',
-          tags: '?',
-          author: mapleta_class.id
-        )
-
-        [ {'name' => 'Example question 2', 'id' => id} ]
-      }
-
-      let(:mapleta_class) {
-        cid = database.dataset[:classes].insert(name: 'Example class', dirname: 'dirname?')
-        double 'Class', id: cid
-      }
-
+      let(:settings)        { RSpec.configuration.maple_settings }
+      let(:database)        { RSpec.configuration.database_connection }
+      let(:mapleta_class)   { create :class }
+      let(:questions)       { [ create(:question, name: 'Example question',   author: mapleta_class.id) ] }
+      let(:other_questions) { [ create(:question, name: 'Example question 2', author: mapleta_class.id) ] }
       let(:assignment) {
         Maple::MapleTA::Assignment.new(
           :name       => "test assignment",
@@ -84,7 +36,7 @@ module Maple::MapleTA
           assignment_question_groups.count.should == 1
           assignment_question_groups.first['name'].should == 'Example question'
         end
-        
+
         it "creates the assignment question group map" do
           pending
         end

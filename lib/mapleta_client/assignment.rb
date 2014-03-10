@@ -31,13 +31,11 @@ module Maple::MapleTA
     MODE_MASTERY_ASSIGNMENT = 3
     MODE_STUDY_SESSION      = 4
 
-
     def load(connection)
       defaults!
       connection.ws.assignment(self)
     end
     alias :reload :load
-
 
     def launch(connection, external_data=nil, view_opts={})
       raise Errors::MapleTAError, "Connection class id (#{connection.class_id}) doesn't match assignment class id (#{self.class_id})" unless self.class_id == connection.class_id.to_i
@@ -52,13 +50,10 @@ module Maple::MapleTA
       page connection.launch('assignment', params), connection, view_opts
     end
 
-
     def post(connection, url, data, view_opts={})
       raise Errors::MapleTAError, "Connection class id (#{connection.class_id}) doesn't match assignment class id (#{self.class_id})" unless self.class_id == connection.class_id.to_i
-
       page(connection.fetch_page(url, data, :post), connection, view_opts)
     end
-
 
     def timed?
       time_limit > 0 && self.class.timeable?(mode)
@@ -117,7 +112,7 @@ module Maple::MapleTA
     end
 
     def include_questionid?(questionid)
-      questions.map{|question| question['id']}.include?(questionid)
+      questions.map{ |question| question['id'] }.include?(questionid)
     end
 
     def assignment_hash
@@ -131,43 +126,32 @@ module Maple::MapleTA
 
     def assignment_policy_hash
       {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable,
-      "printable" => printable, "mode" => (mode.nil? ? 0 : mode), "show_final_grade_feedback" => show_final_grade_feedback}
+      "printable" => printable, "mode" => mode || 0, "show_final_grade_feedback" => show_final_grade_feedback}
     end
 
     def assignment_question_group_hashes(questions = self.questions)
       questions.map { |question| {"id" => nil, "assignmentid" => nil, "name" => question['name'], "order_id" => 0} }
     end
 
-    def assignment_question_group_map_hashes(questions=nil)
-      hashes = []
-      q = questions
-      unless questions
-        q = self.questions
-      end
-      q.each {|question| hashes.push({"groupid" => nil, "questionid" => question['id'], "question_uid" => question['uid']})}
-      hashes
+    def assignment_question_group_map_hashes(questions = self.questions)
+      questions.map { |question| {"groupid" => nil, "questionid" => question['id'], "question_uid" => question['uid']} }
     end
 
     def assignment_mastery_policy_hashes
-      hashes = []
-      hashes
+      []
     end
 
     def assignment_mastery_penalty_hashes
-      hashes = []
-      hashes
+      []
     end
 
     def assignment_advanced_policy_hashes
-      hashes = []
-      hashes
+      []
     end
 
-  private
-
+    private
     def page(mechanize_page, connection, view_opts)
       Maple::MapleTA.Page(mechanize_page, view_opts)
     end
-
   end
 end

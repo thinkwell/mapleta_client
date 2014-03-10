@@ -12,8 +12,8 @@ FactoryGirl.define do
     created Time.now
   end
 
-  factory :class, class: Maple::MapleTA::Orm::TAClass do
-    to_create { |instance| instance.save }
+  factory :class, class: Maple::MapleTA::Orm::Class do
+    to_create { |instance| puts instance.save.inspect }
 
     name 'Algebra'
     dirname 'dirname'
@@ -35,7 +35,7 @@ FactoryGirl.define do
     annotation '...'
     modedescription '...'
     tags '...'
-    
+
     modified_by 'Me'
     revision '1'
     attribute_author false
@@ -43,5 +43,23 @@ FactoryGirl.define do
 
     created Time.now
     lastmodified Time.now
+  end
+
+  factory :assignment, class: Maple::MapleTA::Orm::Assignment do
+    to_create { |instance| instance.save }
+
+    name 'Assignment'
+    weighting 1
+
+    # primary_key :id
+    # foreign_key :classid, :classes, :null => false, :key => [:cid]
+    # Float :totalpoints
+    # DateTime :lastmodified, :null => false
+    # String :uid, :size => 50
+    # TrueClass :adaptive, :default => false, :null => false
+  end
+
+  factory :user_class, class: Maple::MapleTA::Orm::UserClass do
+    to_create { |instance| instance.save }
   end
 end

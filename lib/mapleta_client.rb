@@ -57,6 +57,7 @@ module Maple
     module Database
       autoload :Connection, 'mapleta_client/database/connection'
       autoload :MockConnection, 'mapleta_client/database/mock_connection'
+
       module Macros
         autoload :Answersheetitem, 'mapleta_client/database/macros/answersheetitem'
         autoload :Assignment, 'mapleta_client/database/macros/assignment'
@@ -68,11 +69,13 @@ module Maple
     end
 
     module Orm
-      require 'mapleta_client/orm/base'
       autoload :Class, 'mapleta_client/orm/class'
       autoload :Assignment, 'mapleta_client/orm/assignment'
       autoload :AssignmentClass, 'mapleta_client/orm/assignment_class'
       autoload :AssignmentPolicy, 'mapleta_client/orm/assignment_policy'
+      autoload :Author, 'mapleta_client/orm/author'
+      autoload :Question, 'mapleta_client/orm/question'
+      autoload :UserClass, 'mapleta_client/orm/user_class'
     end
 
     require 'mapleta_client/page'
