@@ -16,7 +16,7 @@ module Maple::MapleTA
       @database_connection ||=
         begin
           connection = Database::Connection.new database_config
-          connection.exec("SET TIMEZONE='#{self.database_timezone.name}'")
+          connection.exec("SET TIMEZONE='#{database_timezone.name}'")
           connection
         end
     end
