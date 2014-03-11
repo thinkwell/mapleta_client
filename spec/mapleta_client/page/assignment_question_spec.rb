@@ -8,7 +8,7 @@ module Maple::MapleTA
         Assignment.new(
           :id      => settings['assignment_id'],
           :name    => settings['assignment_name'],
-          :classId => settings['class_id']
+          :class_id => settings['class_id']
         )
       }
       let(:settings) { RSpec.configuration.maple_settings }

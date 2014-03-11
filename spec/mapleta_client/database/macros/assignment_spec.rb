@@ -8,14 +8,10 @@ module Maple::MapleTA
       let(:mapleta_class)   { create :class }
       let(:questions)       { [ create(:question, name: 'Example question',   author: mapleta_class.id) ] }
       let(:other_questions) { [ create(:question, name: 'Example question 2', author: mapleta_class.id) ] }
-      let(:assignment) {
-        Maple::MapleTA::Assignment.new(
-          :name       => "test assignment",
-          :class_id   => mapleta_class.id,
-          :questions  => questions,
-          :reworkable => false,
-          :printable  => true
-        )
+      let(:assignment)      {
+        build(:assignment, name: "test assignment",
+              class_id: mapleta_class.id,
+              questions: questions)
       }
 
       before(:each) do

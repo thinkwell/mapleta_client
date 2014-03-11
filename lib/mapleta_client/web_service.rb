@@ -198,27 +198,33 @@ module Maple::MapleTA
 
 
     def hydrate(type, data)
-      if type.is_a?(HashInitialize)
-        raise Errors::NotFoundError if data.nil?
-        type.hydrate(data)
-      else
+
+      # if type.is_a?(HashInitialize)
+      #   raise Errors::NotFoundError if data.nil?
+      #   type.hydrate(data)
+      # else
+
         klass = "Maple::MapleTA::#{type.to_s.camelize}".constantize
+
         if data.is_a?(Array)
-          data.map { |obj| klass.new(obj) }
+          data.map { |hash| klass.new underscore_hash_keys(hash) }
         elsif data.is_a?(Hash)
-          klass.new(data)
+          klass.new underscore_hash_keys(data)
         else
           nil
         end
-      end
+
+      # end
     end
 
+    def underscore_hash_keys(hash)
+      hash.keys.each { |key| hash[key.to_s.underscore] = hash.delete(key) }
+      hash
+    end
 
-  private
-
+    private
     def connected?
       connection.connected?
     end
-
   end
 end

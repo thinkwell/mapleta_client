@@ -49,14 +49,11 @@ FactoryGirl.define do
     to_create { |instance| instance.save }
 
     name 'Assignment'
-    weighting 1
-
-    # primary_key :id
-    # foreign_key :classid, :classes, :null => false, :key => [:cid]
-    # Float :totalpoints
-    # DateTime :lastmodified, :null => false
-    # String :uid, :size => 50
-    # TrueClass :adaptive, :default => false, :null => false
+    reworkable false
+    printable true
+    weighting 0
+    insession_grade false
+    show_current_grade  false
   end
 
   factory :user_class, class: Maple::MapleTA::Orm::UserClass do

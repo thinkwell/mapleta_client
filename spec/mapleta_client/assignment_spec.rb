@@ -6,9 +6,9 @@ module Maple::MapleTA
     let(:connection) { Maple::MapleTA::Connection.new RSpec.configuration.maple_settings }
     let(:assignment) {
       Assignment.new(
-        :id      => settings['assignment_id'],
-        :name    => settings['assignment_name'],
-        :classId => settings['class_id']
+        :id       => settings['assignment_id'],
+        :name     => settings['assignment_name'],
+        :class_id => settings['class_id']
       )
     }
 
