@@ -111,7 +111,7 @@ module Maple::MapleTA
 
         transaction do
           new_assignment_id = insert_assignment(
-            assignment.assignment_hash,
+            assignment.to_hash,
             assignment.class_id
           )
 
@@ -256,7 +256,7 @@ module Maple::MapleTA
       end
 
       def update_assignment(assignment)
-        assignment_hash = assignment.assignment_hash
+        assignment_hash = assignment.to_hash
         assignment_update_cmd = UpdateCmd.new("assignment", "id=#{assignment.id}")
         push_assignment(assignment_hash, assignment.id, assignment.class_id, {}, assignment_update_cmd)
         assignment_update_cmd.execute

@@ -1,4 +1,3 @@
-require 'active_support/base64'
 require 'active_support/values/time_zone'
 require 'sequel'
 require 'pg'
