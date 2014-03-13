@@ -6,6 +6,7 @@ module Maple::MapleTA
         unless assignment_class_id
           raise Errors::DatabaseError.new("Must pass assignment_class_id") 
         end
+        asdfsadfasd
 
         query = <<-SQL
           select q.* from question q

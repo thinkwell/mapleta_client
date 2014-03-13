@@ -3,6 +3,8 @@ require 'uuid'
 module Maple::MapleTA
   module Database::Macros
     module Assignment
+      include Orm
+
       def copy_batch_assignments_to_class(new_class_id, recorded_assignment_ids, assignment_ids_and_names)
         raise Errors::DatabaseError.new("Must pass new_class_id") unless new_class_id
 
@@ -107,49 +109,37 @@ module Maple::MapleTA
       end
 
       def create_assignment(assignment)
-        new_assignment_id = nil
-
         transaction do
-
-          new_assignment_id = assignment.save.id
-
-          assignment.assignment_class = Orm::AssignmentClass.new
-          assignment.assignment_class.save
-
-          new_assignment_class_id = assignment.assignment_class.id
-          
-          
+          assignment.save
+          assignment_class = assignment.assignment_class = AssignmentClass.new
+          assignment_class.assignment_policy = AssignmentPolicy.new
 
 
-          insert_assignment_policy(
-            assignment.assignment_policy_hash,
-            new_assignment_class_id
-          )
 
           insert_assignment_question_groups(
             assignment.assignment_question_group_hashes,
             assignment.assignment_question_group_map_hashes,
-            new_assignment_id
+            assignment.id
           )
 
           insert_assignment_mastery_policy(
             assignment.assignment_mastery_policy_hashes,
-            new_assignment_class_id
+            assignment_class.id
           )
 
           insert_assignment_mastery_penalty(
             assignment.assignment_mastery_penalty_hashes,
-            new_assignment_class_id
+            assignment_class.id
           )
 
           insert_assignment_advanced_policy(
             assignment.assignment_advanced_policy_hashes,
-            new_assignment_id,
-            new_assignment_class_id
+            assignment.id,
+            assignment_class.id
           )
-        end
 
-        new_assignment_id
+          return assignment.id
+        end
       end
 
       def edit_assignment(assignment)

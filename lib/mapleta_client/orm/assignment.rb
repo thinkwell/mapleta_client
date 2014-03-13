@@ -1,6 +1,7 @@
 module Maple::MapleTA
   module Orm
     class Assignment < Sequel::Model( Maple::MapleTA.database_connection.dataset[:assignment] )
+      # TODO: restrict
       unrestrict_primary_key
 
       # Todo: spec, check time zone
@@ -32,9 +33,15 @@ module Maple::MapleTA
         {"name" => name, "totalpoints" => total_points, "weighting" => weighting}
       end
 
-
       def assignment_policy_hash
-        {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable, "printable" => printable, "mode" => mode || 0, "show_final_grade_feedback" => show_final_grade_feedback}
+        {
+         "show_current_grade" => show_current_grade,
+         "insession_grade" => insession_grade,
+         "reworkable" => reworkable,
+         "printable" => printable,
+         "mode" => mode || 0,
+         "show_final_grade_feedback" => show_final_grade_feedback
+        }
       end
 
       def assignment_question_group_hashes(questions = self.questions)

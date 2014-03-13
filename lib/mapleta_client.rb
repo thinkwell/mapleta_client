@@ -74,6 +74,9 @@ module Maple
       autoload :Author, 'mapleta_client/orm/author'
       autoload :Question, 'mapleta_client/orm/question'
       autoload :UserClass, 'mapleta_client/orm/user_class'
+      autoload :MasteryPolicy, 'mapleta_client/orm/mastery_policy'
+      autoload :MasteryPenalty, 'mapleta_client/orm/mastery_penalty'
+      autoload :AdvancedPolicy, 'mapleta_client/orm/advanced_policy'
     end
 
     require 'mapleta_client/page'
