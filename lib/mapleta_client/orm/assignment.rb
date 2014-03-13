@@ -6,14 +6,16 @@ module Maple::MapleTA
 
       # Todo: spec, check time zone
       plugin :timestamps, :create => :updated_at, :update => :updated_at
+      plugin :nested_attributes
 
       def_column_alias :class_id,     :classid
       def_column_alias :total_points, :totalpoints
       def_column_alias :updated_at,   :lastmodified
 
       one_to_one :assignment_class,
-        key: [:assignmentid, :classid], primary_key: [:id, :classid],
-        before_set: proc{ |this, other| other.set this.assignment_class_hash }
+        key: [:assignmentid, :classid], primary_key: [:id, :classid]
+
+      nested_attributes :assignment_class
 
       attr_accessor :questions
 
@@ -27,6 +29,8 @@ module Maple::MapleTA
 
       # unknown
       attr_accessor :weight, :policy
+
+
 
 
       def assignment_class_hash
@@ -67,7 +71,6 @@ module Maple::MapleTA
       def include_questionid?(questionid)
         questions.map{ |question| question['id'] }.include?(questionid)
       end
-
 
       attr_accessor :class_name
       # Movable

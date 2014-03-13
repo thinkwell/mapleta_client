@@ -110,11 +110,15 @@ module Maple::MapleTA
 
       def create_assignment(assignment)
         transaction do
+          assignment.assignment_class_attributes =
+            assignment.assignment_class_hash
+
+          assignment.assignment_class.assignment_policy_attributes =
+            assignment.assignment_policy_hash
+
           assignment.save
-          assignment_class = assignment.assignment_class = AssignmentClass.new
-          assignment_class.assignment_policy = AssignmentPolicy.new
 
-
+          # assignment.assignment_class.assignment_policy = AssignmentPolicy.new
 
           insert_assignment_question_groups(
             assignment.assignment_question_group_hashes,
@@ -122,21 +126,21 @@ module Maple::MapleTA
             assignment.id
           )
 
-          insert_assignment_mastery_policy(
-            assignment.assignment_mastery_policy_hashes,
-            assignment_class.id
-          )
-
-          insert_assignment_mastery_penalty(
-            assignment.assignment_mastery_penalty_hashes,
-            assignment_class.id
-          )
-
-          insert_assignment_advanced_policy(
-            assignment.assignment_advanced_policy_hashes,
-            assignment.id,
-            assignment_class.id
-          )
+          # ::::::::::Not specked::::::::::::::::::
+          # insert_assignment_mastery_policy(
+          #   assignment.assignment_mastery_policy_hashes,
+          #   assignment_class.id
+          # )
+          # insert_assignment_mastery_penalty(
+          #   assignment.assignment_mastery_penalty_hashes,
+          #   assignment_class.id
+          # )
+          # insert_assignment_advanced_policy(
+          #   assignment.assignment_advanced_policy_hashes,
+          #   assignment.id,
+          #   assignment_class.id
+          # )
+          # ::::::::::Not specked::::::::::::::::::
 
           return assignment.id
         end
