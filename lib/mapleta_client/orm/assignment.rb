@@ -3,27 +3,31 @@ module Maple::MapleTA
     class Assignment < Sequel::Model( Maple::MapleTA.database_connection.dataset[:assignment] )
       unrestrict_primary_key
 
+      # Todo: spec, check time zone
+      plugin :timestamps, :create => :updated_at, :update => :updated_at
+
       def_column_alias :class_id,     :classid
       def_column_alias :total_points, :totalpoints
+      def_column_alias :updated_at,   :lastmodified
 
 
-      # belongs_to :parent_class, :class_name => 'Maple::MapleTA::Orm::Class', :foreign_key => 'classid'
-      # has_many :class_assignments, :class_name => 'Maple::MapleTA::Orm::AssignmentClass', :foreign_key => 'assignmentid'
       attr_accessor :questions
-
 
       #assignment policy
       attr_accessor :show_current_grade, :reworkable, :printable,
         :insession_grade, :mode, :show_final_grade_feedback, :time_limit,
         :passing_score
 
-
       # questions
       attr_accessor :mode_description
 
-
       # unknown
       attr_accessor :weight, :policy
+
+
+
+
+
 
 
       def assignment_class_hash

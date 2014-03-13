@@ -110,10 +110,7 @@ module Maple::MapleTA
         new_assignment_id = nil
 
         transaction do
-          new_assignment_id = insert_assignment(
-            assignment.to_hash,
-            assignment.class_id
-          )
+          new_assignment_id = assignment.save.id
 
           new_assignment_class_id = insert_assignment_class(
             assignment.assignment_class_hash,
