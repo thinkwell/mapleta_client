@@ -5,8 +5,9 @@ module Maple::MapleTA
 
       def_column_alias :class_id,      :classid
       def_column_alias :assignment_id, :assignmentid
+      def_column_alias :total_points,  :totalpoints
       def_column_alias :updated_at,    :lastmodified
-      
+
       def before_create
         super
         self.order_id ||=

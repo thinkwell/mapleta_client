@@ -110,22 +110,16 @@ module Maple::MapleTA
         new_assignment_id = nil
 
         transaction do
+
           new_assignment_id = assignment.save.id
 
-          new_assignment_class_id = Orm::AssignmentClass.create(
-            assignment.assignment_class_hash.merge(
-              # 'order_id' => ( exec("SELECT MAX(order_id) FROM assignment_class WHERE classid=?", assignment.class_id).first['max'].to_i + 1 ),
-              'class_id' => assignment.class_id,
-              'assignment_id' => assignment.id 
-            )
-          ).id
+          assignment.assignment_class = Orm::AssignmentClass.new
+          assignment.assignment_class.save
+
+          new_assignment_class_id = assignment.assignment_class.id
+          
           
 
-          # new_assignment_class_id = insert_assignment_class(
-          #   assignment.assignment_class_hash,
-          #   assignment.class_id,
-          #   new_assignment_id
-          # )
 
           insert_assignment_policy(
             assignment.assignment_policy_hash,

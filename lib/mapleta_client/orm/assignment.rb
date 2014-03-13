@@ -10,6 +10,9 @@ module Maple::MapleTA
       def_column_alias :total_points, :totalpoints
       def_column_alias :updated_at,   :lastmodified
 
+      one_to_one :assignment_class,
+        key: [:assignmentid, :classid], primary_key: [:id, :classid],
+        before_set: proc{ |this, other| other.set this.assignment_class_hash }
 
       attr_accessor :questions
 
@@ -26,8 +29,9 @@ module Maple::MapleTA
 
 
       def assignment_class_hash
-        {"assignmentid" => id, "classid" => class_id, "name" => name, "totalpoints" => total_points, "weighting" => weighting}
+        {"name" => name, "totalpoints" => total_points, "weighting" => weighting}
       end
+
 
       def assignment_policy_hash
         {"assignment_class_id" => nil, "show_current_grade" => show_current_grade, "insession_grade" => insession_grade, "reworkable" => reworkable, "printable" => printable, "mode" => mode || 0, "show_final_grade_feedback" => show_final_grade_feedback}
