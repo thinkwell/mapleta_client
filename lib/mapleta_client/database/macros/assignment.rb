@@ -114,8 +114,7 @@ module Maple::MapleTA
 
           new_assignment_class_id = Orm::AssignmentClass.create(
             assignment.assignment_class_hash.merge(
-              'id' => exec("SELECT nextval('assignment_class_id_seq')").first['nextval'],
-              'order_id' => ( exec("SELECT MAX(order_id) FROM assignment_class WHERE classid=?", assignment.class_id).first['max'].to_i + 1 ),
+              # 'order_id' => ( exec("SELECT MAX(order_id) FROM assignment_class WHERE classid=?", assignment.class_id).first['max'].to_i + 1 ),
               'class_id' => assignment.class_id,
               'assignment_id' => assignment.id 
             )

@@ -25,13 +25,8 @@ module Maple::MapleTA
       attr_accessor :weight, :policy
 
 
-
-
-
-
-
       def assignment_class_hash
-        {"id" => nil, "assignmentid" => id, "classid" => class_id, "name" => name, "totalpoints" => total_points, "order_id" => 0, "weighting" => weighting}
+        {"assignmentid" => id, "classid" => class_id, "name" => name, "totalpoints" => total_points, "weighting" => weighting}
       end
 
       def assignment_policy_hash
