@@ -78,6 +78,7 @@ module Maple
       autoload :MasteryPenalty, 'mapleta_client/orm/mastery_penalty'
       autoload :AdvancedPolicy, 'mapleta_client/orm/advanced_policy'
       autoload :AssignmentQuestionGroup, 'mapleta_client/orm/assignment_question_group'
+      autoload :AssignmentQuestionGroupMap, 'mapleta_client/orm/assignment_question_group_map'
     end
 
     require 'mapleta_client/page'

@@ -16,6 +16,7 @@ module Maple::MapleTA
       one_to_many :assignment_question_groups, key: :assignmentid
 
       nested_attributes :assignment_class
+      nested_attributes :assignment_question_groups
 
       attr_accessor :questions
 
@@ -29,6 +30,15 @@ module Maple::MapleTA
 
       # unknown
       attr_accessor :weight, :policy
+
+
+      def assignment_question_group_hashes(questions = self.questions)
+        questions.map { |question| {"id" => nil, "assignmentid" => nil, "name" => question.name, "order_id" => 0} }
+      end
+
+      def assignment_question_group_map_hashes(questions = self.questions)
+        questions.map { |question| {"groupid" => nil, "questionid" => question.id, "question_uid" => question.uid} }
+      end
 
 
 
@@ -45,14 +55,6 @@ module Maple::MapleTA
          "mode" => mode || 0,
          "show_final_grade_feedback" => show_final_grade_feedback
         }
-      end
-
-      def assignment_question_group_hashes(questions = self.questions)
-        questions.map { |question| {"id" => nil, "assignmentid" => nil, "name" => question['name'], "order_id" => 0} }
-      end
-
-      def assignment_question_group_map_hashes(questions = self.questions)
-        questions.map { |question| {"groupid" => nil, "questionid" => question['id'], "question_uid" => question['uid']} }
       end
 
       def assignment_mastery_policy_hashes

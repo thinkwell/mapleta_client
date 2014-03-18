@@ -9,11 +9,8 @@ module Maple::MapleTA
       def_column_alias :total_points,  :totalpoints
       def_column_alias :updated_at,    :lastmodified
 
-      many_to_one :assignment,
-        key: [:assignmentid, :classid], primary_key: [:id, :classid]
-
+      many_to_one :assignment, key: [:assignmentid, :classid], primary_key: [:id, :classid] 
       one_to_one :assignment_policy
-        # before_set: proc{ |this, other| other.set this.assignment.assignment_policy_hash }
 
       nested_attributes :assignment_policy
 

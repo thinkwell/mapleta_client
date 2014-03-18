@@ -109,41 +109,51 @@ module Maple::MapleTA
       end
 
       def create_assignment(assignment)
-        transaction do
-          assignment.assignment_class_attributes =
-            assignment.assignment_class_hash
+        assignment.assignment_class_attributes = {
+          :name         => assignment.name,
+          :total_points => assignment.total_points,
+          :weighting    => assignment.weighting,
+          :assignment_policy_attributes => {
+            :show_current_grade        => assignment.show_current_grade,
+            :insession_grade           => assignment.insession_grade,
+            :reworkable                => assignment.reworkable,
+            :printable                 => assignment.printable,
+            :mode                      => assignment.mode || 0,
+            :show_final_grade_feedback => assignment.show_final_grade_feedback
+          }
+        }
 
-          assignment.assignment_class.assignment_policy_attributes =
-            assignment.assignment_policy_hash
+        # One question group (thus one question group map) per question
+        assignment.assignment_question_groups_attributes =
+          assignment.questions.map { |question| 
+            {
+              :name => question.name,
+              :order_id => 0,
+              :assignment_question_group_maps_attributes => [
+                {:question_id => question.id, :question_uid => question.uid}
+              ]
+            }
+          }
 
-          assignment.save
+        assignment.save
 
-          # assignment.assignment_class.assignment_policy = AssignmentPolicy.new
+        # ::::::::::Not specked::::::::::::::::::
+        # insert_assignment_mastery_policy(
+        #   assignment.assignment_mastery_policy_hashes,
+        #   assignment_class.id
+        # )
+        # insert_assignment_mastery_penalty(
+        #   assignment.assignment_mastery_penalty_hashes,
+        #   assignment_class.id
+        # )
+        # insert_assignment_advanced_policy(
+        #   assignment.assignment_advanced_policy_hashes,
+        #   assignment.id,
+        #   assignment_class.id
+        # )
+        # ::::::::::Not specked::::::::::::::::::
 
-          insert_assignment_question_groups(
-            assignment.assignment_question_group_hashes,
-            assignment.assignment_question_group_map_hashes,
-            assignment.id
-          )
-
-          # ::::::::::Not specked::::::::::::::::::
-          # insert_assignment_mastery_policy(
-          #   assignment.assignment_mastery_policy_hashes,
-          #   assignment_class.id
-          # )
-          # insert_assignment_mastery_penalty(
-          #   assignment.assignment_mastery_penalty_hashes,
-          #   assignment_class.id
-          # )
-          # insert_assignment_advanced_policy(
-          #   assignment.assignment_advanced_policy_hashes,
-          #   assignment.id,
-          #   assignment_class.id
-          # )
-          # ::::::::::Not specked::::::::::::::::::
-
-          return assignment.id
-        end
+        return assignment.id
       end
 
       def edit_assignment(assignment)
