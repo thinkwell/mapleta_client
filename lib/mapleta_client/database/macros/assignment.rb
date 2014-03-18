@@ -166,28 +166,22 @@ module Maple::MapleTA
       end
 
       def copy_assignment_to_class(assignment_class_id, new_class_id)
-        raise Errors::DatabaseError.new("Must pass assignment_class_id") unless assignment_class_id
-        raise Errors::DatabaseError.new("Must pass new_class_id") unless new_class_id
+        assignment_class = AssignmentClass.with_pk!(assignment_class_id)
+        assignment = assignment_class.assignment
 
-        assignment_class = exec("SELECT * FROM assignment_class WHERE id=?", assignment_class_id).first
-        raise Errors::DatabaseError.new("Cannot find assignment_class with id=#{assignment_class_id}") unless assignment_class && assignment_class['assignmentid']
-
-        assignment = exec("SELECT * FROM assignment WHERE id=?", assignment_class['assignmentid']).first
-        raise Errors::DatabaseError.new("Cannot find assignment with id=#{assignment_class['assignmentid']}") unless assignment
-
-        new_assignment_class_id = nil
         transaction do
-          new_assignment_id = insert_assignment(assignment, new_class_id)
-
+          new_assignment_id       = insert_assignment(assignment, new_class_id)
           new_assignment_class_id = insert_assignment_class(assignment_class, new_class_id, new_assignment_id)
 
+
+          # ::::::::::Not specked::::::::::::::::::
           assignment_policy = exec("SELECT * FROM assignment_policy WHERE assignment_class_id=?", assignment_class_id).first
           raise Errors::DatabaseError.new("Cannot find assignment_policy with assignment_class_id=#{assignment_class_id}") unless assignment_policy
           insert_assignment_policy(assignment_policy, new_assignment_class_id)
 
           # We ignore advance policies as they depend on other assignments in the original class
-          assignment_question_groups = assignment_question_groups(assignment_class['assignmentid'])
-          assignment_question_group_maps = assignment_question_group_maps(assignment_class['assignmentid'])
+          assignment_question_groups     = assignment_question_groups assignment_class.assignmentid
+          assignment_question_group_maps = assignment_question_group_maps assignment_class.assignmentid
           insert_assignment_question_groups(assignment_question_groups, assignment_question_group_maps, new_assignment_id)
 
           assignment_mastery_policies = exec("SELECT * FROM assignment_mastery_policy WHERE assignment_class_id=?", assignment_class_id)
@@ -198,11 +192,10 @@ module Maple::MapleTA
 
           assignment_advanced_policy = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_id=?", assignment_class['assignmentid'])
           insert_assignment_advanced_policy(assignment_advanced_policy, new_assignment_id, new_assignment_class_id)
-        end
+          # ::::::::::Not specked::::::::::::::::::
 
-        new_assignment_class_id
-      rescue PG::Error => e
-        raise Errors::DatabaseError.new(nil, e)
+          return new_assignment_class_id
+        end
       end
 
       def insert_assignment_mastery_penalty(assignment_mastery_penalty_hashes, new_assignment_class_id)

@@ -97,6 +97,20 @@ module Maple::MapleTA
           new_assignment_class_id = database.copy_assignment_to_class assignment_class['id'], mapleta_class.id
           new_assignment_class_id.should_not be_nil
         end
+        # let(:assignment_class)  { Orm::AssignmentClass.first }
+        # let(:new_mapleta_class) { create :class }
+
+        # it "should create a new assignment" do
+        #   expect {
+        #     database.copy_assignment_to_class assignment_class.id, new_mapleta_class.id
+        #   }.to change{ Orm::Assignment.count }.by 1
+        # end
+
+        # it "should create a new assignment_class" do
+        #   expect {
+        #     database.copy_assignment_to_class assignment_class.id, new_mapleta_class.id
+        #   }.to change{ Orm::AssignmentClass.count }.by 1
+        # end
       end
 
       describe 'max attempts' do

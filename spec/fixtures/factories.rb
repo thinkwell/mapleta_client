@@ -15,7 +15,7 @@ FactoryGirl.define do
   factory :class, class: Maple::MapleTA::Orm::Class do
     to_create { |instance| puts instance.save.inspect }
 
-    name 'Algebra'
+    sequence(:name) { |num| "Algebra #{num}" }
     dirname 'dirname'
   end
 
