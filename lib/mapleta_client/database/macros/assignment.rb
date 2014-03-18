@@ -140,9 +140,9 @@ module Maple::MapleTA
 
       def edit_assignment(assignment)
         transaction do
+          assignment.assignment_class_attributes = {:id => assignment.assignment_class.id, :name => assignment.name, :totalpoints => assignment.total_points, :weighting => assignment.weighting}
           assignment.save
 
-          update_assignment_class(assignment)
           update_assignment_policy(assignment)
           update_assignment_question_groups(assignment)
         end
@@ -249,22 +249,6 @@ module Maple::MapleTA
         order_id = exec("SELECT MAX(order_id) FROM assignment_class WHERE classid=?", class_id).first['max'].to_i + 1
 
         push_assignment_class hash, id, class_id, assignment_id, order_id, {}, cmd
-        cmd.execute
-      end
-
-      def update_assignment_class(assignment)
-        assignment_class = assignment_class_for_assignmentid assignment.id
-        cmd = UpdateCmd.new("assignment_class", "id=#{assignment_class.id}")
-
-        push_assignment_class(
-          assignment.assignment_class_hash,
-          assignment_class['id'],
-          assignment.class_id, assignment.id,
-          assignment_class['order_id'],
-          {},
-          cmd
-        )
-
         cmd.execute
       end
 
