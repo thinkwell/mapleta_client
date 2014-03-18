@@ -12,8 +12,10 @@ module Maple::MapleTA
       def_column_alias :total_points, :totalpoints
       def_column_alias :updated_at,   :lastmodified
 
-      one_to_one  :assignment_class, key: [:assignmentid, :classid], primary_key: [:id, :classid]
-      one_to_many :assignment_question_groups, key: :assignmentid
+      one_to_one   :assignment_class,           :key => [:assignmentid, :classid], :primary_key => [:id, :classid]
+      one_to_many  :assignment_question_groups, :key => :assignmentid
+      many_to_many :assignment_question_group_maps, :join_table => :assignment_question_group, :left_key => :assignmentid, :right_key => :id, :right_primary_key => :groupid
+
 
       nested_attributes :assignment_class
       nested_attributes :assignment_question_groups

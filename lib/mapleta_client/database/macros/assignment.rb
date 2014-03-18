@@ -430,8 +430,7 @@ module Maple::MapleTA
       ##
       # Get the assignment question group database row for a given assignmentid
       def assignment_question_group_maps(assignmentid)
-        raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
-        exec("SELECT m.* FROM assignment_question_group_map m left join assignment_question_group a on a.id = m.groupid WHERE a.assignmentid=?", assignmentid)
+        Orm::Assignment.with_pk!(assignmentid).assignment_question_group_maps.map(&:to_hash).map(&:stringify_keys)
       end
 
       ##
