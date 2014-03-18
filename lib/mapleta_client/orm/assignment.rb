@@ -59,18 +59,6 @@ module Maple::MapleTA
         }
       end
 
-      def assignment_mastery_policy_hashes
-        []
-      end
-
-      def assignment_mastery_penalty_hashes
-        []
-      end
-
-      def assignment_advanced_policy_hashes
-        []
-      end
-
       def include_questionid?(questionid)
         questions.map{ |question| question['id'] }.include?(questionid)
       end

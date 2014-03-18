@@ -136,39 +136,15 @@ module Maple::MapleTA
           }
 
         assignment.save
-        # ::::::::::Not specked::::::::::::::::::
-        # insert_assignment_mastery_policy(
-        #   assignment.assignment_mastery_policy_hashes,
-        #   assignment_class.id
-        # )
-        # insert_assignment_mastery_penalty(
-        #   assignment.assignment_mastery_penalty_hashes,
-        #   assignment_class.id
-        # )
-        # insert_assignment_advanced_policy(
-        #   assignment.assignment_advanced_policy_hashes,
-        #   assignment.id,
-        #   assignment_class.id
-        # )
-        # ::::::::::Not specked::::::::::::::::::
       end
 
       def edit_assignment(assignment)
         transaction do
-          update_assignment(assignment)
+          assignment.save
 
           update_assignment_class(assignment)
-
           update_assignment_policy(assignment)
-
           update_assignment_question_groups(assignment)
-          #
-          #insert_assignment_mastery_policy(assignment.assignment_mastery_policy_hashes, new_assignment_class_id)
-          #
-          #insert_assignment_mastery_penalty(assignment.assignment_mastery_penalty_hashes, new_assignment_class_id)
-          #
-          #insert_assignment_advanced_policy(assignment.assignment_advanced_policy_hashes, new_assignment_id, new_assignment_class_id)
-          #
         end
       end
 
@@ -255,12 +231,6 @@ module Maple::MapleTA
         cmd.execute
       end
 
-      def update_assignment(assignment)
-        assignment_hash = assignment.to_hash
-        assignment_update_cmd = UpdateCmd.new("assignment", "id=#{assignment.id}")
-        push_assignment(assignment_hash, assignment.id, assignment.class_id, {}, assignment_update_cmd)
-        assignment_update_cmd.execute
-      end
 
       def push_assignment(assignment, new_assignment_id, new_class_id, overrides, assignment_insert_cmd)
         new_assignment_uid = "#{::UUID.new.generate.to_s}-#{new_class_id}"
