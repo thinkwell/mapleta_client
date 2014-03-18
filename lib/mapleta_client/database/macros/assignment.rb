@@ -423,9 +423,8 @@ module Maple::MapleTA
 
       ##
       # Get the assignment question group database row for a given assignmentid
-      def assignment_question_groups(assignmentid)
-        raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
-        exec("SELECT * FROM assignment_question_group WHERE assignmentid=?", assignmentid)
+      def assignment_question_groups(assignment_id)
+        Orm::Assignment.with_pk!(assignment_id).assignment_question_groups
       end
 
       ##
@@ -527,7 +526,7 @@ class Cmd
   end
 
   def push(hash, except = [], override = {}, additional_columns = {})
-    new_hash = hash.dup
+    new_hash = hash.to_hash.stringify_keys
     new_hash = new_hash.delete_if { |key, val| except.include? key.to_s }
     override = override.delete_if { |key, value| not new_hash.keys.include?(key.to_s) }
 

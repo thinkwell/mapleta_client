@@ -29,8 +29,8 @@ module Maple::MapleTA
 
         it "should create the assignment question group for each question" do
           assignment_question_groups = database.assignment_question_groups @assignment_id
-          assignment_question_groups.count.should == 1
-          assignment_question_groups.first['name'].should == 'Example question'
+          assignment_question_groups.should have(1).item
+          assignment_question_groups.first.name.should == 'Example question'
         end
 
         it "creates the assignment question group map" do
@@ -71,8 +71,8 @@ module Maple::MapleTA
 
         it "should update the assignment_question_groups" do
           assignment_question_groups = database.assignment_question_groups @assignment_id
-          assignment_question_groups.count.should == 1
-          assignment_question_groups.first['name'].should == 'Example question 2'
+          assignment_question_groups.should have(1).item
+          assignment_question_groups.first.name.should == 'Example question 2'
         end
 
         it "should update the assignment_class" do
