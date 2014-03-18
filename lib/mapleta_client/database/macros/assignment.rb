@@ -136,7 +136,6 @@ module Maple::MapleTA
           }
 
         assignment.save
-
         # ::::::::::Not specked::::::::::::::::::
         # insert_assignment_mastery_policy(
         #   assignment.assignment_mastery_policy_hashes,
@@ -152,8 +151,6 @@ module Maple::MapleTA
         #   assignment_class.id
         # )
         # ::::::::::Not specked::::::::::::::::::
-
-        return assignment.id
       end
 
       def edit_assignment(assignment)
@@ -177,7 +174,7 @@ module Maple::MapleTA
 
       def copy_assignment_to_class(assignment_class_id, new_class_id)
         assignment_class = AssignmentClass.with_pk!(assignment_class_id)
-        assignment = assignment_class.assignment
+        assignment       = assignment_class.assignment
 
         transaction do
           new_assignment_id       = insert_assignment(assignment, new_class_id)
@@ -189,10 +186,16 @@ module Maple::MapleTA
           raise Errors::DatabaseError.new("Cannot find assignment_policy with assignment_class_id=#{assignment_class_id}") unless assignment_policy
           insert_assignment_policy(assignment_policy, new_assignment_class_id)
 
+
           # We ignore advance policies as they depend on other assignments in the original class
-          assignment_question_groups     = assignment_question_groups assignment_class.assignmentid
+          assignment_question_groups     = assignment.assignment_question_groups
           assignment_question_group_maps = assignment_question_group_maps assignment_class.assignmentid
-          insert_assignment_question_groups(assignment_question_groups, assignment_question_group_maps, new_assignment_id)
+
+          insert_assignment_question_groups(
+            assignment_question_groups,
+            assignment_question_group_maps,
+            new_assignment_id
+          )
 
           assignment_mastery_policies = exec("SELECT * FROM assignment_mastery_policy WHERE assignment_class_id=?", assignment_class_id)
           insert_assignment_mastery_policy(assignment_mastery_policies, new_assignment_class_id)
@@ -342,7 +345,7 @@ module Maple::MapleTA
       end
 
       def update_assignment_question_groups(assignment)
-        assignment_question_groups     = assignment_question_groups assignment.id
+        assignment_question_groups     = assignment.assignment_question_groups
         assignment_question_group_maps = assignment_question_group_maps assignment.id
 
         assignment_question_group_maps_to_delete =
@@ -422,12 +425,6 @@ module Maple::MapleTA
       def assignment_policy_for_assignmentid(assignmentid)
         raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
         exec("SELECT p.* FROM assignment_policy p left join assignment_class a on a.id = p.assignment_class_id WHERE a.assignmentid=?", assignmentid).first
-      end
-
-      ##
-      # Get the assignment question group database row for a given assignmentid
-      def assignment_question_groups(assignment_id)
-        Orm::Assignment.with_pk!(assignment_id).assignment_question_groups
       end
 
       ##

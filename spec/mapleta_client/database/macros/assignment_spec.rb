@@ -15,12 +15,12 @@ module Maple::MapleTA
       }
 
       before(:each) do
-        @assignment_id = database.create_assignment assignment
+        @assignment = database.create_assignment assignment
       end
 
       describe "Assignment creation" do
         it "should create a new assignment" do
-          @assignment_id.should_not be_nil
+          @assignment.should_not be_nil
 
           assignment = database.assignment mapleta_class.id
           assignment.should_not be_nil
@@ -28,7 +28,7 @@ module Maple::MapleTA
         end
 
         it "should create the assignment question group for each question" do
-          assignment_question_groups = database.assignment_question_groups @assignment_id
+          assignment_question_groups = @assignment.assignment_question_groups
           assignment_question_groups.should have(1).item
           assignment_question_groups.first.name.should == 'Example question'
         end
@@ -40,7 +40,7 @@ module Maple::MapleTA
         it "should create the assignment class" do
           assignment_class = database.assignment_class mapleta_class.id
           assignment_class.should_not be_nil
-          assignment_class.assignmentid.should == @assignment_id
+          assignment_class.assignment.should == @assignment
           assignment_class.name.should == "test assignment"
         end
 
@@ -59,8 +59,9 @@ module Maple::MapleTA
           assignment.questions  = other_questions
           assignment.reworkable = true
           assignment.printable  = false
-          assignment.id         = @assignment_id
+          assignment.id         = @assignment.id
           database.edit_assignment assignment
+          @assignment.reload
         end
 
         it "should update the assignment" do
@@ -70,7 +71,7 @@ module Maple::MapleTA
         end
 
         it "should update the assignment_question_groups" do
-          assignment_question_groups = database.assignment_question_groups @assignment_id
+          assignment_question_groups = @assignment.assignment_question_groups
           assignment_question_groups.should have(1).item
           assignment_question_groups.first.name.should == 'Example question 2'
         end
@@ -78,7 +79,7 @@ module Maple::MapleTA
         it "should update the assignment_class" do
           assignment_class = database.assignment_class(mapleta_class.id)
           assignment_class.should_not be_nil
-          assignment_class.assignmentid.should == @assignment_id
+          assignment_class.assignment.should == @assignment
           assignment_class.name.should == "test assignment edited"
         end
 
