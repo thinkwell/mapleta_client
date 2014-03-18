@@ -24,7 +24,7 @@ module Maple::MapleTA
 
           assignment = database.assignment mapleta_class.id
           assignment.should_not be_nil
-          assignment['name'].should == "test assignment"
+          assignment.name.should == "test assignment"
         end
 
         it "should create the assignment question group for each question" do
@@ -40,13 +40,13 @@ module Maple::MapleTA
         it "should create the assignment class" do
           assignment_class = database.assignment_class mapleta_class.id
           assignment_class.should_not be_nil
-          assignment_class['assignmentid'].should == @assignment_id
-          assignment_class['name'].should == "test assignment"
+          assignment_class.assignmentid.should == @assignment_id
+          assignment_class.name.should == "test assignment"
         end
 
         it "should create the assignment policy" do
           assignment_class  = database.assignment_class mapleta_class.id
-          assignment_policy = database.assignment_policy assignment_class['id']
+          assignment_policy = database.assignment_policy assignment_class.id
           assignment_policy.should_not be_nil
           assignment_policy['reworkable'].should be false
           assignment_policy['printable'].should be true
@@ -66,7 +66,7 @@ module Maple::MapleTA
         it "should update the assignment" do
           assignment = database.assignment mapleta_class.id
           assignment.should_not be_nil
-          assignment['name'].should == "test assignment edited"
+          assignment.name.should == "test assignment edited"
         end
 
         it "should update the assignment_question_groups" do
@@ -78,13 +78,13 @@ module Maple::MapleTA
         it "should update the assignment_class" do
           assignment_class = database.assignment_class(mapleta_class.id)
           assignment_class.should_not be_nil
-          assignment_class['assignmentid'].should == @assignment_id
-          assignment_class['name'].should == "test assignment edited"
+          assignment_class.assignmentid.should == @assignment_id
+          assignment_class.name.should == "test assignment edited"
         end
 
         it "should update the assignment_policy" do
-          assignment_class = database.assignment_class mapleta_class.id
-          assignment_policy = database.assignment_policy assignment_class['id']
+          assignment_class  = database.assignment_class mapleta_class.id
+          assignment_policy = database.assignment_policy assignment_class.id
           assignment_policy.should_not be_nil
           assignment_policy['reworkable'].should be true
           assignment_policy['printable'].should be false
@@ -92,25 +92,20 @@ module Maple::MapleTA
       end
 
       describe "copy_assignment_to_class" do
-        it "should create a new assignment_class" do
-          assignment_class = database.exec("SELECT * FROM assignment_class limit 1").first
-          new_assignment_class_id = database.copy_assignment_to_class assignment_class['id'], mapleta_class.id
-          new_assignment_class_id.should_not be_nil
+        let(:assignment_class)  { Orm::AssignmentClass.first }
+        let(:new_mapleta_class) { create :class }
+
+        it "should create a new assignment" do
+          expect {
+            database.copy_assignment_to_class assignment_class.id, new_mapleta_class.id
+          }.to change{ Orm::Assignment.count }.by 1
         end
-        # let(:assignment_class)  { Orm::AssignmentClass.first }
-        # let(:new_mapleta_class) { create :class }
 
-        # it "should create a new assignment" do
-        #   expect {
-        #     database.copy_assignment_to_class assignment_class.id, new_mapleta_class.id
-        #   }.to change{ Orm::Assignment.count }.by 1
-        # end
-
-        # it "should create a new assignment_class" do
-        #   expect {
-        #     database.copy_assignment_to_class assignment_class.id, new_mapleta_class.id
-        #   }.to change{ Orm::AssignmentClass.count }.by 1
-        # end
+        it "should create a new assignment_class" do
+          expect {
+            database.copy_assignment_to_class assignment_class.id, new_mapleta_class.id
+          }.to change{ Orm::AssignmentClass.count }.by 1
+        end
       end
 
       describe 'max attempts' do

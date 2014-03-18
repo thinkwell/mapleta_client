@@ -9,7 +9,7 @@ module Maple::MapleTA
         raise Errors::DatabaseError.new("Must pass new_class_id") unless new_class_id
 
         assignment_class_id_old_to_new = {}
-        
+
         assignment_classes_query_sql = "SELECT * FROM assignment_class WHERE id IN (#{recorded_assignment_ids.join(",")})"
         assignment_classes = exec(assignment_classes_query_sql)
         raise Errors::DatabaseError.new("Cannot find assignment_classes in recorded_assignment_ids=#{recorded_assignment_ids}") unless assignment_classes && assignment_classes.count > 0
@@ -101,7 +101,7 @@ module Maple::MapleTA
           assignment_mastery_penalty_insert_cmd.execute
           assignment_advanced_policy_insert_cmd.execute
         end
-        
+
         assignment_class_id_old_to_new
       rescue PG::Error => e
         Rails.logger.error e.backtrace.join("\n")
@@ -271,7 +271,7 @@ module Maple::MapleTA
 
       def update_assignment_class(assignment)
         assignment_class = assignment_class_for_assignmentid assignment.id
-        cmd = UpdateCmd.new("assignment_class", "id=#{assignment_class['id']}")
+        cmd = UpdateCmd.new("assignment_class", "id=#{assignment_class.id}")
 
         push_assignment_class(
           assignment.assignment_class_hash,
@@ -430,22 +430,19 @@ module Maple::MapleTA
       ##
       # Get the assignment database row for a given classid
       def assignment(classid)
-        raise Errors::DatabaseError.new("Must pass classid") unless classid
-        exec("SELECT * FROM assignment WHERE classid=?", classid).first
+        Orm::Assignment.where(classid: classid).first!
       end
 
       ##
       # Get the assignment_class database row for a given classid
       def assignment_class(classid)
-        raise Errors::DatabaseError.new("Must pass classid") unless classid
-        exec("SELECT * FROM assignment_class WHERE classid=?", classid).first
+        AssignmentClass.where(classid: classid).first!
       end
 
       ##
       # Get the assignment_class database row for a given assignmentid
       def assignment_class_for_assignmentid(assignmentid)
-        raise Errors::DatabaseError.new("Must pass assignmentid") unless assignmentid
-        exec("SELECT * FROM assignment_class WHERE assignmentid=?", assignmentid).first
+        AssignmentClass.where(assignmentid: assignmentid).first!
       end
 
       ##
