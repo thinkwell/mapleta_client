@@ -4,7 +4,6 @@ module Maple::MapleTA
       unrestrict_primary_key
 
       set_primary_key :assignment_class_id
-      alias id assignment_class_id
     end
   end
 end

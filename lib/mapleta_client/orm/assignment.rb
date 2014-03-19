@@ -20,7 +20,7 @@ module Maple::MapleTA
 
 
       nested_attributes :assignment_class
-      nested_attributes :assignment_question_groups
+      nested_attributes :assignment_question_groups, destroy: true
 
       attr_accessor :questions
 

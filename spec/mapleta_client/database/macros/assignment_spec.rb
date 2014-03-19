@@ -18,7 +18,7 @@ module Maple::MapleTA
         @assignment = database.create_assignment assignment
       end
 
-      describe "Assignment creation" do
+      describe "creating an assignment" do
         it "should create a new assignment" do
           @assignment.should_not be_nil
 
@@ -53,42 +53,51 @@ module Maple::MapleTA
         end
       end
 
-      describe "update_assignment" do
+      describe "updating an assignment and dependent records" do
         before(:each) do
           assignment.name       = "test assignment edited"
           assignment.questions  = other_questions
           assignment.reworkable = true
           assignment.printable  = false
           assignment.id         = @assignment.id
-          database.edit_assignment assignment
-          @assignment.reload
+        end
+
+        it "removes question groups and question groups maps not relating new questions" do
+          expect {  }
+
         end
 
         it "should update the assignment" do
-          assignment = database.assignment mapleta_class.id
-          assignment.should_not be_nil
+          assignment = database.edit_assignment @assignment
+
           assignment.name.should == "test assignment edited"
         end
 
         it "should update the assignment_question_groups" do
-          assignment_question_groups = @assignment.assignment_question_groups
+          assignment = database.edit_assignment @assignment
+
+          assignment_question_groups = assignment.assignment_question_groups
           assignment_question_groups.should have(1).item
           assignment_question_groups.first.name.should == 'Example question 2'
         end
 
         it "should update the assignment_class" do
-          assignment_class = database.assignment_class(mapleta_class.id)
+          assignment = database.edit_assignment @assignment
+
+          assignment_class = assignment.assignment_class
           assignment_class.should_not be_nil
           assignment_class.assignment.should == @assignment
           assignment_class.name.should == "test assignment edited"
         end
 
         it "should update the assignment_policy" do
-          assignment_class  = database.assignment_class mapleta_class.id
-          assignment_policy = database.assignment_policy assignment_class.id
-          assignment_policy.should_not be_nil
-          assignment_policy['reworkable'].should be true
-          assignment_policy['printable'].should be false
+          database.edit_assignment assignment
+
+          assignment_class  = assignment.assignment_class
+          assignment_policy = assignment_class.assignment_policy
+
+          assignment_policy.reworkable.should be true
+          assignment_policy.printable.should be false
         end
       end
 
