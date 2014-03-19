@@ -92,6 +92,18 @@ module Maple::MapleTA
         end
       end
 
+      describe 'removing an assignment' do
+        it { expect{ assignment.destroy }.to change{ Orm::Assignment.count }.by(-1) }
+        it { expect{ assignment.destroy }.to change{ Orm::AssignmentClass.count }.by(-1) }
+        it { expect{ assignment.destroy }.to change{ Orm::AssignmentQuestionGroup.count }.by(-1) }
+        it { expect{ assignment.destroy }.to change{ Orm::AssignmentQuestionGroupMap.count }.by(-1) }
+      end
+
+      describe 'removing an assignmnet class' do
+        it { expect{ assignment.assignment_class.destroy }.to change{ Orm::AssignmentClass.count }.by(-1) }
+        it { expect{ assignment.assignment_class.destroy }.to change{ Orm::AssignmentPolicy.count }.by(-1) }
+      end
+
       describe "copy_assignment_to_class" do
         let(:assignment_class)  { Orm::AssignmentClass.first }
         let(:new_mapleta_class) { create :class }

@@ -12,6 +12,8 @@ module Maple::MapleTA
       many_to_one :assignment, key: [:assignmentid, :classid], primary_key: [:id, :classid] 
       one_to_one :assignment_policy
 
+      plugin :association_dependencies, :assignment_policy => :delete
+
       nested_attributes :assignment_policy
 
       def before_create

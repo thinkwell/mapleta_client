@@ -140,7 +140,13 @@ module Maple::MapleTA
 
       def edit_assignment(assignment)
         transaction do
-          assignment.assignment_class_attributes = {:id => assignment.assignment_class.id, :name => assignment.name, :totalpoints => assignment.total_points, :weighting => assignment.weighting}
+          assignment.assignment_class_attributes = {
+            :id => assignment.assignment_class.id,
+            :name => assignment.name,
+            :totalpoints => assignment.total_points,
+            :weighting => assignment.weighting
+          }
+
           assignment.save
 
           update_assignment_policy(assignment)
@@ -405,17 +411,6 @@ module Maple::MapleTA
         AssignmentClass.where(assignmentid: assignmentid).first!
       end
 
-      ##
-      # Delete the assignment database row for a given classid
-      def delete_assignment(classid)
-        raise Errors::DatabaseError.new("Must pass classid") unless classid
-        assignment = assignment(classid)
-        return unless assignment
-        assignment_question_group_maps(assignment['id']).each do |assignment_question_group_map|
-          delete_assignment_question_group(assignment_question_group_map)
-        end
-        exec("DELETE FROM assignment WHERE classid=$1", [classid]).first
-      end
 
       def delete_assignment_question_group(assignment_question_group_map)
         exec "DELETE FROM assignment_question_group_map WHERE id=?", assignment_question_group_map['id']
