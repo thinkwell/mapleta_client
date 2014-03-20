@@ -62,20 +62,13 @@ module Maple::MapleTA
           assignment.id         = @assignment.id
         end
 
-        it "removes question groups and question groups maps not relating new questions" do
-          expect {  }
-
-        end
-
         it "should update the assignment" do
           assignment = database.edit_assignment @assignment
-
           assignment.name.should == "test assignment edited"
         end
 
         it "should update the assignment_question_groups" do
           assignment = database.edit_assignment @assignment
-
           assignment_question_groups = assignment.assignment_question_groups
           assignment_question_groups.should have(1).item
           assignment_question_groups.first.name.should == 'Example question 2'
@@ -83,7 +76,6 @@ module Maple::MapleTA
 
         it "should update the assignment_class" do
           assignment = database.edit_assignment @assignment
-
           assignment_class = assignment.assignment_class
           assignment_class.should_not be_nil
           assignment_class.assignment.should == @assignment
@@ -92,10 +84,8 @@ module Maple::MapleTA
 
         it "should update the assignment_policy" do
           database.edit_assignment assignment
-
           assignment_class  = assignment.assignment_class
           assignment_policy = assignment_class.assignment_policy
-
           assignment_policy.reworkable.should be true
           assignment_policy.printable.should be false
         end
@@ -116,18 +106,13 @@ module Maple::MapleTA
       describe "copy_assignment_to_class" do
         let(:assignment_class)  { Orm::AssignmentClass.first }
         let(:new_mapleta_class) { create :class }
+        let(:assignment_copy)   { database.copy_assignment_to_class assignment_class.id, new_mapleta_class.id }
 
-        it "should create a new assignment" do
-          expect {
-            database.copy_assignment_to_class assignment_class.id, new_mapleta_class.id
-          }.to change{ Orm::Assignment.count }.by 1
-        end
-
-        it "should create a new assignment_class" do
-          expect {
-            database.copy_assignment_to_class assignment_class.id, new_mapleta_class.id
-          }.to change{ Orm::AssignmentClass.count }.by 1
-        end
+        it { expect { assignment_copy }.to change{ Orm::Assignment.count }.by 1 }
+        it { expect { assignment_copy }.to change{ Orm::AssignmentClass.count }.by 1 }
+        it { expect { assignment_copy }.to change{ Orm::AssignmentPolicy.count }.by 1 }
+        it { expect { assignment_copy }.to change{ Orm::AssignmentQuestionGroup.count }.by 1 }
+        it { expect { assignment_copy }.to change{ Orm::AssignmentQuestionGroupMap.count }.by 1 }
       end
 
       describe 'max attempts' do

@@ -1,3 +1,4 @@
+
 module Maple::MapleTA
   module Orm
     class Assignment < Sequel::Model( Maple::MapleTA.database_connection.dataset[:assignment] )
@@ -7,6 +8,7 @@ module Maple::MapleTA
       # Todo: spec, check time zone
       plugin :timestamps, :create => :updated_at, :update => :updated_at
       plugin :nested_attributes
+      plugin :deep_dup
 
       def_column_alias :class_id,     :classid
       def_column_alias :total_points, :totalpoints
