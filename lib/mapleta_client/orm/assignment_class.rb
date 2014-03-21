@@ -13,6 +13,7 @@ module Maple::MapleTA
       one_to_one :assignment_policy
 
       plugin :association_dependencies, :assignment_policy => :delete
+      plugin :deep_dup
 
       nested_attributes :assignment_policy
 
