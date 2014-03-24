@@ -9,13 +9,17 @@ module Maple::MapleTA
       def_column_alias :total_points,  :totalpoints
       def_column_alias :updated_at,    :lastmodified
 
-      many_to_one :assignment, key: [:assignmentid, :classid], primary_key: [:id, :classid] 
-      one_to_one :assignment_policy
+      many_to_one :assignment, :key => [:assignmentid, :classid], :primary_key => [:id, :classid] 
+      one_to_one  :assignment_policy
+      one_to_one  :advanced_policy
 
-      plugin :association_dependencies, :assignment_policy => :delete
+      plugin :association_dependencies, :assignment_policy => :delete,
+        :advanced_policy => :delete
+
       plugin :deep_dup
 
       nested_attributes :assignment_policy
+      nested_attributes :advanced_policy, :unmatched_pk => :create, :destroy => true
 
       def before_create
         super

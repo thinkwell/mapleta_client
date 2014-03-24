@@ -119,13 +119,14 @@ module Maple::MapleTA
       end
 
       describe 'max attempts' do
-        it "set_assignment_max_attempts" do
-          pending "Aparently not implemented correctly"
-          database.set_assignment_max_attempts mapleta_class.id, 3
-          database.assignment_max_attempts(mapleta_class.id).should == 3
+        let(:assignment_class)  { Orm::AssignmentClass.first }
 
-          database.set_assignment_max_attempts mapleta_class.id, nil
-          database.assignment_max_attempts(mapleta_class.id).should be_false
+        it "set_assignment_max_attempts" do
+          database.set_assignment_max_attempts assignment_class.id, 3
+          database.assignment_max_attempts(assignment_class.id).should == 3
+
+          database.set_assignment_max_attempts assignment_class.id, nil
+          database.assignment_max_attempts(assignment_class.id).should be_false
         end
       end
     end
