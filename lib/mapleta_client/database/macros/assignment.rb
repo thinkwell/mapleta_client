@@ -65,7 +65,6 @@ module Maple::MapleTA
         assignment_class.advanced_policy.try(:keyword) or false
       end
 
-
       def set_assignment_max_attempts(assignment_class_id, max_attempts)
         assignment_class = AssignmentClass.with_pk!(assignment_class_id)
 
@@ -84,8 +83,6 @@ module Maple::MapleTA
           assignment_class.advanced_policy_dataset.destroy
         end
       end
-
-
     end
   end
 end
