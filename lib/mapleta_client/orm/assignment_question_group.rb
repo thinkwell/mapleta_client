@@ -3,6 +3,8 @@ module Maple::MapleTA
     class AssignmentQuestionGroup < Sequel::Model( Maple::MapleTA.database_connection.dataset[:assignment_question_group] )
       plugin :nested_attributes
 
+      def_column_alias :assignment_id, :assignmentid
+
       many_to_one :assignment, :key => :assignmentid
       one_to_many :assignment_question_group_maps, key: :groupid
 

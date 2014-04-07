@@ -11,23 +11,22 @@ module Maple::MapleTA
           :name        => assignment.name,
           :totalpoints => assignment.total_points,
           :weighting   => assignment.weighting,
+          :assignment_policy_attributes => {
+            :assignment_class_id       => assignment.assignment_classes.first.try(:id),
+            :show_current_grade        => assignment.show_current_grade,
+            :insession_grade           => assignment.insession_grade,
+            :reworkable                => assignment.reworkable,
+            :printable                 => assignment.printable,
+            :mode                      => assignment.mode || 0,
+            :show_final_grade_feedback => assignment.show_final_grade_feedback
+          }
         }
 
-        if assignment.assignment_class
-          assignment_class_attrs[:id] = assignment.assignment_class.id
+        if assignment.assignment_classes.size > 0
+          assignment_class_attrs[:id] = assignment.assignment_classes.first.id
         end
 
-        assignment.assignment_class_attributes = assignment_class_attrs
-
-        assignment.assignment_class.assignment_policy_attributes = {
-          :assignment_class_id       => assignment.assignment_class.try(:id),
-          :show_current_grade        => assignment.show_current_grade,
-          :insession_grade           => assignment.insession_grade,
-          :reworkable                => assignment.reworkable,
-          :printable                 => assignment.printable,
-          :mode                      => assignment.mode || 0,
-          :show_final_grade_feedback => assignment.show_final_grade_feedback
-        }
+        assignment.assignment_classes_attributes = [assignment_class_attrs]
 
         question_group_attrs = []
 

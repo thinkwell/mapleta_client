@@ -1,4 +1,3 @@
-
 module Maple::MapleTA
   module Orm
     class Assignment < Sequel::Model( Maple::MapleTA.database_connection.dataset[:assignment] )
@@ -14,14 +13,14 @@ module Maple::MapleTA
       def_column_alias :total_points, :totalpoints
       def_column_alias :updated_at,   :lastmodified
 
-      one_to_one   :assignment_class,           :key => [:assignmentid, :classid], :primary_key => [:id, :classid]
+      one_to_many  :assignment_classes,         :key => [:assignmentid, :classid], :primary_key => [:id, :classid]
       one_to_many  :assignment_question_groups, :key => :assignmentid
       many_to_many :assignment_question_group_maps, :join_table => :assignment_question_group, :left_key => :assignmentid, :right_key => :id, :right_primary_key => :groupid
 
-      plugin :association_dependencies, :assignment_class => :destroy, :assignment_question_groups => :destroy
+      plugin :association_dependencies, :assignment_classes => :destroy, :assignment_question_groups => :destroy
 
 
-      nested_attributes :assignment_class
+      nested_attributes :assignment_classes
       nested_attributes :assignment_question_groups, :destroy => true
 
       attr_accessor :questions

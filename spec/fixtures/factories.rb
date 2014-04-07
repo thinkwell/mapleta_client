@@ -1,7 +1,45 @@
 require 'ostruct'
 
+ns = Maple::MapleTA::Orm
+
 FactoryGirl.define do
-  factory :author, class: Maple::MapleTA::Orm::Author do
+  factory :class, class: ns::Class do
+    to_create { |instance| puts instance.save.inspect }
+
+    sequence(:name) { |num| "Algebra #{num}" }
+    dirname 'dirname'
+  end
+
+  factory :assignment, class: ns::Assignment do
+    to_create { |instance| instance.save }
+
+    name 'Assignment'
+    reworkable false
+    printable true
+    weighting 0
+    insession_grade false
+    show_current_grade  false
+  end
+
+  factory :assignment_class, class: ns::AssignmentClass do
+    to_create { |instance| instance.save }
+    sequence(:name) { |num| "Assignment class #{num}" }
+    totalpoints 1
+    weighting   1
+  end
+
+  factory :assignment_policy, class: ns::AssignmentPolicy do
+    to_create { |instance| instance.save }
+
+    show_current_grade true
+    insession_grade true
+    reworkable true
+    printable true
+    mode 0
+    show_final_grade_feedback true
+  end
+
+  factory :author do
     to_create { |instance| instance.save }
 
     sequence(:id)  { |num| num }
@@ -12,14 +50,7 @@ FactoryGirl.define do
     created Time.now
   end
 
-  factory :class, class: Maple::MapleTA::Orm::Class do
-    to_create { |instance| puts instance.save.inspect }
-
-    sequence(:name) { |num| "Algebra #{num}" }
-    dirname 'dirname'
-  end
-
-  factory :question, class: Maple::MapleTA::Orm::Question do
+  factory :question, class: ns::Question do
     to_create { |instance| instance.save }
 
     name 'Question'
@@ -45,18 +76,11 @@ FactoryGirl.define do
     lastmodified Time.now
   end
 
-  factory :assignment, class: Maple::MapleTA::Orm::Assignment do
+  factory :user_class, class: ns::UserClass do
     to_create { |instance| instance.save }
-
-    name 'Assignment'
-    reworkable false
-    printable true
-    weighting 0
-    insession_grade false
-    show_current_grade  false
   end
 
-  factory :user_class, class: Maple::MapleTA::Orm::UserClass do
+  factory :assignment_question_group, class: ns::AssignmentQuestionGroup do
     to_create { |instance| instance.save }
   end
 end
