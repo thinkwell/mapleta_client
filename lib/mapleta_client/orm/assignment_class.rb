@@ -9,7 +9,7 @@ module Maple::MapleTA
       def_column_alias :total_points,  :totalpoints
       def_column_alias :updated_at,    :lastmodified
 
-      many_to_one :assignment, :key => [:assignmentid, :classid], :primary_key => [:id, :classid] 
+      many_to_one :assignment, :key => :assignmentid
       one_to_one  :assignment_policy
       one_to_one  :advanced_policy
 

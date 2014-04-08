@@ -54,8 +54,13 @@ module Maple::MapleTA
       alias create_assignment save_assignment
       alias edit_assignment save_assignment
 
-      def copy_assignment_to_class(assignment_class_id, new_class_id)
-        AssignmentClass.with_pk!(assignment_class_id).assignment.set(:class_id => new_class_id).deep_dup.save
+      def copy_assignment_to_class(assignment, new_class)
+
+        new_assignment = assignment.set(:class_id => new_class.id).
+          deep_dup :assignment_classes => [:assignment_policy],
+            :assignment_question_group_maps => []
+        
+        new_assignment.save
       end
 
       # Read advance policies to determine max attempts

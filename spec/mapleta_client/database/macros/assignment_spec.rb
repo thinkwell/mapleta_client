@@ -14,143 +14,143 @@ module Maple::MapleTA
               questions: questions)
       }
 
-      before(:each) do
-        @assignment = database.create_assignment assignment
-      end
-
-      describe "creating an assignment" do
-        it "should create a new assignment" do
-          assignment = @assignment.reload
-          assignment.should_not be_nil
-          assignment.name.should == "test assignment"
-        end
-
-        it "should create the assignment question group for each question" do
-          assignment_question_groups = @assignment.assignment_question_groups
-          assignment_question_groups.should have(1).item
-          assignment_question_groups.first.name.should == 'Example question'
-        end
-
-        it "creates the assignment question group map" do
-          pending
-        end
-
-        it "should create the assignment class" do
-          assignment.assignment_classes.should have(1).item
-
-          assignment_class = assignment.assignment_classes.first
-          assignment_class.assignment.should == @assignment
-          assignment_class.name.should == "test assignment"
-        end
-
-        it "should create the assignment policy" do
-          assignment_class  = assignment.assignment_classes.first
-          assignment_policy = assignment_class.assignment_policy
-          assignment_policy.should_not be_nil
-          assignment_policy.reworkable.should be false
-          assignment_policy.printable.should be true
-        end
-      end
-
-      describe "updating an assignment and dependent records" do
+      describe 'creating an assignment' do
         before(:each) do
-          assignment.name       = "test assignment edited"
-          assignment.questions  = other_questions
-          assignment.reworkable = true
-          assignment.printable  = false
-          assignment.id         = @assignment.id
+          @assignment = database.create_assignment assignment
         end
 
-        it "should update the assignment" do
-          assignment = database.edit_assignment @assignment
-          assignment.name.should == "test assignment edited"
+        describe "creating an assignment" do
+          it "should create a new assignment" do
+            assignment = @assignment.reload
+            assignment.should_not be_nil
+            assignment.name.should == "test assignment"
+          end
+
+          it "should create the assignment question group for each question" do
+            assignment_question_groups = @assignment.assignment_question_groups
+            assignment_question_groups.should have(1).item
+            assignment_question_groups.first.name.should == 'Example question'
+          end
+
+          it "creates the assignment question group map" do
+            pending
+          end
+
+          it "should create the assignment class" do
+            assignment.assignment_classes.should have(1).item
+
+            assignment_class = assignment.assignment_classes.first
+            assignment_class.assignment.should == @assignment
+            assignment_class.name.should == "test assignment"
+          end
+
+          it "should create the assignment policy" do
+            assignment_class  = assignment.assignment_classes.first
+            assignment_policy = assignment_class.assignment_policy
+            assignment_policy.should_not be_nil
+            assignment_policy.reworkable.should be false
+            assignment_policy.printable.should be true
+          end
         end
 
-        it "should update the assignment_question_groups" do
-          assignment = database.edit_assignment @assignment
-          assignment_question_groups = assignment.assignment_question_groups
-          assignment_question_groups.should have(1).item
-          assignment_question_groups.first.name.should == 'Example question 2'
+        describe "updating an assignment and dependent records" do
+          before(:each) do
+            assignment.name       = "test assignment edited"
+            assignment.questions  = other_questions
+            assignment.reworkable = true
+            assignment.printable  = false
+            assignment.id         = @assignment.id
+          end
+
+          it "should update the assignment" do
+            assignment = database.edit_assignment @assignment
+            assignment.name.should == "test assignment edited"
+          end
+
+          it "should update the assignment_question_groups" do
+            assignment = database.edit_assignment @assignment
+            assignment_question_groups = assignment.assignment_question_groups
+            assignment_question_groups.should have(1).item
+            assignment_question_groups.first.name.should == 'Example question 2'
+          end
+
+          it "should update the assignment_class" do
+            assignment = database.edit_assignment @assignment
+            assignment.assignment_classes.should have(1).item
+
+            assignment_class = assignment.assignment_classes.first
+            assignment_class.assignment.should == @assignment
+            assignment_class.name.should == "test assignment edited"
+          end
+
+          it "should update the assignment_policy" do
+            database.edit_assignment assignment
+
+            assignment_class  = assignment.assignment_classes.first
+            assignment_policy = assignment_class.assignment_policy
+            assignment_policy.reworkable.should be true
+            assignment_policy.printable.should be false
+          end
         end
 
-        it "should update the assignment_class" do
-          assignment = database.edit_assignment @assignment
-          assignment.assignment_classes.should have(1).item
-
-          assignment_class = assignment.assignment_classes.first
-          assignment_class.assignment.should == @assignment
-          assignment_class.name.should == "test assignment edited"
+        describe 'removing an assignment' do
+          it { expect{ assignment.destroy }.to change{ Orm::Assignment.count }.by(-1) }
+          it { expect{ assignment.destroy }.to change{ Orm::AssignmentClass.count }.by(-1) }
+          it { expect{ assignment.destroy }.to change{ Orm::AssignmentQuestionGroup.count }.by(-1) }
+          it { expect{ assignment.destroy }.to change{ Orm::AssignmentQuestionGroupMap.count }.by(-1) }
         end
 
-        it "should update the assignment_policy" do
-          database.edit_assignment assignment
-
-          assignment_class  = assignment.assignment_classes.first
-          assignment_policy = assignment_class.assignment_policy
-          assignment_policy.reworkable.should be true
-          assignment_policy.printable.should be false
+        describe 'removing an assignmnet class' do
+          it { expect{ assignment.assignment_classes_dataset.destroy }.to change{ Orm::AssignmentClass.count }.by(-1) }
+          it { expect{ assignment.assignment_classes_dataset.destroy }.to change{ Orm::AssignmentPolicy.count }.by(-1) }
         end
-      end
 
-      describe 'removing an assignment' do
-        it { expect{ assignment.destroy }.to change{ Orm::Assignment.count }.by(-1) }
-        it { expect{ assignment.destroy }.to change{ Orm::AssignmentClass.count }.by(-1) }
-        it { expect{ assignment.destroy }.to change{ Orm::AssignmentQuestionGroup.count }.by(-1) }
-        it { expect{ assignment.destroy }.to change{ Orm::AssignmentQuestionGroupMap.count }.by(-1) }
-      end
+        describe 'max attempts' do
+          let(:assignment_class)  { Orm::AssignmentClass.first }
 
-      describe 'removing an assignmnet class' do
-        it { expect{ assignment.assignment_classes_dataset.destroy }.to change{ Orm::AssignmentClass.count }.by(-1) }
-        it { expect{ assignment.assignment_classes_dataset.destroy }.to change{ Orm::AssignmentPolicy.count }.by(-1) }
+          it "set_assignment_max_attempts" do
+            database.set_assignment_max_attempts assignment_class.id, 3
+            database.assignment_max_attempts(assignment_class.id).should == 3
+
+            database.set_assignment_max_attempts assignment_class.id, nil
+            database.assignment_max_attempts(assignment_class.id).should be_false
+          end
+        end
       end
 
       describe "copy assignment to class" do
+        let(:existing_class)  { create :class }
+        let(:new_class)       { create :class }
+        let(:assignment)      { create(:assignment, classid: existing_class.id) }
+        let(:assignment_copy) { database.copy_assignment_to_class(assignment.reload, new_class) }
+
         before do
-          existing_class = create :class
           3.times do |num|
-            assignment = create(:assignment, classid: existing_class.id)
             3.times { 
               question = create(:question, author: existing_class.id)
               group = Orm::AssignmentQuestionGroup.create(assignment_id: assignment.id, order_id: 0)
 
               3.times {
                 map = Orm::AssignmentQuestionGroupMap.
-                  create(question_id: question.id, group_id: group.id)
+                create(question_id: question.id, group_id: group.id)
               }
             }
             assignment_class = create :assignment_class, class_id: existing_class.id, assignment_id: assignment.id
+            
             Orm::AssignmentPolicy.create(assignment_class_id: assignment_class.id)
             Orm::AdvancedPolicy.create(assignment_class_id: assignment_class.id, and_id: 1, or_id: 1, keyword: 1, assignment_id: assignment.id, has: 1)
           end
         end
-        
-        it {  }
 
-        # let(:new_class)        { create :class }
-        # let(:assignment_copy)  { database.copy_assignment_to_class assignment_class.id, new_class.id }
+        it { assignment.should have(3).assignment_classes }
+        it { assignment_copy.class_id.should == new_class.id }
+        it { expect { assignment_copy }.to change{ Orm::Assignment.count }.by 1 }
+        it { expect { assignment_copy }.to change{ Orm::AssignmentClass.count }.by 3 }
+        it { expect { assignment_copy }.to change{ Orm::AssignmentPolicy.count }.by 3 }
+        it { expect { assignment_copy }.to change{ Orm::AssignmentQuestionGroup.count }.by 9 }
+        it { expect { assignment_copy }.to change{ Orm::AssignmentQuestionGroupMap.count }.by 18 }
 
-        # it { assignment_copy.class_id.should == new_class.id }
-        # it { assignment_copy.assignment_class.class_id.should == new_class.id }
-        # it { expect { assignment_copy }.to change{ Orm::Assignment.count }.by 1 }
-        # it { expect { assignment_copy }.to change{ Orm::AssignmentClass.count }.by 1 }
-        # it { expect { assignment_copy }.to change{ Orm::AssignmentPolicy.count }.by 1 }
-        # it { expect { assignment_copy }.to change{ Orm::AssignmentQuestionGroup.count }.by 1 }
-        # it { expect { assignment_copy }.to change{ Orm::AssignmentQuestionGroupMap.count }.by 1 }
-        # it { expect { assignment_copy }.to change{ Orm::MasteryPolicy.count }.by 1 }
-        # it { expect { assignment_copy }.to change{ Orm::MasteryPenalty.count }.by 1 }
-        # it { expect { assignment_copy }.to change{ Orm::AdvancedPolicy.count }.by 1 }
-      end
-
-      describe 'max attempts' do
-        let(:assignment_class)  { Orm::AssignmentClass.first }
-
-        it "set_assignment_max_attempts" do
-          database.set_assignment_max_attempts assignment_class.id, 3
-          database.assignment_max_attempts(assignment_class.id).should == 3
-
-          database.set_assignment_max_attempts assignment_class.id, nil
-          database.assignment_max_attempts(assignment_class.id).should be_false
-        end
+        it { expect { assignment_copy }.not_to change{ Orm::Question.count } }
       end
     end
   end
