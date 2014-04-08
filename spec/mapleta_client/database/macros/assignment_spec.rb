@@ -119,13 +119,16 @@ module Maple::MapleTA
       end
 
       describe "copy assignment to class" do
-        let(:existing_class)  { create :class }
-        let(:new_class)       { create :class }
-        let(:assignment)      { create(:assignment, classid: existing_class.id) }
-        let(:assignment_copy) { database.copy_assignment_to_class(assignment.reload, new_class) }
+        let(:existing_class)        { create :class }
+        let(:new_class)             { create :class }
+        let(:assignment_class_copy) { database.copy_assignment_to_class(assignment_class.id, new_class.id) }
+        let(:assignment_class)      { Orm::AssignmentClass.first }
 
         before do
           3.times do |num|
+            assignment = create(:assignment, classid: existing_class.id)
+            assignment_class = create :assignment_class, class_id: existing_class.id, assignment_id: assignment.id
+
             3.times { 
               question = create(:question, author: existing_class.id)
               group = Orm::AssignmentQuestionGroup.create(assignment_id: assignment.id, order_id: 0)
@@ -135,22 +138,20 @@ module Maple::MapleTA
                 create(question_id: question.id, group_id: group.id)
               }
             }
-            assignment_class = create :assignment_class, class_id: existing_class.id, assignment_id: assignment.id
             
             Orm::AssignmentPolicy.create(assignment_class_id: assignment_class.id)
             Orm::AdvancedPolicy.create(assignment_class_id: assignment_class.id, and_id: 1, or_id: 1, keyword: 1, assignment_id: assignment.id, has: 1)
           end
         end
 
-        it { assignment.should have(3).assignment_classes }
-        it { assignment_copy.class_id.should == new_class.id }
-        it { expect { assignment_copy }.to change{ Orm::Assignment.count }.by 1 }
-        it { expect { assignment_copy }.to change{ Orm::AssignmentClass.count }.by 3 }
-        it { expect { assignment_copy }.to change{ Orm::AssignmentPolicy.count }.by 3 }
-        it { expect { assignment_copy }.to change{ Orm::AssignmentQuestionGroup.count }.by 9 }
-        it { expect { assignment_copy }.to change{ Orm::AssignmentQuestionGroupMap.count }.by 18 }
-
-        it { expect { assignment_copy }.not_to change{ Orm::Question.count } }
+        it { assignment_class_copy.class_id.should == new_class.id }
+        it { expect { assignment_class_copy }.to change{ Orm::AssignmentClass.count }.by 1 }
+        it { expect { assignment_class_copy }.to change{ Orm::Assignment.count }.by 1 }
+        it { expect { assignment_class_copy }.to change{ Orm::AssignmentPolicy.count }.by 1 }
+        it { expect { assignment_class_copy }.to change{ Orm::AdvancedPolicy.count }.by 1 }
+        it { expect { assignment_class_copy }.to change{ Orm::AssignmentQuestionGroup.count }.by 3 }
+        it { expect { assignment_class_copy }.to change{ Orm::AssignmentQuestionGroupMap.count }.by 9 }
+        it { expect { assignment_class_copy }.not_to change{ Orm::Question.count } }
       end
     end
   end
