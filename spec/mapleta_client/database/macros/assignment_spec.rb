@@ -6,12 +6,12 @@ module Maple::MapleTA
       let(:settings)        { RSpec.configuration.maple_settings }
       let(:database)        { RSpec.configuration.database_connection }
       let(:mapleta_class)   { create :class }
-      let(:questions)       { [ create(:question, name: 'Example question',   author: mapleta_class.id) ] }
-      let(:other_questions) { [ create(:question, name: 'Example question 2', author: mapleta_class.id) ] }
+      let(:questions)       { [ create(:question, :name => 'Example question',   :author => mapleta_class.id) ] }
+      let(:other_questions) { [ create(:question, :name => 'Example question 2', :author => mapleta_class.id) ] }
       let(:assignment)      {
-        build(:assignment, name: "test assignment",
-              class_id: mapleta_class.id,
-              questions: questions)
+        build(:assignment, :name => "test assignment",
+              :class_id => mapleta_class.id,
+              :questions => questions)
       }
 
       describe 'creating an assignment' do
@@ -126,21 +126,21 @@ module Maple::MapleTA
 
         before do
           3.times do |num|
-            assignment = create(:assignment, classid: existing_class.id)
-            assignment_class = create :assignment_class, class_id: existing_class.id, assignment_id: assignment.id
+            assignment = create(:assignment, :classid => existing_class.id)
+            assignment_class = create :assignment_class, :class_id => existing_class.id, :assignment_id => assignment.id
 
             3.times { 
-              question = create(:question, author: existing_class.id)
-              group = Orm::AssignmentQuestionGroup.create(assignment_id: assignment.id, order_id: 0)
+              question = create(:question, :author => existing_class.id)
+              group = Orm::AssignmentQuestionGroup.create(:assignment_id => assignment.id, :order_id => 0)
 
               3.times {
                 map = Orm::AssignmentQuestionGroupMap.
-                create(question_id: question.id, group_id: group.id)
+                create(:question_id => question.id, :group_id => group.id)
               }
             }
             
-            Orm::AssignmentPolicy.create(assignment_class_id: assignment_class.id)
-            Orm::AdvancedPolicy.create(assignment_class_id: assignment_class.id, and_id: 1, or_id: 1, keyword: 1, assignment_id: assignment.id, has: 1)
+            Orm::AssignmentPolicy.create(:assignment_class_id => assignment_class.id)
+            Orm::AdvancedPolicy.create(:assignment_class_id => assignment_class.id, :and_id => 1, :or_id => 1, :keyword => 1, :assignment_id => assignment.id, :has => 1)
           end
         end
 

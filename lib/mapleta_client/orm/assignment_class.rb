@@ -24,7 +24,7 @@ module Maple::MapleTA
       def before_create
         super
         self.order_id ||=
-          self.class.dataset.where(classid: class_id).max(:order_id).to_i + 1
+          self.class.dataset.where(:classid => class_id).max(:order_id).to_i + 1
       end
     end
   end

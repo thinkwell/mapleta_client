@@ -58,10 +58,14 @@ module Maple::MapleTA
       property :time_limit,       :type => :integer
       property :questions,        :default => []
 
-      def_column_alias :passingScore, :passing_score
-      def_column_alias :timeLimit,    :time_limit
-      def_column_alias :classId,      :class_id
-      def_column_alias :totalPoints,  :totalpoints
+      alias passingScore  passing_score
+      alias passingScore= passing_score=
+      alias timeLimit     time_limit
+      alias timeLimit=    time_limit=
+      alias classId       class_id
+      alias classId=      class_id=
+      alias totalPoints   totalpoints
+      alias totalPoints=  totalpoints=
     end
   end
 end

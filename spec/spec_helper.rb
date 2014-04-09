@@ -22,9 +22,9 @@ Maple::MapleTA.database_config = settings['database_settings']
 DB = Sequel.connect settings['database_settings']
 
 RSpec.configure do |config|
-  config.add_setting :maple_values,        default: settings['maple_values']
-  config.add_setting :maple_settings,      default: settings['maple_settings']
-  config.add_setting :database_connection, default: Maple::MapleTA.database_connection
+  config.add_setting :maple_values,        :default => settings['maple_values']
+  config.add_setting :maple_settings,      :default => settings['maple_settings']
+  config.add_setting :database_connection, :default => Maple::MapleTA.database_connection
 
   config.include FactoryGirl::Syntax::Methods
 

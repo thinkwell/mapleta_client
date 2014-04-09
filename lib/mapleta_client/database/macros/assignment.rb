@@ -47,7 +47,6 @@ module Maple::MapleTA
         end
 
         assignment.assignment_question_groups_attributes = question_group_attrs
-
         assignment.save.reload
       end
 
@@ -65,9 +64,10 @@ module Maple::MapleTA
 
           new_assignment_class.save
           
-          adv_policy_attrs     = assignment_class.advanced_policy.to_hash
-          new_adv_policy_attrs = adv_policy_attrs.merge(:assignment_class_id => new_assignment_class.id)
-          new_assignment_class.advanced_policy = AdvancedPolicy.new(new_adv_policy_attrs).save
+          if adv_policy = assignment_class.advanced_policy
+            new_adv_policy_attrs = adv_policy.to_hash.merge(:assignment_class_id => new_assignment_class.id)
+            new_assignment_class.advanced_policy = AdvancedPolicy.new(new_adv_policy_attrs).save
+          end
 
           new_assignment_class
         end

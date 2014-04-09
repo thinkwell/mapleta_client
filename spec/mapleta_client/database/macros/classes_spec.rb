@@ -4,9 +4,9 @@ module Maple::MapleTA
   module Database::Macros
     describe Classes do
       let(:database)      { RSpec.configuration.database_connection }
-      let(:role_id)       { database.dataset[:roles].insert(id: 1, role: 'student') }
+      let(:role_id)       { database.dataset[:roles].insert(:id => 1, :role => 'student') }
       let(:mapleta_class) { create :class }
-      let(:user_class)    { create :user_class, classid: mapleta_class.id, roleid: role_id }
+      let(:user_class)    { create :user_class, :classid => mapleta_class.id, :roleid => role_id }
 
       before do
         mapleta_class.save

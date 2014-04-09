@@ -3,14 +3,14 @@ require 'ostruct'
 ns = Maple::MapleTA::Orm
 
 FactoryGirl.define do
-  factory :class, class: ns::Class do
+  factory :class, :class => ns::Class do
     to_create { |instance| puts instance.save.inspect }
 
     sequence(:name) { |num| "Algebra #{num}" }
     dirname 'dirname'
   end
 
-  factory :assignment, class: ns::Assignment do
+  factory :assignment, :class => ns::Assignment do
     to_create { |instance| instance.save }
 
     name 'Assignment'
@@ -21,14 +21,14 @@ FactoryGirl.define do
     show_current_grade  false
   end
 
-  factory :assignment_class, class: ns::AssignmentClass do
+  factory :assignment_class, :class => ns::AssignmentClass do
     to_create { |instance| instance.save }
     sequence(:name) { |num| "Assignment class #{num}" }
     totalpoints 1
     weighting   1
   end
 
-  factory :assignment_policy, class: ns::AssignmentPolicy do
+  factory :assignment_policy, :class => ns::AssignmentPolicy do
     to_create { |instance| instance.save }
 
     show_current_grade true
@@ -50,7 +50,7 @@ FactoryGirl.define do
     created Time.now
   end
 
-  factory :question, class: ns::Question do
+  factory :question, :class => ns::Question do
     to_create { |instance| instance.save }
 
     name 'Question'
@@ -76,11 +76,11 @@ FactoryGirl.define do
     lastmodified Time.now
   end
 
-  factory :user_class, class: ns::UserClass do
+  factory :user_class, :class => ns::UserClass do
     to_create { |instance| instance.save }
   end
 
-  factory :assignment_question_group, class: ns::AssignmentQuestionGroup do
+  factory :assignment_question_group, :class => ns::AssignmentQuestionGroup do
     to_create { |instance| instance.save }
   end
 end

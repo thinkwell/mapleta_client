@@ -16,7 +16,6 @@ module Maple::MapleTA
 
     def launch(connection, external_data=nil, view_opts={})
       raise Errors::MapleTAError, "Connection class id (#{connection.class_id}) doesn't match assignment class id (#{self.class_id})" unless self.class_id == connection.class_id.to_i
-
       params = {
         'wsExternalData' => external_data,
         'className' => class_name,
