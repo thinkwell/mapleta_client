@@ -26,8 +26,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency     "mechanize", "1.0.0"
   s.add_runtime_dependency     "pg", ">= 0.14.0"
   s.add_runtime_dependency     "uuid", ">= 2.3.0"
-  s.add_runtime_dependency     "sequel", "~> 4.8"
-  s.add_runtime_dependency     "sequel_deep_dup", "~> 0.2.0"
+  s.add_runtime_dependency     "sequel", "~> 4.9"
+  s.add_runtime_dependency     "sequel_deep_dup", "~> 0.2.1"
 
   s.add_development_dependency "activesupport", "~> 2.3.14"
   s.add_development_dependency "bundler"
