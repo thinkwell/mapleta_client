@@ -6,7 +6,7 @@ module Maple::MapleTA
       def_column_alias :assignment_id, :assignmentid
 
       many_to_one :assignment, :key => :assignmentid
-      one_to_many :assignment_question_group_maps, :key => :groupid
+      one_to_many :assignment_question_group_maps, key: :groupid
 
       plugin :association_dependencies, :assignment_question_group_maps => :delete
 
