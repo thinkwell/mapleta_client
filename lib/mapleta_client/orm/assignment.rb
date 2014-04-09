@@ -23,40 +23,45 @@ module Maple::MapleTA
       nested_attributes :assignment_classes
       nested_attributes :assignment_question_groups, :destroy => true
 
-      attr_accessor :questions
+      def self.property(name, opts)
+        type    = opts[:type]
+        default = opts[:default]
 
-      #assignment policy
-      attr_accessor :show_current_grade, :reworkable, :printable,
-        :insession_grade, :mode, :show_final_grade_feedback, :time_limit,
-        :passing_score
+        define_method "#{name}=" do |value|
+          value = type ? self.class.db.typecast_value(type, value) : value
+          instance_variable_set "@#{name}", value
+        end
 
-      # questions
-      attr_accessor :mode_description
-
-      # unknown
-      attr_accessor :weight, :policy
+        define_method name do
+          if instance_variable_defined?("@#{name}")
+            instance_variable_get("@#{name}")
+          else
+            default
+          end
+        end
+      end
 
       attr_accessor :class_name
+      attr_accessor :policy
 
+      property :show_current_grade, :type => :boolean, :default => false
+      property :insession_grade,    :type => :boolean, :default => false
+      property :reworkable,         :type => :boolean, :default => true
+      property :printable,          :type => :boolean, :default => false
+      property :show_final_grade_feedback, :default => ''
+      property :mode,             :type => :integer
+      property :mode_description, :from => :modeDescription
+      property :passing_score,    :type => :integer
+      property :weight,           :type => :float
+      property :start,            :type => :time_from_ms
+      property :end,              :type => :time_from_ms
+      property :time_limit,       :type => :integer
+      property :questions,        :default => []
 
-      # Movable
-      def launch(connection, external_data=nil, view_opts={})
-        raise Errors::MapleTAError, "Connection class id (#{connection.class_id}) doesn't match assignment class id (#{self.class_id})" unless self.class_id == connection.class_id.to_i
-
-        params = {
-          'wsExternalData' => external_data,
-          'className' => class_name,
-          'testName' => name,
-          'testId' => id,
-        }
-
-        page connection.launch('assignment', params), connection, view_opts
-      end
-
-      private
-      def page(mechanize_page, connection, view_opts)
-        Maple::MapleTA.Page(mechanize_page, view_opts)
-      end
+      def_column_alias :passingScore, :passing_score
+      def_column_alias :timeLimit,    :time_limit
+      def_column_alias :classId,      :class_id
+      def_column_alias :totalPoints,  :totalpoints
     end
   end
 end

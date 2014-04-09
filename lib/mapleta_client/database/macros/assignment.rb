@@ -65,11 +65,11 @@ module Maple::MapleTA
 
           new_assignment_class.save
           
-          adv_policy_attrs = assignment_class.advanced_policy.to_hash
+          adv_policy_attrs     = assignment_class.advanced_policy.to_hash
           new_adv_policy_attrs = adv_policy_attrs.merge(:assignment_class_id => new_assignment_class.id)
           new_assignment_class.advanced_policy = AdvancedPolicy.new(new_adv_policy_attrs).save
 
-          return new_assignment_class
+          new_assignment_class
         end
       end
 
