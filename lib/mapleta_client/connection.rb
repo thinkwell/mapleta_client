@@ -4,10 +4,10 @@ module Maple::MapleTA
     attr_reader :session, :first_name, :middle_name, :last_name, :user_login, :user_email, :student_id, :user_role, :class_id, :course_id
 
     def initialize(opts={})
-      {
-        :class_id => -1,
-        :user_role => 'STUDENT',
-      }.merge(opts).each do |key, val|
+      @class_id  = -1
+      @user_role = 'STUDENT'
+
+      opts.each do |key, val|
         if self.respond_to?("#{key}=")
           self.send "#{key}=", val
         elsif self.respond_to?("#{key}")
