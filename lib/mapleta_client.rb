@@ -8,6 +8,7 @@ module Maple
     autoload :Communication, 'mapleta_client/communication'
     autoload :Connection, 'mapleta_client/connection'
     autoload :Course, 'mapleta_client/course'
+    autoload :HashInitialize, 'mapleta_client/hash_initialize'
     autoload :GradeBook, 'mapleta_client/grade_book'
     autoload :MockConnection, 'mapleta_client/mock_connection'
     autoload :RawString, 'mapleta_client/raw_string'

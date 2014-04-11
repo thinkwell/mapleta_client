@@ -199,10 +199,10 @@ module Maple::MapleTA
 
     def hydrate(type, data)
 
-      # if type.is_a?(HashInitialize)
-      #   raise Errors::NotFoundError if data.nil?
-      #   type.hydrate(data)
-      # else
+      if type.is_a?(HashInitialize)
+        raise Errors::NotFoundError if data.nil?
+        type.hydrate(data)
+      else
 
         klass = "Maple::MapleTA::#{type.to_s.camelize}".constantize
 
@@ -214,7 +214,7 @@ module Maple::MapleTA
           nil
         end
 
-      # end
+      end
     end
 
     def underscore_hash_keys(hash)
