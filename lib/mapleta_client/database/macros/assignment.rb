@@ -61,7 +61,8 @@ module Maple::MapleTA
             deep_dup :assignment_policy, :assignment => {
               :assignment_question_groups => :assignment_question_group_maps
             }
-
+          new_assignment_class.assignment.class_id = new_class_id
+          new_assignment_class.assignment.uid = "#{UUID.new.generate.to_s}-#{new_class_id}"
           new_assignment_class.save
           
           if adv_policy = assignment_class.advanced_policy
@@ -97,6 +98,33 @@ module Maple::MapleTA
           assignment_class.advanced_policy_dataset.destroy
         end
       end
+
+      ##
+      # Get or set assignment name for the given assignment_class_id
+      def assignment_name(assignment_class_id, name=nil)
+
+        assignment_class = AssignmentClass.with_pk!(assignment_class_id)
+
+        unless name.nil?
+          assignment_class.name = name
+          assignment_class.assignment.name = name
+          assignment_class.save
+        end
+
+        assignment_class.name
+
+        #assignment_class = exec("SELECT assignmentid, name FROM assignment_class WHERE id=?", [assignment_class_id]).first
+        #raise Errors::DatabaseError.new("Cannot find assignment_class with id=#{assignment_class_id}") unless assignment_class && assignment_class['assignmentid']
+        #unless name === nil || name == assignment_class['name']
+        #  exec("UPDATE assignment_class SET name=$1 WHERE id=?", [name, assignment_class_id])
+        #  exec("UPDATE assignment SET name=? WHERE id=?", [name, assignment_class['assignmentid']])
+        #end
+        # Return old name
+        #assignment_class['name']
+      #rescue PG::Error => e
+      #  raise Errors::DatabaseError.new(nil, e)
+      end
+
     end
   end
 end
