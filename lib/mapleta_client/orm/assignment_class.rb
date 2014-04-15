@@ -27,6 +27,10 @@ module Maple::MapleTA
           self.class.dataset.where(:classid => class_id).max(:order_id).to_i + 1
       end
 
+      def recorded?
+        self.assignment_policy.recorded?
+      end
+
       def copy(options = {})
         db.transaction do
 
