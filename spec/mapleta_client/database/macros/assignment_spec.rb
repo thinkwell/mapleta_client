@@ -145,6 +145,7 @@ module Maple::MapleTA
         end
 
         it { assignment_class_copy.class_id.should == new_class.id }
+        it { assignment_class_copy.reload.assignment.class_id.should == new_class.id }
         it { expect { assignment_class_copy }.to change{ Orm::AssignmentClass.count }.by 1 }
         it { expect { assignment_class_copy }.to change{ Orm::Assignment.count }.by 1 }
         it { expect { assignment_class_copy }.to change{ Orm::AssignmentPolicy.count }.by 1 }

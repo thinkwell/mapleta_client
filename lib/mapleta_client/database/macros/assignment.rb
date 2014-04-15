@@ -61,10 +61,12 @@ module Maple::MapleTA
             deep_dup :assignment_policy, :assignment => {
               :assignment_question_groups => :assignment_question_group_maps
             }
+
           new_assignment_class.assignment.class_id = new_class_id
           new_assignment_class.assignment.uid = "#{UUID.new.generate.to_s}-#{new_class_id}"
+
           new_assignment_class.save
-          
+
           if adv_policy = assignment_class.advanced_policy
             new_adv_policy_attrs = adv_policy.to_hash.merge(:assignment_class_id => new_assignment_class.id)
             new_assignment_class.advanced_policy = AdvancedPolicy.new(new_adv_policy_attrs).save

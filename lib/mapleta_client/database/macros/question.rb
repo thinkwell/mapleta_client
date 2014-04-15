@@ -15,7 +15,7 @@ module Maple::MapleTA
               on a.id = m.groupid
             left join assignment_class c
               on c.assignmentid = a.assignmentid
-            where c.classid=$1 and q.latestrevision is null
+            where c.classid=? and q.latestrevision is null
         SQL
 
         exec query, [assignment_class_id]
