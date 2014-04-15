@@ -83,4 +83,8 @@ FactoryGirl.define do
   factory :assignment_question_group, :class => ns::AssignmentQuestionGroup do
     to_create { |instance| instance.save }
   end
+
+  factory :assignment_question_group_map, :class => ns::AssignmentQuestionGroupMap do
+    to_create { |instance| instance.save }
+  end
 end
