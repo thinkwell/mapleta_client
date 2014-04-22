@@ -8,6 +8,7 @@ module Maple::MapleTA
       let(:mapleta_class_2)   { create :class, :name => "Class 2"}
       let(:question)          { create(:question, :author => mapleta_class.id) }
       let(:assignment)        { create(:assignment, :name => "test assignment", :class_id => mapleta_class.id) }
+      let(:assignment_2)      { create(:assignment, :name => "test assignment 2", :class_id => mapleta_class.id) }
       let(:assignment_question_group)     {
         create(:assignment_question_group,
                :assignmentid => assignment.id,
@@ -30,15 +31,36 @@ module Maple::MapleTA
                :start_time => Time.now,
                :end_time => Time.now+1.month)
       }
+      let(:advanced_policy) {
+        create(:advanced_policy,
+              :assignment_class_id => assignment_class.id,
+              :and_id => 0,
+              :or_id => 0,
+              :keyword => 1,
+              :has => false,
+              :assignment_id => assignment_class.assignment_id)
+      }
+      let(:advanced_policy_2) {
+        create(:advanced_policy,
+               :assignment_class_id => assignment_class.id,
+               :and_id => 0,
+               :or_id => 1,
+               :keyword => 0,
+               :has => true,
+               :assignment_id => assignment_2.id)
+      }
 
       before(:each) do
         mapleta_class.reload
         mapleta_class_2.reload
         assignment.reload
+        assignment_2.reload
         assignment_class.reload
         assignment_policy.reload
         assignment_question_group.reload
         assignment_question_group_map.reload
+        advanced_policy.reload
+        advanced_policy_2.reload
       end
 
 
@@ -69,13 +91,17 @@ module Maple::MapleTA
           expect(assignment.assignment_question_groups.first.assignment_question_group_maps.count).to eq(1)
         end
 
+        it "should create advanced policy for retakes and set it to 1 max attempt" do
+          expect(assignment_class.retake_policy).to_not be_nil
+          expect(assignment_class.max_attempts).to eq(1)
+        end
+
       end
 
 
       describe "copying an assignment class" do
 
         context "copy an assignment to the same class without options" do
-
           let(:acc) { assignment_class.copy }
 
           it "should copy assignment_class into the same class including new associated records" do
@@ -97,18 +123,23 @@ module Maple::MapleTA
           it "should create the correct number of new records" do
             acc.reload
             expect(Orm::Class.count).to eq(2)
-            expect(Orm::Assignment.count).to eq(2)
+            expect(Orm::Assignment.count).to eq(3)
             expect(Orm::AssignmentClass.count.should).to eq(2)
             expect(Orm::AssignmentPolicy.count).to eq(2)
             expect(Orm::AssignmentQuestionGroup.count).to eq(2)
             expect(Orm::AssignmentQuestionGroupMap.count).to eq(2)
             expect(Orm::Question.count).to eq(1)
+            expect(Orm::AdvancedPolicy.count).to eq(4)
           end
         end
 
         context "copy an assignment to another class without options" do
 
-          let(:acc) { assignment_class.copy :class_id => mapleta_class_2.id }
+          let(:acc) { assignment_class.copy({:class_id => mapleta_class_2.id}) }
+
+          before(:each) do
+            acc.reload
+          end
 
           it "should copy assignment_class into another class" do
             expect(acc.class_id).to_not be_nil
@@ -126,6 +157,15 @@ module Maple::MapleTA
             expect(acc.name).to eq(assignment.name)
             expect(acc.name).to eq(acc.assignment.name)
           end
+
+          it "should update advanced policy assignment_id" do
+            expect(acc.advanced_policies.first.assignment_id).to eq(acc.assignment_id)
+          end
+
+          it "should copy only one advanced_policy" do
+            expect(Orm::AdvancedPolicy.count).to eq(3)
+          end
+
         end
 
         context "copy an assignment to another class with options" do

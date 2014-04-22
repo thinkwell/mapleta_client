@@ -39,6 +39,12 @@ FactoryGirl.define do
     show_final_grade_feedback true
   end
 
+  factory :advanced_policy, :class => ns::AdvancedPolicy do
+    to_create { |instance| instance.save }
+    keyword 0
+    has true
+  end
+
   factory :author do
     to_create { |instance| instance.save }
 

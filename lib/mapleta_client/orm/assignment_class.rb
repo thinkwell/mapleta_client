@@ -112,6 +112,8 @@ module Maple::MapleTA
             new_assignment_class.advanced_policies << AdvancedPolicy.new(new_ap_attrs).save if new_ap_attrs
           end
 
+          new_assignment_class.save
+
           new_assignment_class
         end
       end
