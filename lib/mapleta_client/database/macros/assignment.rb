@@ -228,7 +228,7 @@ module Maple::MapleTA
           #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_mastery_penalty in #{time_diff t7, Time.now}"
 
           t8 = Time.now
-          assignment_advanced_policy = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_id=$1", [assignment_class['assignmentid']])
+          assignment_advanced_policy = exec("SELECT * FROM assignment_advanced_policy WHERE assignment_class_id=$1 AND assignment_id=$2", [assignment_class_id, assignment_class['assignmentid']])
           insert_assignment_advanced_policy(assignment_advanced_policy, new_assignment_id, new_assignment_class_id)
           #puts "Maple::MapleTA::Database::Macros::Assignment copy_assignment_to_class#insert_assignment_advanced_policy in #{time_diff t8, Time.now}"
 
