@@ -132,6 +132,7 @@ module Maple::MapleTA
           end
 
           agent.user_agent = user_agent if user_agent
+          agent.html_parser = Maple::MapleTA::HtmlParser
         end
       end
 

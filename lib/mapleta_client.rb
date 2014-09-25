@@ -9,6 +9,7 @@ module Maple
     autoload :MockConnection, 'mapleta_client/mock_connection'
     autoload :RawString, 'mapleta_client/raw_string'
     autoload :WebService, 'mapleta_client/web_service'
+    autoload :HtmlParser, 'mapleta_client/html_parser'
 
     module Errors
       autoload :DatabaseError, 'mapleta_client/errors/database_error'
