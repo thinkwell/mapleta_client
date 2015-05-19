@@ -27,6 +27,9 @@ module Page
       @feedback_allowed = content_node.xpath('.//a[@href="javascript:doInSessionFeedback()"]').length > 0
     end
 
+    def correct_answer_check_present?
+      @correct_answer_check_present ||= content_node.xpath('.//img[contains(@src, "correct_small.png")]').length > 0
+    end
 
     def time_remaining
       if @time_remaining.nil?
@@ -42,7 +45,12 @@ module Page
       @time_remaining == -1 ? nil : @time_remaining
     end
 
-
+    def current_grade
+      return @current_grade if @current_grade
+      if @current_grade = content_node.at_css('div#currentGrade')
+        @current_grade = @current_grade.content.gsub('Current Grade:', '').strip
+      end
+    end
 
     ###
     # These methods return html snippets intended to be inserted directly in
