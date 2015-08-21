@@ -71,7 +71,15 @@ module Maple
       autoload :Class, 'mapleta_client/orm/class'
       autoload :Assignment, 'mapleta_client/orm/assignment'
       autoload :AssignmentClass, 'mapleta_client/orm/assignment_class'
+      autoload :AssignmentBranch, 'mapleta_client/orm/assignment_branch'
+      autoload :AssignmentQuestionGroup, 'mapleta_client/orm/assignment_question_group'
+      autoload :AssignmentQuestionGroupMap, 'mapleta_client/orm/assignment_question_group_map'
+      autoload :Question, 'mapleta_client/orm/question'
       autoload :AssignmentPolicy, 'mapleta_client/orm/assignment_policy'
+      autoload :AssignmentAdvancedPolicy, 'mapleta_client/orm/assignment_advanced_policy'
+      autoload :Testrecord, 'mapleta_client/orm/testrecord'
+      autoload :Answersheetitem, 'mapleta_client/orm/answersheetitem'
+      autoload :UserProfile, 'mapleta_client/orm/user_profile'
     end
 
     require 'mapleta_client/page'
