@@ -54,7 +54,6 @@ module Maple::MapleTA
           else
             page = agent.get(url, params)
           end
-          Rails.logger.error "MAPLE::DEBUG Communication#fetch_page 03 page=#{page}"
           # Check for a redirection page
           redirects = 0
           while (redirects < 5 &&
@@ -64,6 +63,7 @@ module Maple::MapleTA
             page = page.forms.first.submit
             redirects += 1
           end
+          Rails.logger.error "MAPLE::DEBUG Communication#fetch_page 03 page=#{page}"
 
         rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError,
                Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
@@ -73,6 +73,7 @@ module Maple::MapleTA
 
         # Check for login page
         if self.respond_to?(:session) && session && page.parser.xpath('//form[@name="LoginActionForm"]').length > 0
+          Rails.logger.error "MAPLE::DEBUG Communication#fetch_page LOGIN ERROR=#{session.inspect}"
           raise Errors::SessionExpiredError.new(session)
         end
 
