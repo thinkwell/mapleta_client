@@ -58,11 +58,13 @@ module Maple::MapleTA
 
 
     def get_page(action, view_opts={})
+      Rails.logger.error "MAPLETA::DEBUG Connection#get_page action=#{action}, view_opts=#{view_opts}"
       Maple::MapleTA.Page(fetch_page(action, {}, :get), view_opts)
     end
 
     def get_question(question_id)
       url = "contentmanager/DisplayQuestion.do?actionID=display&questionId=#{question_id}"
+      Rails.logger.error "MAPLETA::DEBUG Connection#get_question url=#{url}"
       get_page(url)
     end
 

@@ -45,7 +45,8 @@ module Maple::MapleTA
       def fetch_page(url, params={}, request_method=:get)
         url = abs_url_for(url)
         params = fix_mechanize_params(params)
-
+        Rails.logger.error "MAPLE::DEBUG Communication#fetch_page 01 url=#{url}, params=#{params}, request_method=#{request_method}"
+        Rails.logger.error "MAPLE::DEBUG Communication#fetch_page 02 agent=#{agent.inspect}"
         begin
           case request_method
           when :post
@@ -53,7 +54,7 @@ module Maple::MapleTA
           else
             page = agent.get(url, params)
           end
-
+          Rails.logger.error "MAPLE::DEBUG Communication#fetch_page 03 page=#{page}"
           # Check for a redirection page
           redirects = 0
           while (redirects < 5 &&
