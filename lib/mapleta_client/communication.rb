@@ -67,6 +67,7 @@ module Maple::MapleTA
 
         rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError,
                Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+          Rails.logger.error "MAPLE::DEBUG Communication#fetch_page error=#{e.inspect}"
           raise Errors::NetworkError, e
         end
 
