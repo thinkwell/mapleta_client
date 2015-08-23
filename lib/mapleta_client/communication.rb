@@ -45,8 +45,6 @@ module Maple::MapleTA
       def fetch_page(url, params={}, request_method=:get)
         url = abs_url_for(url)
         params = fix_mechanize_params(params)
-        Rails.logger.error "MAPLE::DEBUG Communication#fetch_page 01 url=#{url}, params=#{params}, request_method=#{request_method}"
-        Rails.logger.error "MAPLE::DEBUG Communication#fetch_page 02 agent=#{agent.inspect}"
         begin
           case request_method
           when :post
@@ -63,17 +61,14 @@ module Maple::MapleTA
             page = page.forms.first.submit
             redirects += 1
           end
-          Rails.logger.error "MAPLE::DEBUG Communication#fetch_page 03 page=#{page}"
 
         rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError,
                Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
-          Rails.logger.error "MAPLE::DEBUG Communication#fetch_page error=#{e.inspect}"
           raise Errors::NetworkError, e
         end
 
         # Check for login page
         if self.respond_to?(:session) && session && page.parser.xpath('//form[@name="LoginActionForm"]').length > 0
-          Rails.logger.error "MAPLE::DEBUG Communication#fetch_page LOGIN ERROR=#{session.inspect}"
           raise Errors::SessionExpiredError.new(session)
         end
 
