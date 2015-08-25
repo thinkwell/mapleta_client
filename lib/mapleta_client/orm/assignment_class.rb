@@ -1,7 +1,6 @@
 module Maple::MapleTA
   module Orm
-    class AssignmentClass < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class AssignmentClass < Base
 
       self.table_name = 'assignment_class'
 

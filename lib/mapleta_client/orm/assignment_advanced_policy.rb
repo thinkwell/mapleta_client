@@ -2,8 +2,7 @@
 
 module Maple::MapleTA
   module Orm
-    class AssignmentAdvancedPolicy < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class AssignmentAdvancedPolicy < Base
 
       set_primary_key 'assignment_class_id'
       self.table_name = 'assignment_advanced_policy'

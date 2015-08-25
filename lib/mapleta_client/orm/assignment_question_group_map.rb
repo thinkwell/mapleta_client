@@ -1,7 +1,6 @@
 module Maple::MapleTA
   module Orm
-    class AssignmentQuestionGroupMap < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class AssignmentQuestionGroupMap < Base
 
       self.table_name = 'assignment_question_group_map'
 

@@ -1,7 +1,6 @@
 module Maple::MapleTA
   module Orm
-    class Testrecord < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class Testrecord < Base
 
       set_primary_key 'id'
       self.table_name = 'testrecord'

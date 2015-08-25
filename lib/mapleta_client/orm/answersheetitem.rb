@@ -1,7 +1,6 @@
 module Maple::MapleTA
   module Orm
-    class Answersheetitem < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class Answersheetitem < Base
 
       set_primary_key 'id'
       self.table_name = 'answersheetitem'

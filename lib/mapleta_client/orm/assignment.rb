@@ -1,7 +1,6 @@
 module Maple::MapleTA
   module Orm
-    class Assignment < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class Assignment < Base
 
       set_primary_key 'id'
       self.table_name = 'assignment'
@@ -32,7 +31,6 @@ module Maple::MapleTA
           #aqg.order_id = group_order_indx
           aqg.weighting = group["weighting"]
           aqg.assignmentid = self.id
-          logger.debug "MAPLE:: aqg=#{aqg.inspect}"
           aqg.save
           questions.each_with_index do |params, question_order_indx|
             q = AssignmentQuestionGroupMap.new

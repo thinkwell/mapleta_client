@@ -1,7 +1,6 @@
 module Maple::MapleTA
   module Orm
-    class UserProfile < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class UserProfile < Base
 
       set_primary_key 'id'
       self.table_name = 'user_profiles'

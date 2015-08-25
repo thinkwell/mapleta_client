@@ -1,7 +1,6 @@
 module Maple::MapleTA
   module Orm
-    class Question < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class Question < Base
 
       self.table_name = 'question'
 

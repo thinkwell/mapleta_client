@@ -1,7 +1,6 @@
 module Maple::MapleTA
   module Orm
-    class Class < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class Class < Base
 
       set_primary_key 'cid'
 

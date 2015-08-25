@@ -1,7 +1,6 @@
 module Maple::MapleTA
   module Orm
-    class AssignmentBranch < ActiveRecord::Base
-      include Maple::MapleTA::Orm
+    class AssignmentBranch < Base
 
       set_primary_key 'id'
       self.table_name = 'assignment_branch'
