@@ -51,6 +51,7 @@ module Maple
       autoload :NumberHelp, 'mapleta_client/page/number_help'
       autoload :Question, 'mapleta_client/page/question'
       autoload :TimeLimitExceeded, 'mapleta_client/page/time_limit_exceeded'
+      autoload :AnswerParser, 'mapleta_client/page/answer_parser'
     end
 
     module Database

@@ -2,7 +2,7 @@ module Maple::MapleTA
 module Page
 
   class Feedback < Base
-
+    include AnswerParser
 
     def title
       return @title if @title
@@ -13,12 +13,13 @@ module Page
       end
     end
 
-
-
     def content_node
       @page.parser.at_xpath('.//div[@style="margin: 20px"]')
     end
 
+    def html
+      content_node
+    end
 
     def fix_html
       fix_table_border
