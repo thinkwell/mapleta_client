@@ -17,10 +17,6 @@ module Page
       @page.parser.at_xpath('.//div[@style="margin: 20px"]')
     end
 
-    def html
-      content_node
-    end
-
     def fix_html
       fix_table_border
       fix_hr_elements
