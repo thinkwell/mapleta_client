@@ -20,7 +20,7 @@ module Maple::MapleTA
             },
             {
               :method => :multiple_choice,
-              :detect => '//td[@valign="top"]/b[text()="Correct Answer:"]'
+              :detect => '//td/b[text()="Correct Answer:"]'
             }
           ]
         end
@@ -60,7 +60,7 @@ module Maple::MapleTA
         end
 
         def multiple_choice(html)
-          html.xpath('//td[@valign="top"]/b[text()="Correct Answer:"]/../../td[2]')
+          html.xpath('//td/b[text()="Correct Answer:"]/../../td[2]/node()')
         end
 
       end
