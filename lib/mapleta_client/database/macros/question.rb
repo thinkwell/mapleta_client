@@ -37,8 +37,8 @@ module Maple::MapleTA
 
         <<-SQL
           FROM question q
+          JOIN question_header qh ON qh.uid = q.uid AND qh.deleted = 'f'
           LEFT JOIN classes c ON c.cid = q.author OR c.parent = q.author
-          LEFT JOIN question_header qh ON qh.uid = q.uid AND qh.deleted = 'f'
           WHERE c.cid=$1
           AND q.latestrevision IS NULL
           AND q.deleted = 'f'
