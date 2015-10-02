@@ -29,9 +29,21 @@ module Maple::MapleTA
       private
 
       def questions_for_class_sql(search)
-        sql = "from question q left join classes c on c.cid = q.author or c.parent = q.author where c.cid=$1 and q.latestrevision is null and q.deleted = 'false'"
-        sql.concat(" and (q.name like '%#{search}%' or q.questiontext like '%#{search}%')") if search
-        sql
+        if search && search.strip.split(/\s+/).length > 0
+          search_conditions = "AND " + search.strip.split(/\s+/).map{|w| " q.name ~* '.*#{w}.*' "}.join('AND')
+        else
+          search_conditions = ''
+        end
+
+        <<-SQL
+          FROM question q
+          LEFT JOIN classes c ON c.cid = q.author OR c.parent = q.author
+          LEFT JOIN question_header qh ON qh.uid = q.uid AND qh.deleted = 'f'
+          WHERE c.cid=$1
+          AND q.latestrevision IS NULL
+          AND q.deleted = 'f'
+          #{search_conditions}
+        SQL
       end
 
       def build_questions(pg_result)
