@@ -76,6 +76,7 @@ module Maple
       autoload :AssignmentQuestionGroup, 'mapleta_client/orm/assignment_question_group'
       autoload :AssignmentQuestionGroupMap, 'mapleta_client/orm/assignment_question_group_map'
       autoload :Question, 'mapleta_client/orm/question'
+      autoload :QuestionHeader, 'mapleta_client/orm/question_header'
       autoload :AssignmentPolicy, 'mapleta_client/orm/assignment_policy'
       autoload :AssignmentAdvancedPolicy, 'mapleta_client/orm/assignment_advanced_policy'
       autoload :Testrecord, 'mapleta_client/orm/testrecord'
