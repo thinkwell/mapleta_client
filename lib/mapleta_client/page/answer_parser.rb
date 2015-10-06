@@ -26,6 +26,17 @@ module Maple::MapleTA
         end
 
         def correct_answer
+          @correct_answer ||= correct_answer_thinkwell.length > 0 ? correct_answer_thinkwell : correct_answer_mapleta
+        end
+
+        def correct_answer_thinkwell
+          # Try to get correct answer from feedback entered by Thinkwell and wrapped in <span class="correct-answer"></span>
+          # not all questions will have this make sure you check. If it doesn't exist proceed with correct_answer_mapleta
+          @correct_answer_thinkwell ||= content_node.xpath('//span[@class="correct-answer"]')
+        end
+
+        def correct_answer_mapleta
+          # Detect a type of question first. Then run custom parse function for each.
           answers = []
           answer_types.each do |answer_type|
             if content_node.xpath(answer_type[:detect]).count > 0
