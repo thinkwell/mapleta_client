@@ -75,12 +75,18 @@ module Maple
       autoload :AssignmentBranch, 'mapleta_client/orm/assignment_branch'
       autoload :AssignmentQuestionGroup, 'mapleta_client/orm/assignment_question_group'
       autoload :AssignmentQuestionGroupMap, 'mapleta_client/orm/assignment_question_group_map'
+      autoload :AssignmentMasteryPolicy, 'mapleta_client/orm/assignment_mastery_policy'
+      autoload :AssignmentMasteryPenalty, 'mapleta_client/orm/assignment_mastery_penalty'
       autoload :Question, 'mapleta_client/orm/question'
       autoload :QuestionHeader, 'mapleta_client/orm/question_header'
+      autoload :QuestionGroup, 'mapleta_client/orm/question_group'
       autoload :AssignmentPolicy, 'mapleta_client/orm/assignment_policy'
       autoload :AssignmentAdvancedPolicy, 'mapleta_client/orm/assignment_advanced_policy'
       autoload :Testrecord, 'mapleta_client/orm/testrecord'
       autoload :Answersheetitem, 'mapleta_client/orm/answersheetitem'
+      autoload :AnswersheetitemGrade, 'mapleta_client/orm/answersheetitem_grade'
+      autoload :HintPenalty, 'mapleta_client/orm/hint_penalty'
+      autoload :StudentAssignmentPermission, 'mapleta_client/orm/student_assignment_permission'
       autoload :UserProfile, 'mapleta_client/orm/user_profile'
     end
 

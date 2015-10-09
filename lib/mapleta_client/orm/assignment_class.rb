@@ -4,10 +4,12 @@ module Maple::MapleTA
 
       self.table_name = 'assignment_class'
 
-      belongs_to :parent_class, :class_name => 'Maple::MapleTA::Orm::Class', :foreign_key => 'classid'
-      belongs_to :assignment, :class_name => 'Maple::MapleTA::Orm::Assignment', :foreign_key => 'assignmentid'
-      has_one :policy, :class_name => 'Maple::MapleTA::Orm::AssignmentPolicy', :foreign_key => 'assignment_class_id'
-      has_many :advanced_policies, :class_name => 'Maple::MapleTA::Orm::AssignmentAdvancedPolicy', :foreign_key => 'assignment_class_id'
+      belongs_to :parent_class, :class_name => namespace('Class'), :foreign_key => 'classid'
+      belongs_to :assignment, :class_name => namespace('Assignment'), :foreign_key => 'assignmentid'
+      has_one :policy, :class_name => namespace('AssignmentPolicy'), :foreign_key => 'assignment_class_id', :dependent => :destroy
+      has_many :advanced_policies, :class_name => namespace('AssignmentAdvancedPolicy'), :foreign_key => 'assignment_class_id', :dependent => :destroy
+      has_many :assignment_mastery_penalties, :class_name => namespace('AssignmentMasteryPenalty'), :foreign_key => 'assignment_class_id', :dependent => :destroy
+      has_many :assignment_mastery_policies, :class_name => namespace('AssignmentMasteryPolicy'), :foreign_key => 'assignment_class_id', :dependent => :destroy
 
       def attempts_allowed
         retake_policy.keyword if retake_policy

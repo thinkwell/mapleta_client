@@ -7,8 +7,8 @@ module Maple::MapleTA
       set_primary_key 'assignment_class_id'
       self.table_name = 'assignment_advanced_policy'
 
-      belongs_to :assignment_class, :class_name => 'Maple::MapleTA::Orm::AssignmentClass', :foreign_key => 'assignment_class_id'
-      belongs_to :assignment, :class_name => 'Maple::MapleTA::Orm::Assignment', :foreign_key => 'assignment_id'
+      belongs_to :assignment_class, :class_name => namespace('AssignmentClass'), :foreign_key => 'assignment_class_id'
+      belongs_to :assignment, :class_name => namespace('Assignment'), :foreign_key => 'assignment_id'
 
     end
   end

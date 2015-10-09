@@ -5,12 +5,13 @@ module Maple::MapleTA
       set_primary_key 'id'
       self.table_name = 'assignment'
 
-      belongs_to :parent_class, :class_name => 'Maple::MapleTA::Orm::Class', :foreign_key => 'classid'
-      has_many :assignment_branches, :class_name => 'Maple::MapleTA::Orm::AssignmentBranch', :foreign_key => 'assignmentid'
-      has_many :assignment_question_groups, :class_name => 'Maple::MapleTA::Orm::AssignmentQuestionGroup', :foreign_key => 'assignmentid'
-      has_many :advanced_policy, :class_name => 'Maple::MapleTA::Orm::AssignmentAdvancedPolicy', :foreign_key => 'assignment_id'
-      has_many :assignment_classes, :class_name => 'Maple::MapleTA::Orm::AssignmentClass', :foreign_key => 'assignmentid'
-      has_many :testrecords, :class_name => 'Maple::MapleTA::Orm::Testrecord', :foreign_key => 'assignmentid'
+      belongs_to :parent_class, :class_name => namespace('Class'), :foreign_key => 'classid'
+      has_many :assignment_branches, :class_name => namespace('AssignmentBranch'), :foreign_key => 'assignmentid', :dependent => :destroy
+      has_many :assignment_question_groups, :class_name => namespace('AssignmentQuestionGroup'), :foreign_key => 'assignmentid', :dependent => :destroy
+      has_many :advanced_policy, :class_name => namespace('AssignmentAdvancedPolicy'), :foreign_key => 'assignment_id', :dependent => :destroy
+      has_many :assignment_classes, :class_name => namespace('AssignmentClass'), :foreign_key => 'assignmentid', :dependent => :destroy
+      has_many :testrecords, :class_name => namespace('Testrecord'), :foreign_key => 'assignmentid', :dependent => :destroy
+      has_many :student_assignment_permissions, :class_name => namespace('StudentAssignmentPermission'), :foreign_key => 'assignmentid', :dependent => :destroy
 
       def question_groups; self.assignment_question_groups; end
 
