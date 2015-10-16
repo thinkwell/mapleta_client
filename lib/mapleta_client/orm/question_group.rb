@@ -4,8 +4,12 @@ module Maple::MapleTA
 
       self.table_name = 'question_group'
 
-      has_one :parent, :class_name => namespace('QuestionGroup'), :primary_key => 'parent', :foreign_key => 'id'
-      has_many :groups, :class_name => namespace('QuestionGroup'), :foreign_key => 'parent'
+      has_one :parent_group, :class_name => namespace('QuestionGroup'), :primary_key => 'parent', :foreign_key => 'id'
+      has_many :question_groups, :class_name => namespace('QuestionGroup'), :foreign_key => 'parent'
+
+      def all_child_ids
+        @all_child_ids ||= self.question_groups.map{|g| g.all_child_ids}.flatten.unshift(self.id)
+      end
 
     end
   end
