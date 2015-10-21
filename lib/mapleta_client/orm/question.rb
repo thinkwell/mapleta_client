@@ -17,12 +17,36 @@ module Maple::MapleTA
 
       def self.search(classid, search=nil, limit=100, offset=0, group_ids=[])
         if search && search.strip.split(/\s+/).length > 0
-          search_conditions = " AND " + search.strip.split(/\s+/).map{|w| " qh.name ~* '.*#{w}.*' "}.join('AND') + " "
+
+          search_string = ''
+          search_conditions = []
+
+          # Split search string to possible sequence and name
+          split_search = search.to_s.strip.match(/((P\.|[0-9]*\.*){0,4})(.*)/)
+          sequence = split_search ? split_search[1] : ''
+          keywords = split_search ? split_search[3].strip.split(/\s+/) : ''
+
+          # Transform sequence into pattern matching regex to allow matches on sequence numbers with leading zeros
+          sequence = sequence.split('.').map{|i| "0*#{i}"}.join('\.')
+
+          # Search for sequence number
+          search_conditions << " qg.name ~* '#{sequence}' " unless sequence.blank?
+          # Split search string to individual keywords to search for
+          search_conditions << " " + keywords.map{|w| " qg.name ~* '.*#{Regexp.escape(w)}.*' "}.join('AND') + " " if keywords.length > 0 && sequence.blank?
+
+          search_string = "(#{search_conditions.join(' AND ')})"
+
+          # Search question name using keywords only
+          if keywords.length > 0
+            join_keyword = sequence.blank? ? 'OR' : 'AND'
+            search_string += " #{join_keyword} (" + keywords.map{|w| " qh.name ~* '.*#{Regexp.escape(w)}.*' "}.join('AND') + ") "
+          end
+          search_string = " AND (#{search_string})"
         else
-          search_conditions = ''
+          search_string = ''
         end
         if group_ids.length > 0
-          search_conditions += " AND qg.id IN (#{group_ids.join(',')}) "
+          search_string += " AND qg.id IN (#{group_ids.join(',')}) "
         end
 
         sql = <<-SQL
@@ -35,7 +59,7 @@ module Maple::MapleTA
           WHERE c.cid=#{classid}
           AND q.latestrevision IS NULL
           AND q.deleted = 'f'
-          #{search_conditions}
+          #{search_string}
           ORDER BY qg.name, qh.name
           LIMIT #{limit} OFFSET #{offset}
         SQL
