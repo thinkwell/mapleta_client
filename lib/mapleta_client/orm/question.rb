@@ -59,6 +59,8 @@ module Maple::MapleTA
           WHERE c.cid=#{classid}
           AND q.latestrevision IS NULL
           AND q.deleted = 'f'
+          AND q.info !~* '.*active=no.*'
+          AND qh.name !~ '.*ADAPTIVE.*'
           #{search_string}
           ORDER BY qg.name, qh.name
           LIMIT #{limit} OFFSET #{offset}
