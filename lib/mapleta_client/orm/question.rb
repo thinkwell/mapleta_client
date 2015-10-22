@@ -55,9 +55,7 @@ module Maple::MapleTA
           JOIN question_header qh ON qh.uid = q.uid AND qh.deleted = 'f'
           JOIN question_group_map qgm ON qgm.questionid = q.id
           JOIN question_group qg ON qg.id = qgm.questiongroupid
-          LEFT JOIN classes c ON c.cid = q.author OR c.parent = q.author
-          WHERE c.cid=#{classid}
-          AND q.latestrevision IS NULL
+          WHERE q.latestrevision IS NULL
           AND q.deleted = 'f'
           AND q.info !~* '.*active=no.*'
           AND qh.name !~ '.*ADAPTIVE.*'
