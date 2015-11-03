@@ -48,26 +48,17 @@ module Maple::MapleTA
 
         def free_response(html)
           base = html.xpath('//span[@style="background-color: #ccffcc"]')
-          base.each{|node| node.remove_attribute('style')} if base.length
-          base = base.xpath('.//tt/b/node()')
-          case base.length
-            when 2..100
-              return base.to_a.join(', ')
-            when 1
-              return base
-            else
-              html.xpath('//span[@style="background-color: #ccffcc"]/../..')
-          end
+          base.each{|node| node.remove_attribute('style'); node['class'] = 'correct-answer' } if base.length
+          base
         end
 
         def multiple_response(html)
           answer = html.xpath('//th[contains(.,"Choice")]/../th[contains(.,"Selected")]/../th[contains(.,"Points")]/../..')
           answer = answer.xpath('//table/tr/th[contains(.,"Selected")]/../../tr/td/font/img[@src[contains(.,"images")]]/../../../td[1]')
           answer.each do |node|
-            node.inner_html = '<li class="correct-answer-item">' + node.inner_html + '</li>'
+            node.inner_html = '<span class="correct-answer">' + node.inner_html + '</span>'
           end
-          '<ul>' + answer.xpath('.//li').to_html + '</ul>'
-          #answer.select{|a| !a.text().blank?}.to_a.join(", ")
+          answer
         end
 
         def multiple_choice(html)

@@ -17,6 +17,17 @@ module Page
       @page.parser.at_xpath('.//div[@style="margin: 20px"]')
     end
 
+    def solution
+      comment_row = content_node.xpath('//tr/td/b[text()="Comment:"]/../..')
+      if comment_row && comment_row.xpath('.//td').length == 1
+        return comment_row.first.next_element.xpath('.//td')
+      elsif comment_row && comment_row.xpath('.//td').length > 1
+        return comment_row.xpath('.//td[2]')
+      else
+        return ''
+      end
+    end
+
     def fix_html
       fix_table_border
       fix_hr_elements
