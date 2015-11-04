@@ -18,14 +18,21 @@ module Page
     end
 
     def solution
+      # Look for solution under the heading of 'Comment:' first
       comment_row = content_node.xpath('//tr/td/b[text()="Comment:"]/../..')
-      if comment_row && comment_row.xpath('.//td').length == 1
-        return comment_row.first.next_element.xpath('.//td')
-      elsif comment_row && comment_row.xpath('.//td').length > 1
-        return comment_row.xpath('.//td[2]')
+      if comment_row && comment_row.xpath('./td').length == 1
+        comment =  comment_row.first.next_element.xpath('./td')
+      elsif comment_row && comment_row.xpath('./td').length > 1
+        comment =  comment_row.xpath('./td[2]')
       else
-        return ''
+        comment = nil
       end
+      return comment unless comment.blank?
+
+      # If the above produces nothing look for solution under the heading of 'Comments:'
+      comment = content_node.xpath('//tr/td/b[text()="Comments:"]/..')
+      comment.xpath('.//b[text()="Comments:"]').each{|c| c.remove }
+      comment
     end
 
     def fix_html
