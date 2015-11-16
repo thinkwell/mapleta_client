@@ -1,7 +1,7 @@
 module Maple::MapleTA
   class Connection
     include Communication
-    attr_reader :session, :first_name, :middle_name, :last_name, :user_login, :user_email, :student_id, :user_role, :class_id, :course_id
+    attr_reader :session, :first_name, :middle_name, :last_name, :user_login, :user_email, :student_id, :user_role, :class_id, :course_id, :alternate
 
     def initialize(opts={})
       {
@@ -58,13 +58,11 @@ module Maple::MapleTA
 
 
     def get_page(action, view_opts={})
-      Rails.logger.error "MAPLETA::DEBUG Connection#get_page action=#{action}, view_opts=#{view_opts}"
       Maple::MapleTA.Page(fetch_page(action, {}, :get), view_opts)
     end
 
     def get_question(question_id)
       url = "contentmanager/DisplayQuestion.do?actionID=display&questionId=#{question_id}"
-      Rails.logger.error "MAPLETA::DEBUG Connection#get_question url=#{url}"
       get_page(url)
     end
 

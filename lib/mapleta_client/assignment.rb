@@ -63,10 +63,10 @@ module Maple::MapleTA
     end
 
 
-    def post(connection, url, data, view_opts={})
+    def post(connection, url, data, view_opts={}, tries=3)
       raise Errors::MapleTAError, "Connection class id (#{connection.class_id}) doesn't match assignment class id (#{self.class_id})" unless self.class_id == connection.class_id.to_i
 
-      page(connection.fetch_page(url, data, :post), connection, view_opts)
+      page(connection.fetch_page(url, data, :post, tries), connection, view_opts)
     end
 
 

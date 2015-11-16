@@ -61,6 +61,7 @@ module Page
       # inner_xhtml
       html = question_node.children.map { |x| x.to_xhtml }.join
       html.gsub('This question accepts formulas in Maple syntax.', '')
+      html.gsub('This question accepts numbers or formulas.', '')
     end
     alias :question_html :html
 
@@ -97,18 +98,16 @@ module Page
 
     # Shortcut for applying all html fixes
     def fix_html
-      fix_equation_entry_mode_links
-      fix_equation_editor
-      fix_text_equation_null_value
       fix_preview_links
       fix_plot_links
       fix_help_links
       remove_preview_links
       remove_plot_links
-      remove_equation_editor_label
-      remove_preview_links
-      remove_plot_links
       fix_help_links
+      fix_equation_entry_mode_links
+      fix_equation_editor
+      fix_text_equation_null_value
+      remove_equation_editor_label
     end
 
 
@@ -143,13 +142,8 @@ module Page
           node['href'] = "#symbol"
           title = "Switch to Equation Editor"
         end
-        node['class'] = 'change-equation-entry-mode'
-        if node.xpath('./img').length > 0
-          node['class'] += " inline-icon"
-          node['title'] = title
-          node.remove_attribute 'onmouseout'
-          node.remove_attribute 'onmouseover'
-        end
+        node['class'] = 'change-equation-entry-mode inline-icon'
+        5.times { node.previous_element.remove if node.previous_element.name() == 'br' }
         node.content = title
       end
     end

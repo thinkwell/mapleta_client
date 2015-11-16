@@ -42,37 +42,39 @@ module Maple::MapleTA
       end
 
 
-      def fetch_page(url, params={}, request_method=:get)
-        url = abs_url_for(url)
-        params = fix_mechanize_params(params)
-        begin
-          case request_method
+      def fetch_page(url_input, params_input={}, request_method=:get, tries=3)
+
+        url = abs_url_for(url_input)
+        params = fix_mechanize_params(params_input)
+
+        case request_method
           when :post
             page = agent.post(url, params)
           else
             page = agent.get(url, params)
-          end
-          # Check for a redirection page
-          redirects = 0
-          while (redirects < 5 &&
-              page.parser.xpath('.//title').text() == 'Redirector' &&
-              page.parser.xpath('.//body[@onload="doSubmit();"]').length > 0 &&
-              page.forms.first)
-            page = page.forms.first.submit
-            redirects += 1
-          end
-
-        rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError,
-               Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
-          raise Errors::NetworkError, e
         end
 
-        # Check for login page
-        if self.respond_to?(:session) && session && page.parser.xpath('//form[@name="LoginActionForm"]').length > 0
+        # Check for a redirection page
+        redirects = 0
+        while (redirects < 5 &&
+            page.parser.xpath('.//title').text() == 'Redirector' &&
+            page.parser.xpath('.//body[@onload="doSubmit();"]').length > 0 &&
+            page.forms.first)
+          page = page.forms.first.submit
+          redirects += 1
+        end
+        if page.parser.xpath('//form[@name="LoginActionForm"]').length > 0
           raise Errors::SessionExpiredError.new(session)
         end
-
         page
+
+      rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError,
+               Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+          raise Errors::NetworkError, e
+
+      rescue Errors::SessionExpiredError => e
+        (tries -= 1) > 0 ? (connect and retry) : raise
+
       end
 
 
@@ -111,8 +113,6 @@ module Maple::MapleTA
         page
       end
 
-
-
       def api_signature
         ts = Time.now.to_i * 1000
         {'timestamp' => ts, 'signature' => signature(ts)}
@@ -120,7 +120,12 @@ module Maple::MapleTA
 
 
       def agent
-        @agent ||= Mechanize.new.tap do |agent|
+        if @agent && !@agent.nil? &&
+          @agent.cookies.select{|c| c.name == "JSESSIONID"}.length > 0 &&
+          @agent.cookies.detect{|c| c.name == "JSESSIONID"}.value == session
+          return @agent
+        end
+        @agent = Mechanize.new.tap do |agent|
           uri = URI.parse(base_url)
           cookies.each do |key, val|
             cookie = Mechanize::Cookie.new(key, val)
@@ -134,6 +139,12 @@ module Maple::MapleTA
         end
       end
 
+      def active_session?
+        fetch_page('About.do', {}, :get, 0)
+        return true
+      rescue Errors::SessionExpiredError => e
+        return false
+      end
 
       def ws_url
         "#{base_url}/ws"
