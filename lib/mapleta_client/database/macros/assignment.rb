@@ -355,7 +355,7 @@ module Maple::MapleTA
           raise Errors::DatabaseError.new("Cannot determine new assignment_question_group id") unless new_group_id && new_group_id.to_i > 0
 
           assignment_question_group_hash = assignment_question_group.hash
-          assignment_question_group_hash['order_id'] = index
+          #assignment_question_group_hash['order_id'] = index
           push_assignment_question_group(assignment_question_group_hash, new_group_id, new_assignment_id, assignment_question_group_insert_cmd)
           assignment_question_group.map_hashes.each do |assignment_question_group_map_hash|
             push_assignment_question_group_map(assignment_question_group_map_hash, new_group_id, assignment_question_group_map_insert_cmd)
