@@ -142,6 +142,8 @@ module Page
           node['href'] = "#symbol"
           title = "Switch to Equation Editor"
         end
+        node.remove_attribute('onmouseover')
+        node.remove_attribute('onmouseout')
         node['class'] = 'change-equation-entry-mode inline-icon'
         5.times { node.previous_element.remove if node.previous_element.name() == 'br' }
         node.content = title
