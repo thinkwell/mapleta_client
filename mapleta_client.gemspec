@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
   # s.add_development_dependency "rspec"
   s.add_runtime_dependency(%q<activesupport>, ["~> 2.3"])
-  s.add_runtime_dependency(%q<nokogiri>, ["= 1.5.0"])
+  s.add_runtime_dependency(%q<nokogiri>, ["~> 1.5"])
   # 2.0.1 is causing problems with Net::HTTP::Persistent
   # https://github.com/tenderlove/mechanize/issues/123
   s.add_runtime_dependency(%q<mechanize>, ["= 1.0.0"])
@@ -35,4 +35,3 @@ Gem::Specification.new do |s|
   s.add_development_dependency(%q<rcov>, [">= 0"])
   s.add_development_dependency(%q<rake>, [">= 0"])
 end
-
