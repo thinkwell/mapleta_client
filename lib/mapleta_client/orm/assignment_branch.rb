@@ -2,7 +2,7 @@ module Maple::MapleTA
   module Orm
     class AssignmentBranch < Base
 
-      set_primary_key 'id'
+      self.primary_key = 'id'
       self.table_name = 'assignment_branch'
 
       belongs_to :assignment, :class_name => namespace('Assignment'), :foreign_key => 'assignmentid'

@@ -2,7 +2,7 @@ module Maple::MapleTA
   module Orm
     class Answersheetitem < Base
 
-      set_primary_key 'id'
+      self.primary_key = 'id'
       self.table_name = 'answersheetitem'
 
       belongs_to :testrecord, :class_name => namespace('Testrecord'), :foreign_key => 'testrecordid'

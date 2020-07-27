@@ -2,7 +2,7 @@ module Maple::MapleTA
   module Orm
     class Assignment < Base
 
-      set_primary_key 'id'
+      self.primary_key = 'id'
       self.table_name = 'assignment'
 
       belongs_to :parent_class, :class_name => namespace('Class'), :foreign_key => 'classid'

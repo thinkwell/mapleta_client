@@ -2,7 +2,7 @@ module Maple::MapleTA
   module Orm
     class Testrecord < Base
 
-      set_primary_key 'id'
+      self.primary_key = 'id'
       self.table_name = 'testrecord'
 
       belongs_to :assignment, :class_name => namespace('Assignment'), :foreign_key => 'assignmentid'

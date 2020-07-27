@@ -2,7 +2,7 @@ module Maple::MapleTA
   module Orm
     class Class < Base
 
-      set_primary_key 'cid'
+      self.primary_key = 'cid'
 
       belongs_to :parent_class, :class_name => namespace('Class'), :primary_key => 'cid', :foreign_key => 'parent'
       has_many :children, :class_name => namespace('Class'), :primary_key => 'cid', :foreign_key => 'parent'

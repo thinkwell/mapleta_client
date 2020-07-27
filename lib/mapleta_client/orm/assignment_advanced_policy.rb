@@ -4,7 +4,7 @@ module Maple::MapleTA
   module Orm
     class AssignmentAdvancedPolicy < Base
 
-      set_primary_key 'assignment_class_id'
+      self.primary_key = 'assignment_class_id'
       self.table_name = 'assignment_advanced_policy'
 
       belongs_to :assignment_class, :class_name => namespace('AssignmentClass'), :foreign_key => 'assignment_class_id'
