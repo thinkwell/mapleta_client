@@ -4,7 +4,7 @@ module Page
   class Preview < Base
     def html
       html = "<table class=\"preview\">#{table_node.children.map { |x| x.to_xhtml }.join}</table>"
-      html.gsub('http://mapleta5.thinkwell.com:80', 'https://files.thinkwell.com')
+      use_secure_image_proxy html
     end
 
     def table_node
