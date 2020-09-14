@@ -47,7 +47,12 @@ module Page
 
     def html
       # inner_xhtml
-      content_node.children.map { |x| x.to_xhtml }.join
+      html = content_node.children.map { |x| x.to_xhtml }.join
+      use_secure_image_proxy html
+    end
+    
+    def use_secure_image_proxy html
+      html.gsub('http://mapleta5.thinkwell.com:80', 'https://files.thinkwell.com')
     end
 
     #
