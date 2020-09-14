@@ -78,7 +78,8 @@ module Page
 
 
     def html
-      grade_questions_node.to_xhtml
+      html = grade_questions_node.to_xhtml
+      html.gsub('http://mapleta5.thinkwell.com:80', 'https://files.thinkwell.com')
     end
 
 
