@@ -3,7 +3,8 @@ module Page
 
   class Preview < Base
     def html
-      "<table class=\"preview\">#{table_node.children.map { |x| x.to_xhtml }.join}</table>"
+      html = "<table class=\"preview\">#{table_node.children.map { |x| x.to_xhtml }.join}</table>"
+      html.gsub('http://mapleta5.thinkwell.com:80', 'https://files.thinkwell.com')
     end
 
     def table_node
