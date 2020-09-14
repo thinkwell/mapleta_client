@@ -61,7 +61,8 @@ module Page
       # inner_xhtml
       html = question_node.children.map { |x| x.to_xhtml }.join
       html.gsub!('This question accepts formulas in Maple syntax.', '')
-      html.gsub('This question accepts numbers or formulas.', '')
+      html.gsub!('This question accepts numbers or formulas.', '')
+      html.gsub('http://mapleta5.thinkwell.com:80', 'https://files.thinkwell.com')
     end
     alias :question_html :html
 
