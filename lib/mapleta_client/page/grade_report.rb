@@ -78,7 +78,8 @@ module Page
 
 
     def html
-      grade_questions_node.to_xhtml
+      html = grade_questions_node.to_xhtml
+      use_secure_image_proxy html
     end
 
 
