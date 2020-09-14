@@ -79,7 +79,7 @@ module Page
 
     def html
       html = grade_questions_node.to_xhtml
-      html.gsub('http://mapleta5.thinkwell.com:80', 'https://files.thinkwell.com')
+      use_secure_image_proxy html
     end
 
 
