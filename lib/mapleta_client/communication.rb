@@ -220,7 +220,7 @@ module Maple::MapleTA
 
     private
       def signature(ts)
-        ::ActiveSupport::Base64.encode64(Digest::MD5.digest("#{ts}#{secret}")).gsub("\n",'')
+        ::Base64.encode64(Digest::MD5.digest("#{ts}#{secret}")).gsub("\n",'')
       end
 
       # Mechanize unescapes HTML entities such as &minus; in string form data.
