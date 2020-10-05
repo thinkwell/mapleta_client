@@ -3,7 +3,8 @@ module Page
 
   class Preview < Base
     def html
-      "<table class=\"preview\">#{table_node.children.map { |x| x.to_xhtml }.join}</table>"
+      html = "<table class=\"preview\">#{table_node.children.map { |x| x.to_xhtml }.join}</table>"
+      use_secure_image_proxy html
     end
 
     def table_node
