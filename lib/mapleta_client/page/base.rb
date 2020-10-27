@@ -52,7 +52,7 @@ module Page
     end
     
     def use_secure_image_proxy html
-      html.gsub('http://mapleta5.thinkwell.com:80', 'https://files.thinkwell.com')
+      html.gsub(/http(s)?\:\/\/mapleta5\.thinkwell\.com(\:80)?/i, 'https://files.thinkwell.com')
     end
 
     #
