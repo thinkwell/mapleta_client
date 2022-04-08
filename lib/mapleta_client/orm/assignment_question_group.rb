@@ -3,6 +3,7 @@ module Maple::MapleTA
     class AssignmentQuestionGroup < Base
 
       self.table_name = 'assignment_question_group'
+      self.primary_key = 'id'
 
       belongs_to :assignment, :class_name => namespace('Assignment'), :foreign_key => 'assignmentid'
       belongs_to :assignment_branch, :class_name => namespace('AssignmentBranch'), :foreign_key => 'assignment_branch_id'

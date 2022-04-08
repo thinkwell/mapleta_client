@@ -3,7 +3,8 @@ module Maple::MapleTA
     class AssignmentClass < Base
 
       self.table_name = 'assignment_class'
-
+      self.primary_key = 'id'
+      
       belongs_to :parent_class, :class_name => namespace('Class'), :foreign_key => 'classid'
       belongs_to :assignment, :class_name => namespace('Assignment'), :foreign_key => 'assignmentid'
       has_one :policy, :class_name => namespace('AssignmentPolicy'), :foreign_key => 'assignment_class_id', :dependent => :destroy
